@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <div className="flex items-center h-full p-10 gap-8">
       <Menu />
-      <div className="h-full">{children}</div>
+      <div className="h-full pr-5 pb-5 sm:2-full 2xl:w-8/12">{children}</div>
     </div>
   );
 }

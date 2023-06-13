@@ -22,6 +22,13 @@ export function PieChart({ labels, dataset, className = "" }: Props) {
   return (
     <div className={className}>
       <Pie
+        options={{
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+        }}
         data={{
           labels,
           datasets: [

@@ -44,7 +44,9 @@ export function TableCol({ colData }: Props) {
             <Avatar name={data.name} src={data.image} small />
             <div>
               <div className="font-bold">{data.name}</div>
-              <div className="text-sm opacity-50">{data.subtext}</div>
+              <div className="text-sm opacity-50 whitespace-nowrap">
+                {data.subtext}
+              </div>
             </div>
           </div>
         </td>

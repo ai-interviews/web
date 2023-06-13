@@ -1,5 +1,4 @@
 import { Card } from "@/app/_components/Card";
-import { BarChart } from "./Charts/BarChart";
 import { ReactNode } from "react";
 
 type Props = {
@@ -10,10 +9,10 @@ type Props = {
 
 export function MetricCard({ title, subtext, children }: Props) {
   return (
-    <Card>
-      <div className="flex align-center justify-between gap-8">
-        <div className="flex flex-col gap-5">
-          <div className="text-2xl">{title}</div>
+    <Card className="xl:h-36 2xl:h-52 justify-center">
+      <div className="flex align-center items-center justify-center gap-8 xl:h-24 2xl:h-32">
+        <div className="flex flex-col justify-center gap-5">
+          <div className="xl: 2xl:text-2xl">{title}</div>
           <div className="text-sm opacity-50 w-32 break-words">{subtext}</div>
         </div>
         {children}

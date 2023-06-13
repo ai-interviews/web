@@ -29,7 +29,7 @@ export async function DashboardMetrics() {
           <PieChart
             labels={wordFrequency.labels}
             dataset={wordFrequency.dataset}
-            className="h-full w-48"
+            className="h-full max-w-36"
           />
         </MetricCard>
         <MetricCard
@@ -41,18 +41,18 @@ export async function DashboardMetrics() {
           <BarChart
             labels={avgQuietTimeSeconds.dataset.data.map(() => "")}
             dataset={avgQuietTimeSeconds.dataset}
-            className="h-full w-48"
+            className="xl:h-24 xl:w-24 2xl:h-full 2xl:w-36"
             barThickness={8}
             hideGridLines
           />
         </MetricCard>
       </div>
-      <Card className="flex flex-col justify-center h-full w-2/3">
+      <Card className="flex flex-col justify-center xl:h-80 2xl:h-96 w-2/3">
         <div className="text-2xl pl-4 pb-5">Performance over time</div>
         <BarChart
           labels={avgScore.labels}
           dataset={avgScore.dataset}
-          className="h-full w-full"
+          className="h-5/6 w-full"
         />
       </Card>
     </div>
