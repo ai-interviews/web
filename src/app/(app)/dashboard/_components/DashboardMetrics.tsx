@@ -2,7 +2,8 @@ import { Card } from "@/app/_components/Card";
 import { BarChart } from "../../_components/Charts/BarChart";
 import { MetricCard } from "../../_components/MetricCard";
 import { getAggregateMetrics } from "../../_lib/server/getAggregateMetrics";
-import { formatBarChartMetrics } from "../../_lib/client/formatBarChartMetrics";
+import { formatChartMetrics } from "../../_lib/client/formatChartMetrics";
+import { PieChart } from "../../_components/Charts/PieChart";
 
 export async function DashboardMetrics() {
   const metrics = await getAggregateMetrics({
@@ -10,38 +11,47 @@ export async function DashboardMetrics() {
     endDate: new Date(),
   });
 
-  const barChartMetrics = formatBarChartMetrics({ metrics });
+  const chartMetrics = formatChartMetrics({ metrics });
+
+  const { avgQuietTimeSeconds, avgScore, wordFrequency } =
+    chartMetrics.datasets;
+
+  const { avgQuietTimeSeconds: avgQuietTimeSecondsDelta } =
+    chartMetrics.percentDifferences;
 
   return (
     <div className="flex items-center gap-5">
       <div className="flex flex-col gap-5 w-1/3">
         <MetricCard
-          title="0%"
-          subtext="Decrease in the use of filler words this month"
+          title="4"
+          subtext="Different filler words detected this month."
         >
-          <BarChart
-            labels={[""]}
-            dataset={{ label: "Score", data: [6.5] }}
+          <PieChart
+            labels={wordFrequency.labels}
+            dataset={wordFrequency.dataset}
             className="h-full w-48"
-            barThickness={8}
-            hideYAxis
           />
         </MetricCard>
-        <MetricCard title="0%" subtext="Decrease in thinking time this month.">
+        <MetricCard
+          title={avgQuietTimeSecondsDelta?.delta || "0%"}
+          subtext={`${
+            avgQuietTimeSecondsDelta?.isPositive ? "Increase" : "Decrease"
+          } in thinking time this month.`}
+        >
           <BarChart
-            labels={[""]}
-            dataset={{ label: "Score", data: [6.5] }}
+            labels={avgQuietTimeSeconds.dataset.data.map(() => "")}
+            dataset={avgQuietTimeSeconds.dataset}
             className="h-full w-48"
             barThickness={8}
-            hideYAxis
+            hideGridLines
           />
         </MetricCard>
       </div>
       <Card className="flex flex-col justify-center h-full w-2/3">
         <div className="text-2xl pl-4 pb-5">Performance over time</div>
         <BarChart
-          labels={barChartMetrics.labels}
-          dataset={barChartMetrics.datasets.avgScore}
+          labels={avgScore.labels}
+          dataset={avgScore.dataset}
           className="h-full w-full"
         />
       </Card>

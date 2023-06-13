@@ -7,21 +7,21 @@ import { useTheme } from "@/app/_lib/client/theme";
 
 Chart.register(CategoryScale, LinearScale, BarElement);
 
-export type BarChartDataset = { label: string; data: number[] };
+export type ChartDataset = { label: string; data: number[] };
 
 type Props = {
   className?: string;
   labels: string[];
-  dataset: BarChartDataset;
+  dataset: ChartDataset;
   barThickness?: number;
-  hideYAxis?: boolean;
+  hideGridLines?: boolean;
 };
 
 export function BarChart({
   className,
   labels,
   dataset,
-  hideYAxis,
+  hideGridLines,
   barThickness = 15,
 }: Props) {
   const { themeColors } = useTheme();
@@ -32,9 +32,22 @@ export function BarChart({
         options={{
           responsive: true,
           maintainAspectRatio: false,
-          scales: hideYAxis
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: hideGridLines
             ? {
                 y: {
+                  ticks: {
+                    display: false,
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+                x: {
                   ticks: {
                     display: false,
                   },
