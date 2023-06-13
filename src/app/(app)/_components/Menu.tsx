@@ -3,6 +3,7 @@ import {
   ChartBarIcon,
   BookmarkIcon,
   UserIcon,
+  PlusIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -52,6 +53,13 @@ export async function Menu() {
           href="/profile"
           active={pathname.includes("/profile")}
         />
+        <MenuItem
+          icon={<PlusIcon className={iconClass} />}
+          text="New interview"
+          href="/interview"
+          active={pathname.includes("/profile")}
+          bgColorSecondary
+        />
       </ul>
     </Card>
   );
@@ -62,16 +70,25 @@ type MenuItemProps = {
   text: string;
   href: string;
   active?: boolean;
+  bgColorSecondary?: boolean;
 };
 
-function MenuItem({ icon, text, active, href }: MenuItemProps) {
+function MenuItem({
+  icon,
+  text,
+  active,
+  href,
+  bgColorSecondary,
+}: MenuItemProps) {
   return (
     <li>
       <Link
         href={href}
-        className={`flex align-center text-lg h-12 gap-4 ${
-          active ? "active" : ""
-        }`}
+        className={`
+          flex align-center text-lg h-12 gap-4 
+          ${bgColorSecondary ? "bg-accent" : ""}
+          ${active ? "active" : ""}
+        `}
       >
         {icon}
         {text}

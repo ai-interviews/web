@@ -48,6 +48,7 @@ export function ThemeSelector() {
       options={THEMES.map((theme) => ({ label: theme, value: theme }))}
       selected={theme}
       wide={true}
+      dropdownPosition="dropdown-end"
     />
   ) : (
     <></>

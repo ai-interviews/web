@@ -3,15 +3,30 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
+type DropdownPosition =
+  | "dropdown-end"
+  | "dropdown-top"
+  | "dropdown-bottom"
+  | "dropdown-left"
+  | "dropdown-right";
+
 type Props = {
   onChange: (value: string) => void;
   options: { label: string; value: string }[];
   selected?: string;
   title?: string;
   wide?: boolean;
+  dropdownPosition?: DropdownPosition;
 };
 
-export function Dropdown({ onChange, options, title, selected, wide }: Props) {
+export function Dropdown({
+  onChange,
+  options,
+  title,
+  selected,
+  wide,
+  dropdownPosition = "dropdown-bottom",
+}: Props) {
   const [selectedValue, setSelectedValue] = useState(selected);
 
   const onClickOption = (value: string) => {
@@ -20,7 +35,7 @@ export function Dropdown({ onChange, options, title, selected, wide }: Props) {
   };
 
   return (
-    <details className="dropdown dropdown-end">
+    <details className={`dropdown ${dropdownPosition}`}>
       <summary className="btn btn-ghost no-animation flex items-center">
         <span>
           {title ||
