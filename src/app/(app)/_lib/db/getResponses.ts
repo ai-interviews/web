@@ -1,5 +1,5 @@
-import { getServerUser } from "@/app/lib/server/getServerUser";
-import prisma from "@/app/lib/server/prismadb";
+import { getServerUser } from "@/app/_lib/server/getServerUser";
+import prisma from "@/app/_lib/server/prismadb";
 import type { Prisma } from "@prisma/client";
 
 export type Response = {

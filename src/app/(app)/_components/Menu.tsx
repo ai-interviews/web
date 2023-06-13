@@ -7,9 +7,9 @@ import {
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Avatar } from "./Avatar";
-import { Card } from "@/app/components/Card";
-import { getServerUrl } from "@/app/lib/server/getServerUrl";
-import { getServerUser } from "@/app/lib/server/getServerUser";
+import { Card } from "@/app/_components/Card";
+import { getServerUrl } from "@/app/_lib/server/getServerUrl";
+import { getServerUser } from "@/app/_lib/server/getServerUser";
 
 export async function Menu() {
   const iconClass = "h-7";

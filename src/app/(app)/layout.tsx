@@ -1,5 +1,5 @@
 import { NextAuthProvider } from "@/app/providers";
-import { Menu } from "./components/Menu";
+import { Menu } from "./_components/Menu";
 
 export default function RootLayout({
   children,

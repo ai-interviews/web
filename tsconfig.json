@@ -22,7 +22,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "typeRoots": ["./environment.d.ts", "./src/app/lib/environment.d.ts"]
+    "typeRoots": ["./environment.d.ts", "src/app/_lib/environment.d.ts"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

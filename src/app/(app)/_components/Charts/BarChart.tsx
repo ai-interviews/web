@@ -1,17 +1,18 @@
 "use client";
 
-import { Chart, ChartData, ChartDataset } from "chart.js";
+import { Chart } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { CategoryScale, LinearScale, BarElement } from "chart.js";
-import { getThemeColors } from "@/app/lib/client/theme";
-import { useEffect, useState } from "react";
+import { useTheme } from "@/app/_lib/client/theme";
 
 Chart.register(CategoryScale, LinearScale, BarElement);
+
+export type BarChartDataset = { label: string; data: number[] };
 
 type Props = {
   className?: string;
   labels: string[];
-  dataset: { label: string; data: number[] };
+  dataset: BarChartDataset;
   barThickness?: number;
   hideYAxis?: boolean;
 };
@@ -23,22 +24,7 @@ export function BarChart({
   hideYAxis,
   barThickness = 15,
 }: Props) {
-  const [primaryThemeColor, setPrimaryThemeColor] = useState<string>(
-    getThemeColors().primary
-  );
-
-  // Change bar color when theme is changed
-  useEffect(() => {
-    const onStorage = () => {
-      setPrimaryThemeColor(getThemeColors().primary);
-    };
-
-    window.addEventListener("storage", onStorage);
-
-    return () => {
-      window.removeEventListener("storage", onStorage);
-    };
-  }, []);
+  const { themeColors } = useTheme();
 
   return (
     <div className={className}>
@@ -64,8 +50,8 @@ export function BarChart({
           datasets: [
             {
               ...dataset,
-              borderColor: primaryThemeColor,
-              backgroundColor: primaryThemeColor,
+              borderColor: themeColors.primary,
+              backgroundColor: themeColors.primary,
               barThickness,
               borderWidth: 2,
               borderRadius: 3,

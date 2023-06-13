@@ -1,7 +1,7 @@
 "use client";
 
-import { Dropdown } from "@/app/components/inputs/Dropdown";
-import { getTheme, setTheme } from "@/app/lib/client/theme";
+import { Dropdown } from "@/app/_components/inputs/Dropdown";
+import { setTheme, useTheme } from "@/app/_lib/client/theme";
 
 const THEMES = [
   "light",
@@ -36,16 +36,20 @@ const THEMES = [
 ];
 
 export function ThemeSelector() {
+  const { theme } = useTheme();
+
   const onChange = (theme: string) => {
     setTheme(theme);
   };
 
-  return (
+  return theme ? (
     <Dropdown
       onChange={onChange}
       options={THEMES.map((theme) => ({ label: theme, value: theme }))}
-      selected={getTheme()}
+      selected={theme}
       wide={true}
     />
+  ) : (
+    <></>
   );
 }

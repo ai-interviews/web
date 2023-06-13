@@ -1,12 +1,14 @@
-import { Card } from "@/app/components/Card";
+import { Card } from "@/app/_components/Card";
 import { BarChart } from "./Charts/BarChart";
+import { ReactNode } from "react";
 
 type Props = {
   title: string;
   subtext: string;
+  children?: ReactNode;
 };
 
-export function MetricCard({ title, subtext }: Props) {
+export function MetricCard({ title, subtext, children }: Props) {
   return (
     <Card>
       <div className="flex align-center justify-between gap-8">
@@ -14,13 +16,7 @@ export function MetricCard({ title, subtext }: Props) {
           <div className="text-2xl">{title}</div>
           <div className="text-sm opacity-50 w-32 break-words">{subtext}</div>
         </div>
-        <BarChart
-          labels={[""]}
-          dataset={{ label: "Score", data: [6.5] }}
-          className="h-full w-48"
-          barThickness={8}
-          hideYAxis
-        />
+        {children}
       </div>
     </Card>
   );

@@ -22,8 +22,10 @@ export function Dropdown({ onChange, options, title, selected, wide }: Props) {
   return (
     <details className="dropdown dropdown-end">
       <summary className="btn btn-ghost no-animation flex items-center">
-        {title ||
-          options.find((option) => option.value === selectedValue)?.label}
+        <span>
+          {title ||
+            options.find((option) => option.value === selectedValue)?.label}
+        </span>
         <ChevronDownIcon className="h-4 w-4" />
       </summary>
       <ul
