@@ -6,7 +6,7 @@ export async function LatestQuestions() {
   const responses = await getResponses({ page: 0, limit: 3 });
 
   return (
-    <Card className="lg:h-64 xl:h-80 2xl:h-full">
+    <Card className="h-min">
       <div className="text-2xl pl-4 pb-2.5">Activity</div>
       <ResponseTable data={responses} />
     </Card>

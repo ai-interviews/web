@@ -17,7 +17,7 @@ export async function Menu() {
   const { pathname } = getServerUrl();
 
   return (
-    <Card className="pt-6 h-full">
+    <Card className="pt-6 h-full hidden md:block">
       <ul className="menu w-56 rounded-box gap-4">
         {/* Avatar */}
         <div className="flex flex-col gap-3 mb-5">

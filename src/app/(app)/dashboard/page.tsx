@@ -9,8 +9,8 @@ export default async function Dashboard() {
   const user = await getServerUser();
 
   return (
-    <div className="flex flex-col gap-4 h-full justify-center w-full">
-      <div>
+    <div className="m-auto h-min">
+      <div className="mb-5">
         <Header title={`Welcome back, ${user.name.split(" ")[0]}.`} />
         <Suspense>
           <DashboardMetrics />

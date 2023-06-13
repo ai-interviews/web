@@ -20,8 +20,8 @@ export async function DashboardMetrics() {
     chartMetrics.percentDifferences;
 
   return (
-    <div className="flex items-center gap-5">
-      <div className="flex flex-col gap-5 w-1/3">
+    <div className="flex items-center justify-between gap-5 flex-wrap w-full">
+      <div className="flex flex-col gap-5 w-full lg:w-4/12">
         <MetricCard
           title="4"
           subtext="Different filler words detected this month."
@@ -29,7 +29,7 @@ export async function DashboardMetrics() {
           <PieChart
             labels={wordFrequency.labels}
             dataset={wordFrequency.dataset}
-            className="h-full max-w-36"
+            className="h-full max-w-36 2xl:w-36"
           />
         </MetricCard>
         <MetricCard
@@ -47,8 +47,8 @@ export async function DashboardMetrics() {
           />
         </MetricCard>
       </div>
-      <Card className="flex flex-col justify-center xl:h-80 2xl:h-96 w-2/3">
-        <div className="text-2xl pl-4 pb-5">Performance over time</div>
+      <Card className="flex flex-col justify-center xl:h-80 2xl:h-96 w-full lg:w-7/12 ">
+        <div className="text-2xl pl-4 pb-5 w-full">Performance over time</div>
         <BarChart
           labels={avgScore.labels}
           dataset={avgScore.dataset}
