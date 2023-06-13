@@ -1,8 +1,8 @@
 import { Card } from "@/app/_components/Card";
 import { BarChart } from "../../_components/Charts/BarChart";
 import { MetricCard } from "../../_components/MetricCard";
-import { getAggregateMetrics } from "../../_lib/db/getAggregateMetrics";
-import { formatBarChartMetrics } from "../../_lib/formatBarChartMetrics";
+import { getAggregateMetrics } from "../../_lib/server/getAggregateMetrics";
+import { formatBarChartMetrics } from "../../_lib/client/formatBarChartMetrics";
 
 export async function DashboardMetrics() {
   const metrics = await getAggregateMetrics({

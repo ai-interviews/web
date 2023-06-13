@@ -1,5 +1,5 @@
-import { BarChartDataset } from "../_components/Charts/BarChart";
-import { AggregateMetrics } from "./db/getAggregateMetrics";
+import { BarChartDataset } from "../../_components/Charts/BarChart";
+import { AggregateMetrics } from "../server/getAggregateMetrics";
 
 export const formatBarChartMetrics = ({
   metrics,

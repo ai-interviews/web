@@ -1,6 +1,6 @@
 import { Card } from "@/app/_components/Card";
 import { ResponseTable } from "../../_components/ResponseTable/ResponseTable";
-import { getResponses } from "../../_lib/db/getResponses";
+import { getResponses } from "../../_lib/server/getResponses";
 
 export async function LatestQuestions() {
   const responses = await getResponses();

@@ -1,6 +1,6 @@
-import { Response } from "../../_lib/db/getResponses";
-import { formatTime } from "../../_lib/formatTime";
-import { truncateText } from "../../_lib/truncateText";
+import { Response } from "../../_lib/server/getResponses";
+import { formatTime } from "../../_lib/client/formatTime";
+import { truncateText } from "../../_lib/client/truncateText";
 import { Table } from "../Table/Table";
 import { TableCol } from "../Table/TableCol";
 
