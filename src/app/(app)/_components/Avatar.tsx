@@ -1,5 +1,4 @@
-import Image from "next/image";
-
+import { Image } from "../../_components/Image";
 type Props = {
   name: string;
   src?: string;
@@ -14,21 +13,20 @@ export function Avatar({ src, name, small }: Props) {
       <div className={`w-${size} rounded-full`}>
         <Image
           src={src}
-          width={size}
-          height={size}
+          size={size}
           className={small ? "w-12" : "w-24"}
           alt="user avatar"
-          referrerPolicy="no-referrer"
-          unoptimized
         />
       </div>
     </div>
   ) : (
     <div className="avatar placeholder">
       <div
-        className={`bg-neutral-focus text-neutral-content rounded-full w-${size}`}
+        className={`bg-neutral-focus text-neutral-content rounded-full ${
+          small ? "w-12" : "w-24"
+        }`}
       >
-        <span className="text-3xl">{name}</span>
+        <span className="text-3xl">{name[0]}</span>
       </div>
     </div>
   );

@@ -24,8 +24,8 @@ export function MenuItem({
       <Link
         href={href}
         className={`
-          flex align-center text-lg h-12 gap-4 
-          ${bgColorSecondary ? "bg-accent" : ""}
+          btn flex flex-nowrap justify-start whitespace-nowrap normal-case font-normal align-center text-lg h-12 gap-4 
+          ${bgColorSecondary ? "btn-outline" : ""}
           ${pathname.includes(href) ? "active" : ""}
         `}
       >
