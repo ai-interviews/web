@@ -16,6 +16,7 @@ type Props = {
   selected?: string;
   title?: string;
   wide?: boolean;
+  noOutline?: boolean;
   dropdownPosition?: DropdownPosition;
 };
 
@@ -25,6 +26,7 @@ export function Dropdown({
   title,
   selected,
   wide,
+  noOutline,
   dropdownPosition = "dropdown-bottom",
 }: Props) {
   const [selectedValue, setSelectedValue] = useState(selected);
@@ -36,8 +38,12 @@ export function Dropdown({
 
   return (
     <details className={`dropdown ${dropdownPosition}`}>
-      <summary className="btn btn-ghost no-animation flex flex-nowrap items-center">
-        <span className="whitespace-nowrap">
+      <summary
+        className={`btn ${
+          noOutline ? "btn-ghost" : "btn-outline"
+        } no-animation flex flex-nowrap items-center`}
+      >
+        <span className="whitespace-nowrap ">
           {title ||
             options.find((option) => option.value === selectedValue)?.label}
         </span>

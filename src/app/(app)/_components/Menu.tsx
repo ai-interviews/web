@@ -4,6 +4,7 @@ import {
   BookmarkIcon,
   UserIcon,
   PlusIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -11,6 +12,7 @@ import { Avatar } from "./Avatar";
 import { Card } from "@/app/_components/Card";
 import { getServerUrl } from "@/app/_lib/server/getServerUrl";
 import { getServerUser } from "@/app/_lib/server/getServerUser";
+import { ThemeSelector } from "./ThemeSelector";
 
 export async function Menu() {
   const iconClass = "h-7";
@@ -18,7 +20,7 @@ export async function Menu() {
   const { pathname } = getServerUrl();
 
   return (
-    <Card className="pt-6 h-full hidden md:block">
+    <Card className="pt-6 h-full hidden md:flex flex-col justify-between">
       <ul className="menu w-56 rounded-box gap-4">
         {/* Avatar */}
         <div className="flex flex-col gap-3 mb-5">
@@ -57,10 +59,16 @@ export async function Menu() {
           icon={<PlusIcon className={iconClass} />}
           text="New interview"
           href="/interview"
-          active={pathname.includes("/profile")}
+          active={pathname.includes("/interview")}
           bgColorSecondary
         />
       </ul>
+      <div className="flex items-center justify-between">
+        <button className="btn btn-ghost">
+          <ArrowLeftOnRectangleIcon height={24} width={24} />{" "}
+        </button>
+        <ThemeSelector />
+      </div>
     </Card>
   );
 }
