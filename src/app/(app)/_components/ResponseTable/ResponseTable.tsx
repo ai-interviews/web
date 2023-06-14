@@ -13,6 +13,7 @@ export function ResponseTable({ data }: Props) {
     // Interviewer
     {
       type: "Person",
+      hiddenThreshold: "md",
       data: {
         name: row.interviewerName,
         image: row.interviewerImageUrl,
@@ -58,7 +59,14 @@ export function ResponseTable({ data }: Props) {
 
   return (
     <Table
-      headers={["Interviewer", "Question", "Response", "Score", "Time", "Date"]}
+      headers={[
+        { label: "Interviewer", hiddenThreshold: "lg" },
+        { label: "Question" },
+        { label: "Response" },
+        { label: "Score", hiddenThreshold: "sm" },
+        { label: "Time", hiddenThreshold: "md" },
+        { label: "Date" },
+      ]}
       data={rows}
     />
   );

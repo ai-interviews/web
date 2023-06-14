@@ -1,4 +1,4 @@
-import { InterviewerDropdown } from "./_components/Dropdown";
+import { InterviewerDropdown } from "./_components/InterviewerDropdown";
 import { getInterviewers } from "../_lib/server/getInterviewers";
 
 export default async function InterviewPage() {
@@ -6,7 +6,7 @@ export default async function InterviewPage() {
 
   return (
     <div className="flex items-center h-full">
-      <div className="">
+      <div>
         <InterviewerDropdown data={interviewers} />
       </div>
     </div>

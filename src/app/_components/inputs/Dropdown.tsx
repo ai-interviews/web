@@ -36,8 +36,8 @@ export function Dropdown({
 
   return (
     <details className={`dropdown ${dropdownPosition}`}>
-      <summary className="btn btn-ghost no-animation flex items-center">
-        <span>
+      <summary className="btn btn-ghost no-animation flex flex-nowrap items-center">
+        <span className="whitespace-nowrap">
           {title ||
             options.find((option) => option.value === selectedValue)?.label}
         </span>

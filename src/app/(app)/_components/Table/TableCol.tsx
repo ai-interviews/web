@@ -27,19 +27,22 @@ export type TableCol = TextCol | PersonCol | DateCol;
 
 type Props = {
   colData: TableCol;
+  className?: string;
 };
 
-export function TableCol({ colData }: Props) {
+export function TableCol({ colData, className }: Props) {
   const { type, data } = colData;
 
   switch (type) {
     case "Text":
-      return <td className="max-w-xs break-words">{data.text}</td>;
+      return (
+        <td className={`max-w-xs break-words ${className}`}>{data.text}</td>
+      );
     case "Date":
-      return <td>{data.date.toDateString()}</td>;
+      return <td className={className}>{data.date.toDateString()}</td>;
     case "Person":
       return (
-        <td>
+        <td className={className}>
           <div className="flex items-center space-x-3">
             <Avatar name={data.name} src={data.image} small />
             <div>

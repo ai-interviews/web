@@ -1,20 +1,27 @@
 import { TableCol } from "./TableCol";
 
+type TailwindBreakpoints = "sm" | "md" | "lg" | "xl" | "2xl";
+
 type Props = {
-  headers: string[];
+  headers: {
+    label: string;
+    hiddenThreshold?: TailwindBreakpoints;
+  }[];
   data: TableCol[][];
   size?: "xs" | "sm" | "md" | "lg";
 };
 
 export function Table({ headers, data, size = "md" }: Props) {
   return (
-    <div className="overflow-x-auto">
-      <table className={`table table-${size}`}>
+    <div className="overflow-x-auto h-min">
+      <table className={`table table-${size} h-min`}>
         {/* Headers */}
         <thead>
           <tr>
-            {headers.map((header, i) => (
-              <th key={i}>{header}</th>
+            {headers.map(({ label, hiddenThreshold }, i) => (
+              <th key={i} className={getClassToHideTableCol(hiddenThreshold)}>
+                {label}
+              </th>
             ))}
           </tr>
         </thead>
@@ -23,7 +30,11 @@ export function Table({ headers, data, size = "md" }: Props) {
           {data.map((rowData, i) => (
             <tr key={i}>
               {rowData.map((colData, j) => (
-                <TableCol key={j} colData={colData} />
+                <TableCol
+                  key={j}
+                  colData={colData}
+                  className={getClassToHideTableCol(headers[j].hiddenThreshold)}
+                />
               ))}
             </tr>
           ))}
@@ -32,3 +43,29 @@ export function Table({ headers, data, size = "md" }: Props) {
     </div>
   );
 }
+
+export const getClassToHideTableCol = (
+  hiddenThreshold?: TailwindBreakpoints
+) => {
+  let hideColClass = "";
+
+  if (hiddenThreshold) {
+    hideColClass = "hidden ";
+    switch (hiddenThreshold) {
+      case "sm":
+        hideColClass += "md:table-cell";
+        break;
+      case "md":
+        hideColClass += "lg:table-cell";
+        break;
+      case "lg":
+        hideColClass += "xl:table-cell";
+        break;
+      case "xl":
+        hideColClass += "2xl:table-cell";
+        break;
+    }
+  }
+
+  return hideColClass;
+};
