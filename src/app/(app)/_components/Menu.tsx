@@ -13,11 +13,11 @@ import { Card } from "@/app/_components/Card";
 import { getServerUrl } from "@/app/_lib/server/getServerUrl";
 import { getServerUser } from "@/app/_lib/server/getServerUser";
 import { ThemeSelector } from "./ThemeSelector";
+import { MenuItem } from "./MenuItem";
 
 export async function Menu() {
   const iconClass = "h-7";
   const user = await getServerUser();
-  const { pathname } = getServerUrl();
 
   return (
     <Card className="pt-6 h-full hidden md:flex flex-col justify-between">
@@ -34,32 +34,27 @@ export async function Menu() {
         <MenuItem
           icon={<RectangleGroupIcon className={iconClass} />}
           text="Dashboard"
-          href="/"
-          active={pathname === "/" || pathname.includes("/dashboard")}
+          href="/dashboard"
         />
         <MenuItem
           icon={<ChartBarIcon className={iconClass} />}
           text="Metrics"
           href="/metrics"
-          active={pathname.includes("/metrics")}
         />
         <MenuItem
           icon={<BookmarkIcon className={iconClass} />}
           text="My Jobs"
           href="/jobs"
-          active={pathname.includes("jobs")}
         />
         <MenuItem
           icon={<UserIcon className={iconClass} />}
           text="My Profile"
           href="/profile"
-          active={pathname.includes("/profile")}
         />
         <MenuItem
           icon={<PlusIcon className={iconClass} />}
           text="New interview"
           href="/interview"
-          active={pathname.includes("/interview")}
           bgColorSecondary
         />
       </ul>
@@ -70,37 +65,5 @@ export async function Menu() {
         <ThemeSelector />
       </div>
     </Card>
-  );
-}
-
-type MenuItemProps = {
-  icon: ReactNode;
-  text: string;
-  href: string;
-  active?: boolean;
-  bgColorSecondary?: boolean;
-};
-
-function MenuItem({
-  icon,
-  text,
-  active,
-  href,
-  bgColorSecondary,
-}: MenuItemProps) {
-  return (
-    <li>
-      <Link
-        href={href}
-        className={`
-          flex align-center text-lg h-12 gap-4 
-          ${bgColorSecondary ? "bg-accent" : ""}
-          ${active ? "active" : ""}
-        `}
-      >
-        {icon}
-        {text}
-      </Link>
-    </li>
   );
 }

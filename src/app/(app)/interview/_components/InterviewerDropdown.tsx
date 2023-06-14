@@ -15,7 +15,8 @@ export function InterviewerDropdown({ data }: Props) {
         label: name,
         value: name,
       }))}
-      title="Select interviewer"
+      title="Interviewer"
+      noOutline
     />
   );
 }
