@@ -1,32 +1,37 @@
 import { Image } from "../../_components/Image";
+
+type Size = "sm" | "md" | "lg";
+
 type Props = {
   name: string;
   src?: string;
-  small?: boolean;
+  size?: Size;
 };
 
-export function Avatar({ src, name, small }: Props) {
-  const size = small ? 12 : 24;
+export function Avatar({ src, name, size = "md" }: Props) {
+  const sizes: Record<
+    Size,
+    { sizeNum: number; sizeClass: string; textClass: string }
+  > = {
+    sm: { sizeNum: 12, sizeClass: "w-12", textClass: "text-lg" },
+    md: { sizeNum: 24, sizeClass: "w-24", textClass: "text-xl" },
+    lg: { sizeNum: 52, sizeClass: "w-52", textClass: "text-2xl" },
+  };
+
+  const { sizeNum, sizeClass, textClass } = sizes[size];
 
   return src ? (
     <div className="avatar">
-      <div className={`w-${size} rounded-full`}>
-        <Image
-          src={src}
-          size={size}
-          className={small ? "w-12" : "w-24"}
-          alt="user avatar"
-        />
+      <div className={`${sizeClass} rounded-full`}>
+        <Image src={src} size={sizeNum} alt="avatar" />
       </div>
     </div>
   ) : (
     <div className="avatar placeholder">
       <div
-        className={`bg-neutral-focus text-neutral-content rounded-full ${
-          small ? "w-12" : "w-24"
-        }`}
+        className={`bg-neutral-focus text-neutral-content rounded-full ${sizeClass}`}
       >
-        <span className="text-3xl">{name[0]}</span>
+        <span className={textClass}>{name[0]}</span>
       </div>
     </div>
   );

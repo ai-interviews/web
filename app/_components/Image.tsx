@@ -2,12 +2,12 @@ import NextImage from "next/image";
 
 type Props = {
   src: string;
-  size: number;
+  size?: number;
   alt: string;
   className?: string;
 };
 
-export function Image({ src, size, className, alt }: Props) {
+export function Image({ src, size = 24, className, alt }: Props) {
   return (
     <NextImage
       src={src}
@@ -17,6 +17,7 @@ export function Image({ src, size, className, alt }: Props) {
       alt={alt}
       referrerPolicy="no-referrer"
       unoptimized
+      // onLoad={}
     />
   );
 }

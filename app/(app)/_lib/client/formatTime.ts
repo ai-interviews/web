@@ -10,10 +10,12 @@ export const formatTime = ({ seconds }: { seconds: number }) => {
   }
 
   if (timeString.length > 0 || minutes > 0) {
-    timeString += `${minutes}:`;
+    // Add padding to ensure minutes are always two digits
+    timeString += `${minutes.toString().padStart(2, "0")}:`;
   }
 
-  timeString += remainingSeconds;
+  // Add padding to ensure seconds are always two digits
+  timeString += remainingSeconds.toString().padStart(2, "0");
 
   return timeString;
 };

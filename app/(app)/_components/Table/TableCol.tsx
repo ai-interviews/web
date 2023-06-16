@@ -1,4 +1,6 @@
+import { Image } from "@/app/_components/Image";
 import { Avatar } from "../Avatar";
+import { getCountryImageUrl } from "../../_lib/client/getCountryImageUrl";
 
 type DateCol = {
   type: "Date";
@@ -12,7 +14,7 @@ type PersonCol = {
   data: {
     name: string;
     image?: string;
-    subtext?: string;
+    country: string;
   };
 };
 
@@ -43,12 +45,17 @@ export function TableCol({ colData, className }: Props) {
     case "Person":
       return (
         <td className={className}>
-          <div className="flex items-center space-x-3">
-            <Avatar name={data.name} src={data.image} small />
+          <div className="flex items-center space-x-4">
+            <Avatar name={data.name} src={data.image} size="sm" />
             <div>
               <div className="font-bold">{data.name}</div>
-              <div className="text-sm opacity-50 whitespace-nowrap">
-                {data.subtext}
+              <div className="flex flex-nowrap items-center gap-1.5 text-sm opacity-50 whitespace-nowrap">
+                <Image
+                  className="h-2 w-4"
+                  src={getCountryImageUrl(data.country)}
+                  alt="country flag"
+                />
+                {data.country}
               </div>
             </div>
           </div>

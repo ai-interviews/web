@@ -58,6 +58,7 @@ model Interviewer {
   name     String @id
   country  String
   imageUrl String
+  bio      String
 
   Interview Interview[]
 }
