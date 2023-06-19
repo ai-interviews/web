@@ -111,7 +111,7 @@ export function InterviewBot({
             messageInProgress={messageInProgress}
           />
         ) : (
-          <div className="max-h-full overflow-auto">
+          <div className="h-full overflow-auto">
             <div className="text-3xl mb-5">Past interviews</div>
             <InterviewTable interviews={interviews} />
           </div>

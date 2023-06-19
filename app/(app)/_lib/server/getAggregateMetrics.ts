@@ -47,7 +47,5 @@ export const getAggregateMetrics = async ({
 
   const metrics: AggregateMetrics[] = await prisma.$queryRaw(sql);
 
-  console.log(metrics);
-
   return metrics;
 };

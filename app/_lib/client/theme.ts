@@ -3,7 +3,7 @@ import daisyUiColors from "daisyui/src/theming/themes";
 import { getLocalStorage, setLocalStorage } from "./storage";
 import { useEffect, useState } from "react";
 
-const getTheme = () => getLocalStorage("interviews-theme") || "";
+const getTheme = () => getLocalStorage("interviews-theme") || "light";
 
 export const setTheme = (newTheme: string) => {
   setLocalStorage("interviews-theme", newTheme);
@@ -31,10 +31,9 @@ const getThemeColors = (): ThemeColors =>
   daisyUiColors[`[data-theme=${getTheme()}]`];
 
 export const useTheme = () => {
+  const lightThemeColors = daisyUiColors[`[data-theme=light]`];
   const [theme, _setTheme] = useState<string>("");
-  const [themeColors, setThemeColors] = useState<ThemeColors>(
-    daisyUiColors[`[data-theme=light]`]
-  );
+  const [themeColors, setThemeColors] = useState<ThemeColors>(lightThemeColors);
 
   useEffect(() => {
     // Only access local storage on component mount, else risk undefined
