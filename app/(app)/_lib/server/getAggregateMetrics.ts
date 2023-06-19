@@ -22,42 +22,32 @@ export const getAggregateMetrics = async ({
   const userId = (await getServerUser()).id;
 
   const sql = Prisma.sql`
-    WITH metrics AS (
-      SELECT 
-        date_trunc(${groupBy}, i."date") AS "date",
-        AVG(r."score") AS "avgScore",
-        AVG(r."timeSeconds") AS "avgTimeSeconds",
-        AVG(r."quietTimeSeconds") AS "avgQuietTimeSeconds"
-      FROM "Response" r
-      INNER JOIN "Interview" i ON r."interviewId" = i."id"
-      WHERE i."userId" = ${userId} AND i."date" BETWEEN ${startDate} AND ${endDate}
-      GROUP BY date
-    ),
-    word_frequencies AS (
+    WITH data AS (
       SELECT
         date_trunc(${groupBy}, i."date") AS "date",
-        jsondata.key AS "key",
-        SUM(jsondata.value::float) AS "total"
+        r."score",
+        r."timeSeconds",
+        r."quietTimeSeconds",
+        (jsonb_each_text(r."wordFrequency")).*
       FROM "Response" r
-      INNER JOIN "Interview" i ON r."interviewId" = i."id",
-        jsonb_each_text("wordFrequency") AS jsondata
-      WHERE i."userId" = ${userId}
-      AND i."date" BETWEEN ${startDate} AND ${endDate}
-      GROUP BY date, jsondata.key
+      INNER JOIN "Interview" i ON r."interviewId" = i."id"
+      WHERE i."userId" = ${userId} 
+        AND i."date" BETWEEN ${startDate} AND ${endDate}
     )
     SELECT
-      metrics."date",
-      metrics."avgScore",
-      metrics."avgTimeSeconds",
-      metrics."avgQuietTimeSeconds",
-      jsonb_object_agg(key, total) as "wordFrequency"
-    FROM metrics
-    LEFT JOIN word_frequencies ON metrics."date" = word_frequencies."date"
-    GROUP BY metrics."date", metrics."avgScore", metrics."avgTimeSeconds", metrics."avgQuietTimeSeconds"
-    ORDER BY metrics."date";
+      "date",
+      CAST(ROUND(AVG("score")) AS INTEGER) AS "avgScore",
+      CAST(ROUND(AVG("timeSeconds")) AS INTEGER) AS "avgTimeSeconds",
+      CAST(ROUND(AVG("quietTimeSeconds")) AS INTEGER) AS "avgQuietTimeSeconds",
+      jsonb_object_agg(key, value::float) as "wordFrequency"
+    FROM data
+    GROUP BY "date"
+    ORDER BY "date";
   `;
 
   const metrics: AggregateMetrics[] = await prisma.$queryRaw(sql);
+
+  console.log(metrics);
 
   return metrics;
 };

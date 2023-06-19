@@ -1,3 +1,23 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "sqltools.connections": [
+    {
+      "pgOptions": {
+        "query_timeout": 60
+      },
+      "previewLimit": 25,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "DFG Local",
+      "connectString": "postgres://ralph@localhost:5432/dfg"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "Intern Project",
+      "connectString": "postgres://hrAdmin:exitOnly123@interviewdb-1.postgres.database.azure.com/postgres?sslmode=prefer",
+      "connectionTimeout": 60
+    }
+  ]
 }

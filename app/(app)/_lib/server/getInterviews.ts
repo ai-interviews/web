@@ -30,9 +30,9 @@ export const getInterviews = async (): Promise<InterviewWithMetrics[]> => {
         p."country" as "interviewerCountry",
         p."imageUrl" as "interviewerImageUrl",
         p."bio" as "interviewerBio",
-        AVG(r."score") as "avgScore",
-        AVG(r."timeSeconds") as "avgTimeSeconds",
-        AVG(r."quietTimeSeconds") as "avgQuietTimeSeconds"
+        CAST(ROUND(AVG(r."score")) AS INTEGER) AS "avgScore",
+        CAST(ROUND(AVG(r."timeSeconds")) AS INTEGER) AS "avgTimeSeconds",
+        CAST(ROUND(AVG(r."quietTimeSeconds")) AS INTEGER) AS "avgQuietTimeSeconds"
       FROM "Interview" i
       LEFT JOIN "Response" r ON r."interviewId" = i."id"
       LEFT JOIN "Interviewer" p ON p."name" = i."interviewerName" 

@@ -26,6 +26,7 @@ export const formatChartMetrics = ({
 
   // Base metrics
   for (const metric of metrics) {
+    // TODO: handle different periods
     const label = metric.date.toLocaleString("default", { month: "long" });
 
     // Labels

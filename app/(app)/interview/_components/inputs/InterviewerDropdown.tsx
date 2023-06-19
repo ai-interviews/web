@@ -6,9 +6,10 @@ import { Interviewer } from "prisma/prisma-client";
 type Props = {
   data: Interviewer[];
   onChange: (interviewer: Interviewer) => void;
+  value?: Interviewer;
 };
 
-export function InterviewerDropdown({ data, onChange }: Props) {
+export function InterviewerDropdown({ data, onChange, value }: Props) {
   return (
     <Dropdown
       onChange={(name) =>
@@ -20,6 +21,7 @@ export function InterviewerDropdown({ data, onChange }: Props) {
         imageUrl,
       }))}
       title="Interviewer"
+      selected={value?.name}
       noOutline
     />
   );
