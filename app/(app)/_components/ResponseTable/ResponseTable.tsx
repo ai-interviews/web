@@ -17,7 +17,7 @@ export function ResponseTable({ data }: Props) {
       data: {
         name: row.interviewerName,
         image: row.interviewerImageUrl,
-        subtext: row.interviewerCountry,
+        country: row.interviewerCountry,
       },
     },
     // Question

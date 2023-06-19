@@ -1,6 +1,6 @@
 "use client";
 
-import { Dropdown } from "../../../_components/inputs/Dropdown";
+import { Dropdown } from "@/app/_components/inputs/Dropdown";
 import { Interviewer } from "prisma/prisma-client";
 
 type Props = {

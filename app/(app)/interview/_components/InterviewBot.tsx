@@ -1,13 +1,47 @@
 "use client";
 
-import { MicrophoneIcon, StopIcon } from "@heroicons/react/24/outline";
-import { Interview } from "ai-interview-sdk";
 import { useMemo, useState } from "react";
+import { Card } from "@/app/_components/Card";
+import { Interviewer } from "prisma/prisma-client";
+import { InterviewWithMetrics } from "../../_lib/server/getInterviews";
+import { InterviewerBio } from "./InterviewerBot/InterviewerBio";
+import {
+  InterviewChat,
+  InterviewMessage,
+} from "./InterviewerBot/InterviewChat";
+import { InterviewTable } from "./InterviewerBot/InterviewTable";
+import { Interview } from "ai-interview-sdk";
 
-export function InterviewBot() {
-  const interview = useMemo(() => new Interview(), []);
+type Props = {
+  interviewer?: Interviewer;
+  interviews: InterviewWithMetrics[];
+  interviewers: Interviewer[];
+};
+
+export function InterviewBot({
+  interviewer: userSelectedInterviewer,
+  interviewers,
+  interviews,
+}: Props) {
+  // TODO: should be a random not 0 indexed
+  const interviewer = userSelectedInterviewer || interviewers[0];
+
   const [isActive, setIsActive] = useState<boolean>(false);
-  const iconSize = 30;
+  const [messages, setMessages] = useState<InterviewMessage[]>([]);
+  const [messageInProgress, setMessageInProgress] = useState<string>("");
+
+  const interview = useMemo(
+    () =>
+      new Interview({
+        onSpeechRecognized: (text) => {
+          setMessageInProgress(text);
+        },
+        onAudio: ({ text }) => {
+          setMessages((prev) => [...prev, { sender: "interviewer", text }]);
+        },
+      }),
+    []
+  );
 
   const handleToggleInterview = () => {
     if (isActive) {
@@ -19,30 +53,70 @@ export function InterviewBot() {
     }
   };
 
+  const handleCandidateFinishedSpeaking = () => {
+    setMessages((prev) => [
+      ...prev,
+      { sender: "candidate", text: messageInProgress },
+    ]);
+    setMessageInProgress("");
+
+    interview.finishedSpeaking();
+  };
+
   return (
-    <div
+    <Card
       className={`
-        flex items-center justify-center h-full w-full border-2 rounded-lg
-        ${isActive ? "border-red-400" : "border-current"}
+        flex flex-row min-h-min h-full w-full border-2 rounded-lg px-8 
         transition-colors
+        ${isActive ? "border-red-400" : "border-current"}
       `}
     >
-      <button
+      {/* LEFT VIEW - INTERVIEWER BIO */}
+
+      <div
         className={`
-          btn btn-outline h-20 w-20 rounded-full 
-          ${isActive ? "border border-red-400 text-red-400" : "btn-ghost"}
-        `}
-        onClick={handleToggleInterview}
+        flex flex-col flex-auto w-20 h-full pr-5 2xl:pr-10 2xl:pl-2 2xl:py-5 
+        border-r ${isActive ? "border-red-400" : "border-current"}
+      `}
+      >
+        <InterviewerBio
+          interviewer={interviewer}
+          isActive={isActive}
+          onBegin={() => interview.begin()}
+        />
+
+        <div className="flex justify-center w-full pt-4 mt-auto">
+          <button
+            className="btn btn-outline w-2/3"
+            onClick={handleToggleInterview}
+          >
+            {isActive ? "End" : "Begin"}
+          </button>
+        </div>
+      </div>
+
+      {/* RIGHT VIEW - INACTIVE: PAST INTERVIEWS TABLE, ACTIVE: CHAT WINDOW */}
+
+      <div
+        className={`
+        flex-auto h-full py-5 px-8 w-80
+        ${isActive ? "flex items-end" : ""}
+      `}
       >
         {isActive ? (
-          <>
-            <span className="absolute loading loading-ring loading-lg"></span>
-            <StopIcon height={iconSize} width={iconSize} />
-          </>
+          <InterviewChat
+            interviewerImageUrl={interviewer.imageUrl}
+            messages={messages}
+            onSendMessage={handleCandidateFinishedSpeaking}
+            messageInProgress={messageInProgress}
+          />
         ) : (
-          <MicrophoneIcon height={iconSize} width={iconSize} />
+          <div className="max-h-full overflow-auto">
+            <div className="text-3xl mb-5">Past interviews</div>
+            <InterviewTable interviews={interviews} />
+          </div>
         )}
-      </button>
-    </div>
+      </div>
+    </Card>
   );
 }

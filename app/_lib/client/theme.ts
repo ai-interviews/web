@@ -31,14 +31,14 @@ const getThemeColors = (): ThemeColors =>
   daisyUiColors[`[data-theme=${getTheme()}]`];
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<string>("");
+  const [theme, _setTheme] = useState<string>("");
   const [themeColors, setThemeColors] = useState<ThemeColors>(
     daisyUiColors[`[data-theme=light]`]
   );
 
   useEffect(() => {
     // Only access local storage on component mount, else risk undefined
-    setTheme(getTheme());
+    _setTheme(getTheme());
     setThemeColors(getThemeColors());
 
     // Check for theme change when local storage is changed

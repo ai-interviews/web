@@ -1,21 +1,13 @@
-import { InterviewerDropdown } from "./_components/InterviewerDropdown";
 import { getInterviewers } from "../_lib/server/getInterviewers";
-import { JobListingDropdown } from "./_components/JobListingDropdown";
-import { InterviewBot } from "./_components/InterviewBot";
+import { getInterviews } from "../_lib/server/getInterviews";
+import { InterviewLayout } from "./_components/InterviewLayout";
 
 export default async function InterviewPage() {
+  // TODO: These should be in Suspense boundaries
   const interviewers = await getInterviewers();
+  const interviews = await getInterviews();
 
   return (
-    <div className="flex flex-col justify-center h-full">
-      <div className="flex items-center h-20">
-        <InterviewerDropdown data={interviewers} />
-        <JobListingDropdown
-          data={["Sanitation Engineer II", "Sr. Sanitation Specialist"]}
-        />
-      </div>
-
-      <InterviewBot />
-    </div>
+    <InterviewLayout interviewers={interviewers} interviews={interviews} />
   );
 }
