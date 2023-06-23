@@ -41,9 +41,9 @@ export default function Jobs() {
                         +
                     </button>
                 </div>
-                <div className="mt-10 bg-white shadow-lg rounded-lg p-6">
+                <div className="card bg-base-200 py-6 px-5 h-min">
                   <Suspense fallback={<div>Loading...</div>}>
-                      <h2 className="text-2xl font-bold mb-4">Jobs Added</h2>
+                      <h2 className="text-2xl pl-4 pb-2.5">Jobs Added</h2>
                       {/* This is where the job listings will go */}
                       <ul>
                           {jobs.map((job, index) => (
