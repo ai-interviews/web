@@ -44,6 +44,7 @@ model User {
   accounts  Account[]
   sessions  Session[]
   Interview Interview[]
+  Job       Job[]
 }
 
 model VerificationToken {
@@ -88,4 +89,16 @@ model Response {
   wordFrequency    Json
 
   interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  company     String
+  location    String?
+  description String
+  url         String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
