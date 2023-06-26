@@ -1,0 +1,110 @@
+<<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .custom-font {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      text-align: center;
+      margin-top: 80px;
+      margin-left: 30px;
+    }
+    .custom-button {
+      background-color: #523CD7;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 30px;
+      font-size: 20px;
+      cursor: pointer;
+      width: 576px;
+      height: 62px;
+      margin-bottom: 10px;
+    }
+    .custom-button:hover {
+      background-color: #3D2999;
+    }
+
+
+
+
+
+
+    h1 {
+      font-size: 96px;
+      color: #231F20;
+      margin: 0;
+    }
+    .signup {
+      font-size: 32px;
+      color: #523CD7;
+      margin: 5px 0 0 0;
+    }
+    .text-boxes-container {
+      max-height: 350px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 65px;
+      margin-left: 30px;
+    }
+    input[type="text"],
+    select {
+      width: 576px;
+      height: 62px;
+      border-radius: 20px;
+      border: none;
+      background-color: #D9D9D9;
+      margin-bottom: 5px;
+      padding: 20px;
+      font-size: 16px;
+    }
+    
+    /* Custom scroll bar styling */
+    .text-boxes-container::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    .text-boxes-container::-webkit-scrollbar-thumb {
+      background-color: #523CD7;
+      border-radius: 10px;
+    }
+    
+    .text-boxes-container::-webkit-scrollbar-track {
+      background-color: #D9D9D9;
+    }
+  </style>
+  <title>My Page</title>
+</head>
+<body>
+  <div class="container">
+    <h1 class="custom-font">Welcome!</h1>
+    <p class="signup custom-font">Let's sign up</p>    
+  </div>
+  <div class="text-boxes-container">
+    <select name="experience" id="experience">
+      <option value="">Select your experience</option>
+      <option value="student">Student</option>
+      <option value="new-grad">New Grad</option>
+      <option value="professional">Professional (5-10 years of experience)</option>
+      <option value="experienced-professional">Experienced Professional (10+ years of experience)</option>
+    </select>
+    <select name="job-interest" id="job-interest">
+      <option value="">Select your job interest</option>
+      <option value="internship">Looking for Internship</option>
+      <option value="new-grad-role">Looking for new grad role</option>
+      <option value="career-pivot">Looking to pivot careers</option>
+      <option value="re-entering-workforce">Re-entering the workforce</option>
+      <option value="for-fun">For fun!</option>
+    </select>
+    <input type="text" placeholder="Enter your name here: ">
+    <input type="text" placeholder="Enter the url to your LinkedIn Profile">
+    <input type="text" placeholder="Insert Country: ">
+    <input type="text" placeholder="Upload your resume">
+    <input type="text" placeholder="Text Box 7">
+    <button class="custom-button">Complete Sign Up!</button>
+
+  </div>
+</body

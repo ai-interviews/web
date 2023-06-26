@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Title</title>
+  <title>My Page</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <!-- Your HTML content here -->
+  <div class="container">
+    <h1>Welcome!</h1>
+    <p>Let's sign up</p>
+  </div>
 </body>
 </html>
