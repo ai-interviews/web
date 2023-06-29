@@ -88,14 +88,11 @@ export default function Jobs() {
               </button>
           </div>
 
-          <Modal open={open} disableClickOutside ={true} onClose={handleToggle}>
+          <Modal open={open} disableClickOutside={!open} onClose={handleToggle}>
           {formJob && (
             <JobForm initialFormJob={formJob} onSubmit={handleFormSubmit} />
           )}
             <div className="modal-action">
-              <button className="btn btn-primary" onClick={handleToggle}>
-                  close
-              </button>
             </div>
           </Modal>
 
