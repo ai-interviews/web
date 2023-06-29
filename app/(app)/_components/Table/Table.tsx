@@ -1,3 +1,4 @@
+"use client";
 import { TableCol } from "./TableCol";
 
 type TailwindBreakpoints = "sm" | "md" | "lg" | "xl" | "2xl";
@@ -44,7 +45,6 @@ export function Table({ headers, data, size = "md", onRowClick }: Props) {
     </div>
   );
 }
-
 
 export const getClassToHideTableCol = (
   hiddenThreshold?: TailwindBreakpoints
