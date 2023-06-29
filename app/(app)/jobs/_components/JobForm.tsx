@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-interface FormJob {
-  title?: string;
-  company?: string;
-  location?: string;
-  description?: string;
-  url?: string;
-}
+import { FormJob } from '../types';
 
 interface JobFormProps {
   initialFormJob: FormJob;

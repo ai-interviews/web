@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { Card } from "../../../_components/Card";
 import { JobTable } from "./JobTable";
 
-export function LatestJobs() {
+const LatestJobs = forwardRef((props, ref) => {
   const [jobs, setJobs] = useState([]);
 
-  useEffect(() => {
+  const fetchJobs = () => {
     fetch('/api/getJobs')
-      .then(response => response.json()) // Parse response as JSON
+      .then(response => response.json())
       .then(data => {
-        setJobs(data); // Store the response data in the jobs state variable
+        setJobs(data);
       });
+  };
+
+  useImperativeHandle(ref, () => ({
+    fetchJobs
+  }));
+
+  useEffect(() => {
+    fetchJobs();
   }, []);
 
   return (
@@ -19,4 +27,6 @@ export function LatestJobs() {
       <JobTable data={jobs} />
     </Card>
   );
-}
+});
+
+export default LatestJobs;

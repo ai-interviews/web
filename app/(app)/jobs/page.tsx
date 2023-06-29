@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useRef } from 'react';
 import { Header } from "../_components/Header";
 import Modal from "./_components/modal";
 import { useClientUser } from "@/app/_lib/client/hooks/useClientUser";
 import JobForm from "./_components/JobForm";
-import { LatestJobs } from "./_components/LatestJobs";
+import LatestJobs from "./_components/LatestJobs";
 
 export default function Jobs() {
   const { user } = useClientUser();
@@ -14,6 +14,9 @@ export default function Jobs() {
   
   const [open, setOpen] = useState(false);
   const handleToggle = () => setOpen((prev) => !prev);
+
+  const latestJobsRef = useRef<{ fetchJobs: () => void }>({ fetchJobs: () => {} });
+
 
   const handleAddJob = async () => {
       if (jobLink) {
@@ -54,6 +57,7 @@ export default function Jobs() {
         setFormJob(null);
         setJobLink('');
         handleToggle();
+        latestJobsRef.current.fetchJobs();
       } else {
         console.error('Failed to submit job:', await response.text());
       }
@@ -97,10 +101,10 @@ export default function Jobs() {
 
           <div className="card bg-base-200 py-6 px-5 h-min">
             <Suspense fallback={<div>Loading...</div>}>
-              <LatestJobs />
+              <LatestJobs ref={latestJobsRef} />
             </Suspense>
           </div>
       </div>
-  </div>
+    </div>
   );
 }
