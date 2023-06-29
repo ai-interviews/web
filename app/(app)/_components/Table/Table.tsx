@@ -9,9 +9,10 @@ type Props = {
   }[];
   data: TableCol[][];
   size?: "xs" | "sm" | "md" | "lg";
+  onRowClick?: (index: number, rowData: TableCol[]) => void;
 };
 
-export function Table({ headers, data, size = "md" }: Props) {
+export function Table({ headers, data, size = "md", onRowClick }: Props) {
   return (
     <div className="overflow-x-auto h-min">
       <table className={`table table-${size} h-min`}>
@@ -28,7 +29,7 @@ export function Table({ headers, data, size = "md" }: Props) {
         {/* Rows */}
         <tbody>
           {data.map((rowData, i) => (
-            <tr key={i}>
+            <tr key={i} onClick={() => onRowClick && onRowClick(i, rowData)}>
               {rowData.map((colData, j) => (
                 <TableCol
                   key={j}
@@ -43,6 +44,7 @@ export function Table({ headers, data, size = "md" }: Props) {
     </div>
   );
 }
+
 
 export const getClassToHideTableCol = (
   hiddenThreshold?: TailwindBreakpoints

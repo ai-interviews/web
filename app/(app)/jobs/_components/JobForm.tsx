@@ -58,7 +58,7 @@ export default function JobForm({ initialFormJob, onSubmit }: JobFormProps) {
         <div className="flex items-center">
             <div className="w-full">
                 <button className="btn btn-success w-full" type="submit">
-                    Confirm
+                    Save
                 </button>
             </div>
         </div>
