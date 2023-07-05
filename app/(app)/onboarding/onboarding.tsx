@@ -1,19 +1,18 @@
 // App.js
-import React from 'react';
 
-function App() {
+function OnboardingPage() {
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-6xl text-black">Welcome!</h1>
       <p className="text-2xl text-purple-600">Let's sign up</p>
       <div className="text-boxes-container space-y-5">
         <div className="w-80">
-          <select name="experience" id="experience" className="input input-primary input-bordered w-full">
-            <option value="">Select your experience</option>
-            <option value="student">Student</option>
-            <option value="new-grad">New Grad</option>
-            <option value="professional">Professional (5-10 years of experience)</option>
-            <option value="experienced-professional">Experienced Professional (10+ years of experience)</option>
+          <select className="select select-ghost w-full max-w-xs">
+            <option disabled selected>Select your experience</option>
+            <option>Student</option>
+            <option>New Grad</option>
+            <option>Professional (5-10 years of experience)</option>
+            <option>Experienced Professional (10+ years of experience)</option>
           </select>
         </div>
         <div className="w-80">
