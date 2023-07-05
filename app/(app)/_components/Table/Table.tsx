@@ -30,7 +30,11 @@ export function Table({ headers, data, size = "md", onRowClick }: Props) {
         {/* Rows */}
         <tbody>
           {data.map((rowData, i) => (
-            <tr key={i} onClick={() => onRowClick && onRowClick(i, rowData)}>
+            <tr
+              key={i}
+              className="hover:bg-base-300 cursor-pointer"
+              onClick={() => onRowClick && onRowClick(i, rowData)}
+            >
               {rowData.map((colData, j) => (
                 <TableCol
                   key={j}

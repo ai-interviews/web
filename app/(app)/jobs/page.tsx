@@ -19,20 +19,24 @@ export default function Jobs() {
 
 
   const handleAddJob = async () => {
-      if (jobLink) {
-          const response = await fetch('https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=' + jobLink, {method: 'GET'});
-          const jobDetails = await response.json();
+    if (jobLink) {
+        const response = await fetch('https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=' + jobLink, {method: 'GET'});
+        const jobDetails = await response.json();
 
-          if (response.ok) {
-              setFormJob(jobDetails);
-              handleToggle();
-          } else {
-              console.error('Failed to fetch job details:', jobDetails);
-          }
-      }
-  };
+        if (response.ok) {
+            setFormJob(jobDetails);
+        } else {
+            console.error('Failed to fetch job details:', jobDetails);
+        }
+    } else {
+        setFormJob({ title: "", company: "", location: "", description: "", url: "" });
+    }
+    handleToggle();
+};
+
 
   const handleFormSubmit = async (formJob: {title?: string, company?: string, location?: string, description?: string, url?: string} | null) => {
+
     if (formJob && user) {
       const jobData = {
         userId: user.id,
@@ -90,7 +94,7 @@ export default function Jobs() {
 
           <Modal open={open} disableClickOutside={!open} onClose={handleToggle}>
           {formJob && (
-            <JobForm initialFormJob={formJob} onSubmit={handleFormSubmit} />
+            <JobForm initialFormJob={formJob} onSubmit={handleFormSubmit} open={open} />
           )}
             <div className="modal-action">
             </div>

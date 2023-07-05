@@ -24,7 +24,6 @@ const handlePostJob = async (req: NextRequest) => {
         console.error(`Error in field ${subError.path.join('.')}: ${subError.message}`);
       }
     } else {
-      // Other errors (e.g., from Prisma)
       console.error(error);
     }
     return new Response("Error processing request", { status: 400 });

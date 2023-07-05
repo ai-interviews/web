@@ -1,9 +1,10 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { Card } from "../../../_components/Card";
 import { JobTable } from "./JobTable";
+import { Job } from '../types';
 
 const LatestJobs = forwardRef((props, ref) => {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
 
   const fetchJobs = () => {
     fetch('/api/getJobs')

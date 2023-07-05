@@ -63,6 +63,7 @@ export function JobTable({ data }: Props) {
       {selectedJob && (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
           <JobForm
+            open={modalOpen}
             initialFormJob={selectedJob as FormJob}
             onSubmit={newJob => {
               console.log('Job updated', newJob);
