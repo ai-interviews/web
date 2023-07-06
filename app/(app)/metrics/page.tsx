@@ -1,23 +1,13 @@
-"use client"
-import { useState, useEffect } from "react";
+import React, { Suspense } from "react";
+import { SlangFrequency } from "./_components/slangFrequency";
 
-export default function MetricPage() {
-  const [slangFrequency, setSlangFrequency] = useState<Record<string, number>>({});
-
-  useEffect(() => {
-    const fetchSlangFrequency = async () => {
-      const res = await fetch("/api/slangFrequency");
-      const data = await res.json();
-      setSlangFrequency(data);
-    };
-
-    fetchSlangFrequency();
-  }, []);
-
+export default function Metrics() {
   return (
     <div>
-      <h1>Metrics</h1>
-      <pre>{JSON.stringify(slangFrequency, null, 2)}</pre>
+      <h1>Slang Metric</h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SlangFrequency />
+      </Suspense>
     </div>
   );
 }
