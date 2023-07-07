@@ -6,7 +6,7 @@ export default function Metrics() {
     <div>
       <h1>Slang Metric</h1>
       <Suspense fallback={<div>Loading...</div>}>
-        <SlangFrequency />
+        <SlangFrequency index={199}/>
       </Suspense>
     </div>
   );
