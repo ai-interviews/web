@@ -1,12 +1,14 @@
 import { ChartDataset } from "../../_components/Charts/BarChart";
 import { AggregateMetrics } from "../server/getAggregateMetrics";
 import { percentDifference } from "./percentDifference";
+import  slangDictionary from "../../metrics/slangDictionary.json";
 
 type NumericMetric =
   | "avgScore"
   | "avgQuietTimeSeconds"
   | "avgTimeSeconds"
-  | "wordFrequency";
+  | "wordFrequency"
+  | "slangFrequency";
 
 export const formatChartMetrics = ({
   metrics,
@@ -22,6 +24,7 @@ export const formatChartMetrics = ({
     avgQuietTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
     avgTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
     wordFrequency: { labels: [], dataset: { label: "data", data: [] } },
+    slangFrequency: { labels: [], dataset: { label: "data", data: [] } },
   };
 
   // Base metrics
@@ -51,6 +54,21 @@ export const formatChartMetrics = ({
 
         // Data
         datasets.wordFrequency.dataset.data.push(freq);
+      }
+    }
+  }
+
+  // Slang frequency
+  if (metrics.length > 0) {
+    for (const [word, freq] of Object.entries(
+      metrics[metrics.length - 1].wordFrequency
+    )) {
+      if (slangDictionary.includes(word)) {
+        // Label
+        datasets.slangFrequency.labels.push(word);
+
+        // Data
+        datasets.slangFrequency.dataset.data.push(freq);
       }
     }
   }

@@ -13,7 +13,7 @@ export async function DashboardMetrics() {
 
   const chartMetrics = formatChartMetrics({ metrics });
 
-  const { avgQuietTimeSeconds, avgScore, wordFrequency } =
+  const { avgQuietTimeSeconds, avgScore, wordFrequency, slangFrequency } =
     chartMetrics.datasets;
 
   const { avgQuietTimeSeconds: avgQuietTimeSecondsDelta } =
@@ -22,8 +22,18 @@ export async function DashboardMetrics() {
   return (
     <div className="flex items-center gap-5 justify-between flex-wrap w-full xl:h-80 2xl:h-96">
       <div className="flex flex-col gap-3 w-full lg:flex-1">
+      <MetricCard
+          title={slangFrequency.labels.length.toString()}
+          subtext="Different slang words detected this month."
+        >
+          <PieChart
+            labels={slangFrequency.labels}
+            dataset={slangFrequency.dataset}
+            className="w-24 2xl:w-36"
+          />
+        </MetricCard>
         <MetricCard
-          title="4"
+          title={wordFrequency.labels.length.toString()}
           subtext="Different filler words detected this month."
         >
           <PieChart
