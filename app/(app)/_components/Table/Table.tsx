@@ -1,3 +1,4 @@
+"use client";
 import { TableCol } from "./TableCol";
 
 type TailwindBreakpoints = "sm" | "md" | "lg" | "xl" | "2xl";
@@ -9,9 +10,10 @@ type Props = {
   }[];
   data: TableCol[][];
   size?: "xs" | "sm" | "md" | "lg";
+  onRowClick?: (index: number, rowData: TableCol[]) => void;
 };
 
-export function Table({ headers, data, size = "md" }: Props) {
+export function Table({ headers, data, size = "md", onRowClick }: Props) {
   return (
     <div className="overflow-x-auto h-min">
       <table className={`table table-${size} h-min`}>
@@ -28,7 +30,11 @@ export function Table({ headers, data, size = "md" }: Props) {
         {/* Rows */}
         <tbody>
           {data.map((rowData, i) => (
-            <tr key={i}>
+            <tr
+              key={i}
+              className="hover:bg-base-300 cursor-pointer"
+              onClick={() => onRowClick && onRowClick(i, rowData)}
+            >
               {rowData.map((colData, j) => (
                 <TableCol
                   key={j}
