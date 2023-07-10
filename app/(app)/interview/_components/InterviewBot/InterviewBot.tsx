@@ -94,11 +94,9 @@ export function InterviewBot({
           },
           onResponseMetrics: async (metrics) => {
             setResponseMetrics(metrics);
-            console.log(metrics);
           },
           onInterviewMetrics: async (metrics) => {
             setInterviewLengthSeconds(metrics.lengthSeconds);
-            console.log(metrics);
           },
         },
         {
@@ -117,7 +115,6 @@ export function InterviewBot({
     if (responseMetrics) {
       (async () => {
         try {
-          console.log("RESPONSE", responseMetrics);
           await callBackend<ApiCreateResponseResp, ApiCreateResponseBody>({
             url: "/api/response",
             method: "POST",

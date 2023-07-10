@@ -21,7 +21,7 @@ export async function DashboardMetrics() {
   const { timeSeconds, quietTimeSeconds } = chartMetrics.responseDatasets;
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-between gap-5 ">
+    <div className="flex w-full flex-wrap items-center justify-between gap-5">
       <div className="flex w-full flex-col gap-3 lg:flex-1">
         <MetricCard
           title={
@@ -49,7 +49,7 @@ export async function DashboardMetrics() {
             <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
           )}
         </MetricCard>
-        <MetricCard
+        {/* <MetricCard
           title={slangFrequency.labels.length.toString()}
           subtext="Different slang words detected this month."
         >
@@ -62,7 +62,7 @@ export async function DashboardMetrics() {
           ) : (
             <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
           )}
-        </MetricCard>
+        </MetricCard> */}
         <MetricCard
           title={wordFrequency.dataset.data.length}
           subtext="Different filler words detected this month."
@@ -83,7 +83,7 @@ export async function DashboardMetrics() {
         <BarChart
           labels={timeSeconds.labels}
           dataset={timeSeconds.dataset}
-          className="h-full w-full"
+          className="h-64 w-full"
         />
         {!timeSeconds.dataset.data.length && (
           <div className="absolute left-0 right-0 ml-auto mr-auto w-24 text-center text-sm 2xl:w-36">

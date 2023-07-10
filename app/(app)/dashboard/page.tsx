@@ -17,7 +17,7 @@ export default async function Dashboard() {
         </Suspense>
       </div>
       <Suspense>
-        <div className="mt-60">
+        <div>
           <LatestQuestions />
         </div>
       </Suspense>
