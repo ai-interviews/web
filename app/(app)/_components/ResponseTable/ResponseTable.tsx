@@ -24,7 +24,7 @@ export function ResponseTable({ data }: Props) {
     {
       type: "Text",
       data: {
-        text: row.question,
+        text: truncateText({ text: row.question, length: 100 }),
       },
     },
     // Response
@@ -35,12 +35,12 @@ export function ResponseTable({ data }: Props) {
       },
     },
     // Score
-    {
-      type: "Text",
-      data: {
-        text: `${row.score} / 10`,
-      },
-    },
+    // {
+    //   type: "Text",
+    //   data: {
+    //     text: `${row.score} / 10`,
+    //   },
+    // },
     // Time
     {
       type: "Text",
@@ -63,7 +63,7 @@ export function ResponseTable({ data }: Props) {
         { label: "Interviewer", hiddenThreshold: "lg" },
         { label: "Question" },
         { label: "Response" },
-        { label: "Score", hiddenThreshold: "sm" },
+        // { label: "Score", hiddenThreshold: "sm" },
         { label: "Time", hiddenThreshold: "md" },
         { label: "Date" },
       ]}

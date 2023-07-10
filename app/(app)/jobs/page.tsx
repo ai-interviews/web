@@ -1,42 +1,72 @@
 "use client";
-import React, { useState, Suspense, useRef } from 'react';
+import React, { useState, Suspense, useRef } from "react";
 import { Header } from "../_components/Header";
 import Modal from "./_components/modal";
-import { useClientUser } from "@/app/_lib/client/hooks/useClientUser";
+import { useClientUser } from "@/app/_hooks/useClientUser";
 import JobForm from "./_components/JobForm";
 import LatestJobs from "./_components/LatestJobs";
 
 export default function Jobs() {
   const { user } = useClientUser();
-  const [jobLink, setJobLink] = useState('');
-  const [jobs, setJobs] = useState<Array<{title: string, company: string, location: string, description: string}>>([]);
-  const [formJob, setFormJob] = useState<{title?: string, company?: string, location?: string, description?: string, url?: string} | null>(null);
-  
+  const [jobLink, setJobLink] = useState("");
+  const [jobs, setJobs] = useState<
+    Array<{
+      title: string;
+      company: string;
+      location: string;
+      description: string;
+    }>
+  >([]);
+  const [formJob, setFormJob] = useState<{
+    title?: string;
+    company?: string;
+    location?: string;
+    description?: string;
+    url?: string;
+  } | null>(null);
+
   const [open, setOpen] = useState(false);
   const handleToggle = () => setOpen((prev) => !prev);
 
-  const latestJobsRef = useRef<{ fetchJobs: () => void }>({ fetchJobs: () => {} });
-
+  const latestJobsRef = useRef<{ fetchJobs: () => void }>({
+    fetchJobs: () => {},
+  });
 
   const handleAddJob = async () => {
     if (jobLink) {
-        const response = await fetch('https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=' + jobLink, {method: 'GET'});
-        const jobDetails = await response.json();
+      const response = await fetch(
+        "https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=" +
+          jobLink,
+        { method: "GET" }
+      );
+      const jobDetails = await response.json();
 
-        if (response.ok) {
-            setFormJob(jobDetails);
-        } else {
-            console.error('Failed to fetch job details:', jobDetails);
-        }
+      if (response.ok) {
+        setFormJob(jobDetails);
+      } else {
+        console.error("Failed to fetch job details:", jobDetails);
+      }
     } else {
-        setFormJob({ title: "", company: "", location: "", description: "", url: "" });
+      setFormJob({
+        title: "",
+        company: "",
+        location: "",
+        description: "",
+        url: "",
+      });
     }
     handleToggle();
-};
+  };
 
-
-  const handleFormSubmit = async (formJob: {title?: string, company?: string, location?: string, description?: string, url?: string} | null) => {
-
+  const handleFormSubmit = async (
+    formJob: {
+      title?: string;
+      company?: string;
+      location?: string;
+      description?: string;
+      url?: string;
+    } | null
+  ) => {
     if (formJob && user) {
       const jobData = {
         userId: user.id,
@@ -47,23 +77,23 @@ export default function Jobs() {
         url: jobLink,
       };
 
-      const response = await fetch('/api/jobs', {
-        method: 'POST',
+      const response = await fetch("/api/jobs", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(jobData),
       });
 
       if (response.ok) {
         const job = await response.json();
-        setJobs(prevJobs => [...prevJobs, job]);
+        setJobs((prevJobs) => [...prevJobs, job]);
         setFormJob(null);
-        setJobLink('');
+        setJobLink("");
         handleToggle();
         latestJobsRef.current.fetchJobs();
       } else {
-        console.error('Failed to submit job:', await response.text());
+        console.error("Failed to submit job:", await response.text());
       }
     }
   };
@@ -71,40 +101,40 @@ export default function Jobs() {
   return (
     <div className="h-min">
       <div className="mb-4 2xl:mb-8">
-          <Header title={`My Jobs`} />
+        <Header title={`My Jobs`} />
       </div>
 
       <div className="container mx-auto px-4 sm:px-8">
-          <div className="flex items-center justify-between py-6">
-              <input 
-                  type="text"
-                  className="flex-grow mr-6 p-2 rounded border shadow-sm"
-                  value={jobLink}
-                  onChange={(e) => setJobLink(e.target.value)}
-                  placeholder="Paste job link here..."
-              />
+        <div className="flex items-center justify-between py-6">
+          <input
+            type="text"
+            className="mr-6 flex-grow rounded border p-2 shadow-sm"
+            value={jobLink}
+            onChange={(e) => setJobLink(e.target.value)}
+            placeholder="Paste job link here..."
+          />
 
-              <button 
-                  className="btn btn-outline"
-                  onClick={handleAddJob}
-              >
-                  +
-              </button>
-          </div>
+          <button className="btn-outline btn" onClick={handleAddJob}>
+            +
+          </button>
+        </div>
 
-          <Modal open={open} disableClickOutside={!open} onClose={handleToggle}>
+        <Modal open={open} disableClickOutside={!open} onClose={handleToggle}>
           {formJob && (
-            <JobForm initialFormJob={formJob} onSubmit={handleFormSubmit} open={open} />
+            <JobForm
+              initialFormJob={formJob}
+              onSubmit={handleFormSubmit}
+              open={open}
+            />
           )}
-            <div className="modal-action">
-            </div>
-          </Modal>
+          <div className="modal-action"></div>
+        </Modal>
 
-          <div className="card bg-base-200 py-6 px-5 h-min">
-            <Suspense fallback={<div>Loading...</div>}>
-              <LatestJobs ref={latestJobsRef} />
-            </Suspense>
-          </div>
+        <div className="card h-min bg-base-200 px-5 py-6">
+          <Suspense fallback={<div>Loading...</div>}>
+            <LatestJobs ref={latestJobsRef} />
+          </Suspense>
+        </div>
       </div>
     </div>
   );

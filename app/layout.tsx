@@ -1,4 +1,4 @@
-import { NextAuthProvider, ThemeProvider } from "./providers";
+import { NextAuthProvider, ThemeProvider, ToastProvider } from "./providers";
 import "@/app/globals.css";
 
 export default function RootLayout({
@@ -11,7 +11,9 @@ export default function RootLayout({
       <head></head>
       <body className="h-screen">
         <main className="h-screen">
-          <NextAuthProvider>{children}</NextAuthProvider>
+          <ToastProvider>
+            <NextAuthProvider>{children}</NextAuthProvider>
+          </ToastProvider>
         </main>
       </body>
     </ThemeProvider>

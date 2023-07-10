@@ -1,22 +1,24 @@
 "use client";
 
+import { truncateText } from "@/app/(app)/_lib/client/truncateText";
 import { Dropdown } from "@/app/_components/inputs/Dropdown";
-import { Interviewer } from "prisma/prisma-client";
+import { Job } from "@prisma/client";
 
 type Props = {
-  data: string[];
+  jobs: Job[];
 };
 
-export function JobListingDropdown({ data }: Props) {
+export function JobListingDropdown({ jobs }: Props) {
   return (
     <Dropdown
       onChange={() => null}
-      options={data.map((name) => ({
-        label: name,
-        value: name,
+      options={jobs.map(({ title }) => ({
+        label: truncateText({ text: title, length: 45 }),
+        value: title,
       }))}
       title="Job listing"
       noOutline
+      wide
     />
   );
 }

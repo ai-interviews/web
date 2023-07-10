@@ -4,6 +4,7 @@ import { MetricCard } from "../../_components/MetricCard";
 import { getAggregateMetrics } from "../../_lib/server/getAggregateMetrics";
 import { formatChartMetrics } from "../../_lib/client/formatChartMetrics";
 import { PieChart } from "../../_components/Charts/PieChart";
+import { getResponses } from "../../_lib/server/getResponses";
 
 export async function DashboardMetrics() {
   const metrics = await getAggregateMetrics({
@@ -11,49 +12,68 @@ export async function DashboardMetrics() {
     endDate: new Date(),
   });
 
-  const chartMetrics = formatChartMetrics({ metrics });
+  const responses = await getResponses();
 
-  const { avgQuietTimeSeconds, avgScore, wordFrequency } =
-    chartMetrics.datasets;
+  const chartMetrics = formatChartMetrics({ metrics, responses });
 
-  const { avgQuietTimeSeconds: avgQuietTimeSecondsDelta } =
-    chartMetrics.percentDifferences;
+  const { wordFrequency } = chartMetrics.aggregateDatasets;
+
+  const { timeSeconds, quietTimeSeconds } = chartMetrics.responseDatasets;
 
   return (
-    <div className="flex items-center gap-5 justify-between flex-wrap w-full xl:h-80 2xl:h-96">
-      <div className="flex flex-col gap-3 w-full lg:flex-1">
+    <div className="flex w-full flex-wrap items-center justify-between gap-5 xl:h-80 2xl:h-96">
+      <div className="flex w-full flex-col gap-3 lg:flex-1">
         <MetricCard
-          title="4"
+          title={wordFrequency.dataset.data.length}
           subtext="Different filler words detected this month."
         >
-          <PieChart
-            labels={wordFrequency.labels}
-            dataset={wordFrequency.dataset}
-            className="w-24 2xl:w-36"
-          />
+          {wordFrequency.dataset.data.length ? (
+            <PieChart
+              labels={wordFrequency.labels}
+              dataset={wordFrequency.dataset}
+              className="w-24 2xl:w-36"
+            />
+          ) : (
+            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
+          )}
         </MetricCard>
         <MetricCard
-          title={avgQuietTimeSecondsDelta?.delta || "0%"}
-          subtext={`${
-            avgQuietTimeSecondsDelta?.isPositive ? "Increase" : "Decrease"
-          } in thinking time this month.`}
+          title={
+            <>
+              {quietTimeSeconds.dataset.data.reduce(
+                (acc, val) => acc + val,
+                0
+              ) / quietTimeSeconds.dataset.data.length || 0}{" "}
+              s
+            </>
+          }
+          subtext={"Average thinking time this month."}
         >
-          <BarChart
-            labels={avgQuietTimeSeconds.dataset.data.map(() => "")}
-            dataset={avgQuietTimeSeconds.dataset}
-            className="w-24 h-24  2xl:h-full 2xl:w-36"
-            barThickness={8}
-            hideGridLines
-          />
+          {quietTimeSeconds.dataset.data.length ? (
+            <BarChart
+              labels={quietTimeSeconds.dataset.data.map(() => "")}
+              dataset={quietTimeSeconds.dataset}
+              className="h-24 w-24  2xl:h-full 2xl:w-36"
+              barThickness={6}
+              hideGridLines
+            />
+          ) : (
+            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
+          )}
         </MetricCard>
       </div>
-      <Card className="flex flex-col justify-center h-full w-full lg:w-96 lg:flex-auto">
-        <div className="text-2xl pl-4 pb-5 w-full">Performance over time</div>
+      <Card className="relative flex h-full w-full flex-col justify-center lg:w-96 lg:flex-auto">
+        <div className="w-full pb-5 pl-4 text-2xl">Response times</div>
         <BarChart
-          labels={avgScore.labels}
-          dataset={avgScore.dataset}
+          labels={timeSeconds.labels}
+          dataset={timeSeconds.dataset}
           className="h-5/6 w-full"
         />
+        {!timeSeconds.dataset.data.length && (
+          <div className="absolute left-0 right-0 ml-auto mr-auto w-24 text-center text-sm 2xl:w-36">
+            No data
+          </div>
+        )}
       </Card>
     </div>
   );

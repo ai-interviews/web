@@ -1,5 +1,6 @@
-import { NextAuthProvider } from "../providers";
+import { Suspense } from "react";
 import { Menu } from "./_components/Menu";
+import { LoadScreen } from "../_components/LoadScreen";
 
 export default function RootLayout({
   children,
@@ -7,10 +8,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center h-full p-10 gap-8">
+    <div className="flex h-full items-center gap-8 p-10">
       <Menu />
-      <div className="h-full pr-5 pb-5 w-full 2xl:w-8/12 overflow-x-auto">
-        {children}
+      <div className="h-full w-full overflow-x-auto pb-5 pr-5 2xl:w-8/12">
+        <Suspense fallback={<LoadScreen />}>{children}</Suspense>
       </div>
     </div>
   );

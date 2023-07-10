@@ -4,7 +4,7 @@ type Size = "sm" | "md" | "lg";
 
 type Props = {
   name: string;
-  src?: string;
+  src?: string | null;
   size?: Size;
 };
 

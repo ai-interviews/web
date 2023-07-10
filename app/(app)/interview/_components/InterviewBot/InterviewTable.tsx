@@ -12,7 +12,7 @@ export function InterviewTable({ interviews }: Props) {
       headers={[
         { label: "Interviewer" },
         { label: "Length" },
-        { label: "Score" },
+        // { label: "Score" },
         { label: "Date" },
       ]}
       data={interviews.map(
@@ -38,12 +38,12 @@ export function InterviewTable({ interviews }: Props) {
               text: formatTime({ seconds: timeSeconds }),
             },
           },
-          {
-            type: "Text",
-            data: {
-              text: `${avgScore} / 10`,
-            },
-          },
+          // {
+          //   type: "Text",
+          //   data: {
+          //     text: `${avgScore} / 10`,
+          //   },
+          // },
           {
             type: "Date",
             data: {

@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { InterviewBot } from "./InterviewBot";
+import { InterviewBot } from "./InterviewBot/InterviewBot";
 import { InterviewerDropdown } from "./inputs/InterviewerDropdown";
 import { JobListingDropdown } from "./inputs/JobListingDropdown";
-import { Interviewer } from "prisma/prisma-client";
+import { Interviewer, Job } from "@prisma/client";
 import { InterviewWithMetrics } from "@/app/(app)/_lib/server/getInterviews";
 
 type Props = {
   interviewers: Interviewer[];
   interviews: InterviewWithMetrics[];
+  jobs: Job[];
 };
 
-export function InterviewLayout({ interviewers, interviews }: Props) {
+export function InterviewLayout({ interviewers, interviews, jobs }: Props) {
   const [interviewer, setInterviewer] = useState<Interviewer>(interviewers[0]);
 
   return (
@@ -23,9 +24,7 @@ export function InterviewLayout({ interviewers, interviews }: Props) {
           onChange={setInterviewer}
           value={interviewer}
         />
-        <JobListingDropdown
-          data={["Sanitation Engineer II", "Sr. Sanitation Specialist"]}
-        />
+        <JobListingDropdown jobs={jobs} />
       </div>
 
       <InterviewBot

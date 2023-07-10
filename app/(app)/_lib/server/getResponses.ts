@@ -10,9 +10,9 @@ export type Response = {
   interviewId: string;
   question: string;
   response: string;
-  score: number;
+  score: number | null;
   timeSeconds: number;
-  quietTimeSeconds: number;
+  quietTimeSeconds: number | null;
   wordFrequency: Prisma.JsonValue;
   date: Date;
 };
@@ -59,6 +59,8 @@ export const getResponses = async (
 
     return responses.map((row) => ({
       ...row,
+      timeSeconds: row.timeSeconds.toNumber(),
+      quietTimeSeconds: row.quietTimeSeconds.toNumber(),
       interviewerName: row.interview.interviewer.name,
       interviewerCountry: row.interview.interviewer.country,
       interviewerImageUrl: row.interview.interviewer.imageUrl,
