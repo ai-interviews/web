@@ -13,7 +13,7 @@ export default async function SignInPage() {
 
   return (
     <Card className="w-full rounded-md p-6 lg:max-w-lg">
-      <h1 className="text-center text-3xl font-semibold">AI Interviews</h1>
+      <h1 className="text-center text-3xl ">AI Interviews</h1>
       <SignInForm />
     </Card>
   );
