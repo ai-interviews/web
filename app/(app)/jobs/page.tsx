@@ -5,6 +5,7 @@ import Modal from "./_components/modal";
 import { useClientUser } from "@/app/_hooks/useClientUser";
 import JobForm from "./_components/JobForm";
 import LatestJobs from "./_components/LatestJobs";
+import Link from "next/link";
 
 export default function Jobs() {
   const { user } = useClientUser();
@@ -35,9 +36,9 @@ export default function Jobs() {
   const handleAddJob = async () => {
     if (jobLink) {
       const response = await fetch(
-        "https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=" +
-          jobLink,
-        { method: "GET" }
+        `https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=${encodeURIComponent(
+          jobLink
+        )}`
       );
       const jobDetails = await response.json();
 
@@ -58,46 +59,6 @@ export default function Jobs() {
     handleToggle();
   };
 
-  const handleFormSubmit = async (
-    formJob: {
-      title?: string;
-      company?: string;
-      location?: string;
-      description?: string;
-      url?: string;
-    } | null
-  ) => {
-    if (formJob && user) {
-      const jobData = {
-        userId: user.id,
-        title: formJob.title,
-        company: formJob.company,
-        location: formJob.location,
-        description: formJob.description,
-        url: jobLink,
-      };
-
-      const response = await fetch("/api/jobs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(jobData),
-      });
-
-      if (response.ok) {
-        const job = await response.json();
-        setJobs((prevJobs) => [...prevJobs, job]);
-        setFormJob(null);
-        setJobLink("");
-        handleToggle();
-        latestJobsRef.current.fetchJobs();
-      } else {
-        console.error("Failed to submit job:", await response.text());
-      }
-    }
-  };
-
   return (
     <div className="h-min">
       <div className="mb-4 2xl:mb-8">
@@ -114,21 +75,13 @@ export default function Jobs() {
             placeholder="Paste job link here..."
           />
 
-          <button className="btn-outline btn" onClick={handleAddJob}>
+          {/* <button className="btn-outline btn" onClick={handleAddJob}>
             +
-          </button>
+          </button> */}
+          <Link href="/jobs/new" className="btn-outline btn">
+            +
+          </Link>
         </div>
-
-        <Modal open={open} disableClickOutside={!open} onClose={handleToggle}>
-          {formJob && (
-            <JobForm
-              initialFormJob={formJob}
-              onSubmit={handleFormSubmit}
-              open={open}
-            />
-          )}
-          <div className="modal-action"></div>
-        </Modal>
 
         <div className="card h-min bg-base-200 px-5 py-6">
           <Suspense fallback={<div>Loading...</div>}>
