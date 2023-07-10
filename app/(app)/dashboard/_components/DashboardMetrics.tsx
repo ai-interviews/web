@@ -20,18 +20,8 @@ export async function DashboardMetrics() {
     chartMetrics.percentDifferences;
 
   return (
-    <div className="flex items-center gap-5 justify-between flex-wrap w-full xl:h-80 2xl:h-96">
+    <div className="flex items-center gap-5 justify-between flex-wrap w-full xl:h-130 2xl:h-96">
       <div className="flex flex-col gap-3 w-full lg:flex-1">
-      <MetricCard
-          title={slangFrequency.labels.length.toString()}
-          subtext="Different slang words detected this month."
-        >
-          <PieChart
-            labels={slangFrequency.labels}
-            dataset={slangFrequency.dataset}
-            className="w-24 2xl:w-36"
-          />
-        </MetricCard>
         <MetricCard
           title={wordFrequency.labels.length.toString()}
           subtext="Different filler words detected this month."
@@ -39,6 +29,16 @@ export async function DashboardMetrics() {
           <PieChart
             labels={wordFrequency.labels}
             dataset={wordFrequency.dataset}
+            className="w-24 2xl:w-36"
+          />
+        </MetricCard>
+        <MetricCard
+          title={slangFrequency.labels.length.toString()}
+          subtext="Different slang words detected this month."
+        >
+          <PieChart
+            labels={slangFrequency.labels}
+            dataset={slangFrequency.dataset}
             className="w-24 2xl:w-36"
           />
         </MetricCard>

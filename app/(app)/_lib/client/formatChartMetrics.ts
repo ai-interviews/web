@@ -1,7 +1,7 @@
 import { ChartDataset } from "../../_components/Charts/BarChart";
 import { AggregateMetrics } from "../server/getAggregateMetrics";
 import { percentDifference } from "./percentDifference";
-import  slangDictionary from "../../metrics/slangDictionary.json";
+import  slangDictionary from "../data/slangDictionary.json";
 
 type NumericMetric =
   | "avgScore"
