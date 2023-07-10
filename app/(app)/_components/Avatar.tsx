@@ -14,8 +14,8 @@ export function Avatar({ src, name, size = "md" }: Props) {
     { sizeNum: number; sizeClass: string; textClass: string }
   > = {
     sm: { sizeNum: 12, sizeClass: "w-12", textClass: "text-lg" },
-    md: { sizeNum: 24, sizeClass: "w-24", textClass: "text-xl" },
-    lg: { sizeNum: 52, sizeClass: "w-52", textClass: "text-2xl" },
+    md: { sizeNum: 24, sizeClass: "w-24", textClass: "text-2xl" },
+    lg: { sizeNum: 40, sizeClass: "w-40", textClass: "text-5xl" },
   };
 
   const { sizeNum, sizeClass, textClass } = sizes[size];
@@ -27,9 +27,9 @@ export function Avatar({ src, name, size = "md" }: Props) {
       </div>
     </div>
   ) : (
-    <div className="avatar placeholder">
+    <div className="placeholder avatar">
       <div
-        className={`bg-neutral-focus text-neutral-content rounded-full ${sizeClass}`}
+        className={`rounded-full bg-neutral-focus text-neutral-content ${sizeClass}`}
       >
         <span className={textClass}>{name[0]}</span>
       </div>

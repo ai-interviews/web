@@ -2,13 +2,13 @@
 
 import { Spinner } from "@/app/_components/Spinner";
 import { ToastType } from "@/app/_components/Toast";
+import { Input } from "@/app/_components/inputs/Input";
 import { Link } from "@/app/_components/inputs/Link";
 import { useToast } from "@/app/_hooks/useToast";
 import { signIn } from "@/app/_lib/client/signIn";
 import { callBackend } from "@/app/_lib/server/callBackend";
 import { ApiSignUpBody, ApiSignUpResp } from "@/app/api/signup/_lib/signUp";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import classNames from "classnames";
 import { useState } from "react";
 
 export function SignupForm() {
@@ -97,48 +97,9 @@ export function SignupForm() {
 
   return (
     <div className="space-y-2">
-      <div>
-        <label className="label">
-          <span className="label-text text-base">
-            Email<span className="text-error">*</span>
-          </span>
-        </label>
-        <input
-          type="text"
-          placeholder="Email address"
-          className={classNames("input-bordered input w-full", {
-            "input-error": isErrorEmail,
-          })}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div>
-        <label className="label">
-          <span className="label-text text-base">
-            Name<span className="text-error">*</span>
-          </span>
-        </label>
-        <input
-          type="text"
-          placeholder="Full name"
-          className={classNames("input-bordered input w-full", {
-            "input-error": isErrorName,
-          })}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label className="label">
-          <span className="label-text text-base">Linkedin</span>
-        </label>
-        <input
-          type="text"
-          placeholder="URL"
-          className="input-bordered input w-full"
-          onChange={(e) => setLinkedin(e.target.value)}
-        />
-      </div>
+      <Input label="Email" onChange={setEmail} required />
+      <Input label="Name" onChange={setName} required />
+      <Input label="Linkedin" onChange={setLinkedin} />
 
       <div className="pt-3">
         <button

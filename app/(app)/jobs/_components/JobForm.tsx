@@ -5,7 +5,6 @@ import { useToast } from "@/app/_hooks/useToast";
 import { callBackend } from "@/app/_lib/server/callBackend";
 import { Job } from "@prisma/client";
 import { ToastType } from "@/app/_components/Toast";
-import classNames from "classnames";
 import { Spinner } from "@/app/_components/Spinner";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import {
@@ -13,6 +12,8 @@ import {
   ApiUpsertJobResp,
 } from "@/app/api/job/_lib/upsertJob";
 import { useRouter } from "next/navigation";
+import { Input } from "@/app/_components/inputs/Input";
+import { Textarea } from "@/app/_components/inputs/Textarea";
 
 type Props = {
   job?: Job | null;
@@ -169,14 +170,7 @@ export default function JobForm({ job }: Props) {
           Job URL
         </label>
         <div className="flex w-full items-center gap-2">
-          <input
-            className="input-bordered input w-full"
-            type="text"
-            placeholder="Type here"
-            id="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
+          <Input placeholder="Type here" value={url} onChange={setUrl} />
           <button
             className="btn-neutral btn"
             onClick={onFetchFromUrl}
@@ -192,76 +186,33 @@ export default function JobForm({ job }: Props) {
           </button>
         </div>
       </div>
-      <div>
-        <label
-          className="mb-2 block text-xs font-bold uppercase tracking-wide"
-          htmlFor="title"
-        >
-          Job Title
-        </label>
-        <input
-          type="text"
-          placeholder="Type here"
-          className={classNames("input-bordered input w-full", {
-            "input-error": isErrorTitle,
-          })}
-          id="title"
-          value={title}
-          onChange={(e) => onChangeTitle(e.target.value)}
-        />
-      </div>
-      <div>
-        <label
-          className="mb-2 block text-xs font-bold uppercase tracking-wide"
-          htmlFor="company"
-        >
-          Company
-        </label>
-        <input
-          type="text"
-          placeholder="Type here"
-          className={classNames("input-bordered input w-full", {
-            "input-error": isErrorCompany,
-          })}
-          id="company"
-          value={company}
-          onChange={(e) => onChangeCompany(e.target.value)}
-        />
-      </div>
-      <div>
-        <label
-          className="mb-2 block text-xs font-bold uppercase tracking-wide"
-          htmlFor="location"
-        >
-          Location
-        </label>
-        <input
-          type="text"
-          placeholder="Type here"
-          className="input-bordered input w-full"
-          id="location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-      </div>
-      <div>
-        <label
-          className="mb-2 block text-xs font-bold uppercase tracking-wide"
-          htmlFor="description"
-        >
-          Job Description
-        </label>
-        <textarea
-          style={{ height: "200px", resize: "none" }}
-          placeholder="Type here"
-          className={classNames("textarea-bordered textarea w-full", {
-            "input-error": isErrorDescription,
-          })}
-          id="description"
-          value={description}
-          onChange={(e) => onChangeDescription(e.target.value)}
-        ></textarea>
-      </div>
+      <Input
+        label="Job title"
+        placeholder="URL"
+        isError={isErrorTitle}
+        value={title}
+        onChange={onChangeTitle}
+      />
+      <Input
+        label="Company"
+        placeholder="Company"
+        isError={isErrorCompany}
+        value={company}
+        onChange={onChangeCompany}
+      />
+      <Input
+        label="Location"
+        placeholder="Location"
+        value={location}
+        onChange={setLocation}
+      />
+      <Textarea
+        label="Job description"
+        placeholder="Paste here"
+        value={description}
+        isError={isErrorDescription}
+        onChange={onChangeDescription}
+      />
 
       <button
         className="btn-neutral btn w-full md:w-24"
