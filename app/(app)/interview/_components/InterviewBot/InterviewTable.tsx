@@ -17,40 +17,43 @@ export function InterviewTable({ interviews }: Props) {
       ]}
       data={interviews.map(
         ({
+          id,
           timeSeconds,
           interviewerName,
           interviewerImageUrl,
           interviewerCountry,
-          avgScore,
           date,
-        }) => [
-          {
-            type: "Person",
-            data: {
-              name: interviewerName,
-              country: interviewerCountry,
-              image: interviewerImageUrl,
+        }) => ({
+          id,
+          rowData: [
+            {
+              type: "Person",
+              data: {
+                name: interviewerName,
+                country: interviewerCountry,
+                image: interviewerImageUrl,
+              },
             },
-          },
-          {
-            type: "Text",
-            data: {
-              text: formatTime({ seconds: timeSeconds }),
+            {
+              type: "Text",
+              data: {
+                text: formatTime({ seconds: timeSeconds }),
+              },
             },
-          },
-          // {
-          //   type: "Text",
-          //   data: {
-          //     text: `${avgScore} / 10`,
-          //   },
-          // },
-          {
-            type: "Date",
-            data: {
-              date,
+            // {
+            //   type: "Text",
+            //   data: {
+            //     text: `${avgScore} / 10`,
+            //   },
+            // },
+            {
+              type: "Date",
+              data: {
+                date,
+              },
             },
-          },
-        ]
+          ],
+        })
       )}
     />
   );

@@ -37,7 +37,7 @@ export const getResponses = async (
           include: {
             Response: {
               skip,
-              take: 3,
+              take: limit,
               include: {
                 interview: {
                   include: {

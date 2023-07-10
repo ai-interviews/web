@@ -1,8 +1,10 @@
+"use client";
+
 import { useToast } from "@/app/_hooks/useToast";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const useQueryParamsToast = ({
+export const QueryParamsToast = ({
   searchParams: { success },
 }: {
   searchParams: { success?: string };
@@ -19,5 +21,7 @@ export const useQueryParamsToast = ({
       });
       router.replace(pathname);
     }
-  }, [success, showToast, pathname, router]);
+  }, [success, showToast, router]);
+
+  return <></>;
 };

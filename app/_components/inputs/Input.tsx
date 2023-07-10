@@ -37,7 +37,7 @@ export function Input({
           },
           className
         )}
-        value={value || undefined}
+        value={value || ""}
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}
       />

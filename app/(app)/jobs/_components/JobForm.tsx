@@ -188,24 +188,17 @@ export default function JobForm({ job }: Props) {
       </div>
       <Input
         label="Job title"
-        placeholder="URL"
         isError={isErrorTitle}
         value={title}
         onChange={onChangeTitle}
       />
       <Input
         label="Company"
-        placeholder="Company"
         isError={isErrorCompany}
         value={company}
         onChange={onChangeCompany}
       />
-      <Input
-        label="Location"
-        placeholder="Location"
-        value={location}
-        onChange={setLocation}
-      />
+      <Input label="Location" value={location} onChange={setLocation} />
       <Textarea
         label="Job description"
         placeholder="Paste here"

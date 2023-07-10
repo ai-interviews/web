@@ -9,7 +9,14 @@ type Props = {
   rows?: number;
 };
 
-export function Textarea({ label, value, onChange, isError, rows }: Props) {
+export function Textarea({
+  label,
+  value,
+  onChange,
+  placeholder,
+  isError,
+  rows,
+}: Props) {
   return (
     <div className="w-full">
       <label
@@ -19,7 +26,7 @@ export function Textarea({ label, value, onChange, isError, rows }: Props) {
         {label}
       </label>
       <textarea
-        placeholder="Type here"
+        placeholder={placeholder || "Type here"}
         className={classNames("textarea-bordered textarea w-full", {
           "input-error": isError,
         })}
