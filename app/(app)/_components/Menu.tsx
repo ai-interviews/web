@@ -10,6 +10,7 @@ import { Card } from "../../_components/Card";
 import { getServerUser } from "../../_lib/server/getServerUser";
 import { ThemeSelector } from "./ThemeSelector";
 import { MenuItem } from "./MenuItem";
+import { SignOutButton } from "./SignOutButton";
 
 export async function Menu() {
   const iconClass = "h-7";
@@ -55,9 +56,7 @@ export async function Menu() {
         />
       </ul>
       <div className="flex items-center justify-between">
-        <button className="btn-ghost btn">
-          <ArrowLeftOnRectangleIcon height={24} width={24} />{" "}
-        </button>
+        <SignOutButton />
         <ThemeSelector />
       </div>
     </Card>

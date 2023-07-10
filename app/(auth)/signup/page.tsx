@@ -1,10 +1,11 @@
 import { Card } from "@/app/_components/Card";
-import { SignInForm } from "./_components/SignInForm";
+import { SignupForm } from "./_components/SignUpForm";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerUser } from "@/app/_lib/server/getServerUser";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export default async function SignInPage() {
+export default async function SignupPage() {
   const session = await getServerSession(authOptions);
 
   if (session?.user) {
@@ -13,8 +14,8 @@ export default async function SignInPage() {
 
   return (
     <Card className="w-full rounded-md p-6 lg:max-w-lg">
-      <h1 className="text-center text-3xl font-semibold">AI Interviews</h1>
-      <SignInForm />
+      <h1 className="text-center text-3xl font-light">AI Interviews</h1>
+      <SignupForm />
     </Card>
   );
 }
