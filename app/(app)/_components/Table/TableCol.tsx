@@ -1,6 +1,7 @@
 import { Image } from "@/app/_components/Image";
 import { Avatar } from "../Avatar";
 import { getCountryImageUrl } from "../../_lib/client/getCountryImageUrl";
+import { formatDate } from "@/app/_lib/client/formatDate";
 
 type DateCol = {
   type: "Date";
@@ -41,7 +42,7 @@ export function TableCol({ colData, className }: Props) {
         <td className={`max-w-xs break-words ${className}`}>{data.text}</td>
       );
     case "Date":
-      return <td className={className}>{data.date.toDateString()}</td>;
+      return <td className={className}>{formatDate(data.date)}</td>;
     case "Person":
       return (
         <td className={className}>
@@ -49,7 +50,7 @@ export function TableCol({ colData, className }: Props) {
             <Avatar name={data.name} src={data.image} size="sm" />
             <div>
               <div className="font-bold">{data.name}</div>
-              <div className="flex flex-nowrap items-center gap-1.5 text-sm opacity-50 whitespace-nowrap">
+              <div className="flex flex-nowrap items-center gap-1.5 whitespace-nowrap text-sm opacity-50">
                 <Image
                   className="h-2 w-4"
                   src={getCountryImageUrl(data.country)}

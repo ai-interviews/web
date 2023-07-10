@@ -1,7 +1,8 @@
-import { authOptions } from "../../api/auth/[...nextauth]/route";
-import SignIn from "./_components/SignIn";
-import { getServerSession } from "next-auth";
+import { Card } from "@/app/_components/Card";
+import { SignInForm } from "./_components/SignInForm";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export default async function SignInPage() {
   const session = await getServerSession(authOptions);
@@ -10,5 +11,10 @@ export default async function SignInPage() {
     redirect("/");
   }
 
-  return <SignIn />;
+  return (
+    <Card className="w-full rounded-md p-6 lg:max-w-lg">
+      <h1 className="text-center text-3xl ">AI Interviews</h1>
+      <SignInForm />
+    </Card>
+  );
 }

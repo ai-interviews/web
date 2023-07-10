@@ -16,19 +16,6 @@ export const authOptions = {
         },
       },
       from: process.env.SENDGRID_FROM_EMAIL,
-      sendVerificationRequest: async ({ url }) => {
-        console.log(`Verification link: ${url}`);
-
-        // SENDGRID ACCOUNT IS DOWN TEMPORARILY
-        // await provider.sendVerificationRequest({
-        //   token,
-        //   url,
-        //   provider,
-        //   expires: new Date(Date.now() + 15 * 60 * 1000),
-        //   theme: {},
-        //   identifier,
-        // });
-      },
     }),
   ],
   callbacks: {

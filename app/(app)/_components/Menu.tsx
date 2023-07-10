@@ -1,30 +1,27 @@
 import {
   RectangleGroupIcon,
-  ChartBarIcon,
   BookmarkIcon,
   UserIcon,
   PlusIcon,
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import { ReactNode } from "react";
 import { Avatar } from "./Avatar";
 import { Card } from "../../_components/Card";
-import { getServerUrl } from "../../_lib/server/getServerUrl";
 import { getServerUser } from "../../_lib/server/getServerUser";
 import { ThemeSelector } from "./ThemeSelector";
 import { MenuItem } from "./MenuItem";
+import { SignOutButton } from "./SignOutButton";
 
 export async function Menu() {
   const iconClass = "h-7";
   const user = await getServerUser();
 
   return (
-    <Card className="pt-6 h-full hidden md:flex flex-col justify-between">
-      <ul className="menu w-56 rounded-box gap-4">
+    <Card className="hidden h-full flex-col justify-between pt-6 md:flex">
+      <ul className="menu rounded-box w-56 gap-4">
         {/* Avatar */}
-        <div className="flex flex-col gap-3 mb-5">
-          <div className="flex align-center justify-center w-full">
+        <div className="mb-5 flex flex-col gap-3">
+          <div className="align-center flex w-full justify-center">
             <Avatar src={user.image || undefined} name={user.name} />
           </div>
           <div className="w-full text-center">{user.name}</div>
@@ -36,11 +33,11 @@ export async function Menu() {
           text="Dashboard"
           href="/dashboard"
         />
-        <MenuItem
+        {/* <MenuItem
           icon={<ChartBarIcon className={iconClass} />}
           text="Metrics"
           href="/metrics"
-        />
+        /> */}
         <MenuItem
           icon={<BookmarkIcon className={iconClass} />}
           text="My Jobs"
@@ -59,9 +56,7 @@ export async function Menu() {
         />
       </ul>
       <div className="flex items-center justify-between">
-        <button className="btn btn-ghost">
-          <ArrowLeftOnRectangleIcon height={24} width={24} />{" "}
-        </button>
+        <SignOutButton />
         <ThemeSelector />
       </div>
     </Card>

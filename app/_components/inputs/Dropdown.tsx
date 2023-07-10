@@ -34,7 +34,7 @@ export function Dropdown({
   const [selectedValue, setSelectedValue] = useState(selected);
   const selectedOption = useMemo(
     () => options.find((option) => option.value === selectedValue),
-    [selectedValue]
+    [selectedValue, options]
   );
   const ref = useRef<HTMLDetailsElement>(null);
 

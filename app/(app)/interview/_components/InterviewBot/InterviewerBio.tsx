@@ -19,16 +19,17 @@ export function InterviewerBio({
     bio: "???",
     country: "",
     imageUrl: "",
+    voice: "",
   },
 }: Props) {
   return (
-    <div className="flex flex-col items-center gap-3 2xl:gap-5 w-full">
+    <div className="flex w-full flex-col items-center gap-3 2xl:gap-5">
       {interviewer.imageUrl ? (
         <Avatar src={interviewer.imageUrl} name="Rachel" size="lg" />
       ) : (
         <UserCircleIcon width={215} />
       )}
-      <div className="flex flex-col gap-1 2xl:gap-2 w-full">
+      <div className="flex w-full flex-col gap-1 2xl:gap-2">
         <span className="text-2xl">{interviewer.name}</span>
         <div className="flex flex-nowrap items-center gap-1.5">
           {interviewer.country && (
@@ -40,7 +41,7 @@ export function InterviewerBio({
           )}
           <span>{interviewer.country}</span>
         </div>
-        <span className=" text-sm 2xl:text-md leading-8">
+        <span className=" 2xl:text-md text-sm leading-8">
           <Typewriter intervalMs={4}>{interviewer.bio}</Typewriter>
         </span>
       </div>

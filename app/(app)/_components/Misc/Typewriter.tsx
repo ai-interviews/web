@@ -8,18 +8,31 @@ type Props = {
 };
 
 export function Typewriter({ children, intervalMs }: Props) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>("");
+  const [_, setIntervalId] = useState<NodeJS.Timer>();
 
   useEffect(() => {
-    (async () => {
-      setText("");
+    if (children) {
+      let i = 0;
+      setIntervalId((prevIntervalId) => {
+        // Stop previous typewriter
+        if (prevIntervalId) {
+          clearInterval(prevIntervalId);
+          setText("");
+        }
 
-      for (const char of children) {
-        await new Promise((resolve) => setTimeout(resolve, intervalMs));
+        // Begin new typewriter
+        const newIntervalId = setInterval(() => {
+          if (i >= children.length - 1) {
+            clearInterval(newIntervalId);
+          }
 
-        setText((prev) => prev + char);
-      }
-    })();
+          setText((prevContent) => prevContent + children[i++]);
+        }, intervalMs);
+
+        return newIntervalId;
+      });
+    }
   }, [children, intervalMs]);
 
   return (

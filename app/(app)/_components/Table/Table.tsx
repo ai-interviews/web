@@ -1,21 +1,38 @@
 "use client";
+
+import { ReactNode } from "react";
 import { TableCol } from "./TableCol";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import classNames from "classnames";
 
 type TailwindBreakpoints = "sm" | "md" | "lg" | "xl" | "2xl";
+
+export type Row = { id: string; rowData: TableCol[] };
 
 type Props = {
   headers: {
     label: string;
     hiddenThreshold?: TailwindBreakpoints;
   }[];
-  data: TableCol[][];
+  data: Row[];
   size?: "xs" | "sm" | "md" | "lg";
-  onRowClick?: (index: number, rowData: TableCol[]) => void;
+  placeholder?: ReactNode;
+  navigateOnRowClick?: boolean;
 };
 
-export function Table({ headers, data, size = "md", onRowClick }: Props) {
+export function Table({
+  headers,
+  data,
+  size = "md",
+  placeholder,
+  navigateOnRowClick,
+}: Props) {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
-    <div className="overflow-x-auto h-min">
+    <div className="h-min overflow-x-auto">
       <table className={`table table-${size} h-min`}>
         {/* Headers */}
         <thead>
@@ -29,21 +46,37 @@ export function Table({ headers, data, size = "md", onRowClick }: Props) {
         </thead>
         {/* Rows */}
         <tbody>
-          {data.map((rowData, i) => (
-            <tr
-              key={i}
-              className="hover:bg-base-300 cursor-pointer"
-              onClick={() => onRowClick && onRowClick(i, rowData)}
-            >
-              {rowData.map((colData, j) => (
-                <TableCol
-                  key={j}
-                  colData={colData}
-                  className={getClassToHideTableCol(headers[j].hiddenThreshold)}
-                />
-              ))}
+          {data.length > 0 ? (
+            data.map(({ id, rowData }, i) => (
+              <tr
+                className={classNames("rounded-lg", {
+                  "cursor-pointer hover:bg-base-300": navigateOnRowClick,
+                })}
+                key={i}
+                onClick={
+                  navigateOnRowClick
+                    ? () => router.push(`${pathname}/${id}`)
+                    : undefined
+                }
+              >
+                {rowData.map((colData, j) => (
+                  <TableCol
+                    key={j}
+                    colData={colData}
+                    className={getClassToHideTableCol(
+                      headers[j].hiddenThreshold
+                    )}
+                  />
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={headers.length} className="text-center">
+                {placeholder || "No data."}
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

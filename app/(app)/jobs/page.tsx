@@ -1,111 +1,30 @@
-"use client";
-import React, { useState, Suspense, useRef } from 'react';
+import React, { useState, Suspense, useRef } from "react";
 import { Header } from "../_components/Header";
-import Modal from "./_components/modal";
-import { useClientUser } from "@/app/_lib/client/hooks/useClientUser";
-import JobForm from "./_components/JobForm";
-import LatestJobs from "./_components/LatestJobs";
+import Link from "next/link";
+import { Card } from "@/app/_components/Card";
+import { JobTable } from "./_components/JobTable";
+import prisma from "@/app/_lib/server/prismadb";
+import { getJobs } from "../_lib/server/getJobs";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
-export default function Jobs() {
-  const { user } = useClientUser();
-  const [jobLink, setJobLink] = useState('');
-  const [jobs, setJobs] = useState<Array<{title: string, company: string, location: string, description: string}>>([]);
-  const [formJob, setFormJob] = useState<{title?: string, company?: string, location?: string, description?: string, url?: string} | null>(null);
-  
-  const [open, setOpen] = useState(false);
-  const handleToggle = () => setOpen((prev) => !prev);
-
-  const latestJobsRef = useRef<{ fetchJobs: () => void }>({ fetchJobs: () => {} });
-
-
-  const handleAddJob = async () => {
-    if (jobLink) {
-        const response = await fetch('https://webscraperjob.azurewebsites.net/api/linkedinWebScraper?url=' + jobLink, {method: 'GET'});
-        const jobDetails = await response.json();
-
-        if (response.ok) {
-            setFormJob(jobDetails);
-        } else {
-            console.error('Failed to fetch job details:', jobDetails);
-        }
-    } else {
-        setFormJob({ title: "", company: "", location: "", description: "", url: "" });
-    }
-    handleToggle();
-};
-
-
-  const handleFormSubmit = async (formJob: {title?: string, company?: string, location?: string, description?: string, url?: string} | null) => {
-
-    if (formJob && user) {
-      const jobData = {
-        userId: user.id,
-        title: formJob.title,
-        company: formJob.company,
-        location: formJob.location,
-        description: formJob.description,
-        url: jobLink,
-      };
-
-      const response = await fetch('/api/jobs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jobData),
-      });
-
-      if (response.ok) {
-        const job = await response.json();
-        setJobs(prevJobs => [...prevJobs, job]);
-        setFormJob(null);
-        setJobLink('');
-        handleToggle();
-        latestJobsRef.current.fetchJobs();
-      } else {
-        console.error('Failed to submit job:', await response.text());
-      }
-    }
-  };
+export default async function Jobs() {
+  const jobs = await getJobs();
 
   return (
     <div className="h-min">
-      <div className="mb-4 2xl:mb-8">
-          <Header title={`My Jobs`} />
-      </div>
+      <Header
+        title="My Jobs"
+        rightContent={
+          <Link href="/jobs/new" className="btn-neutral btn">
+            <PlusIcon height={22} />
+            Add job
+          </Link>
+        }
+      />
 
-      <div className="container mx-auto px-4 sm:px-8">
-          <div className="flex items-center justify-between py-6">
-              <input 
-                  type="text"
-                  className="flex-grow mr-6 p-2 rounded border shadow-sm"
-                  value={jobLink}
-                  onChange={(e) => setJobLink(e.target.value)}
-                  placeholder="Paste job link here..."
-              />
-
-              <button 
-                  className="btn btn-outline"
-                  onClick={handleAddJob}
-              >
-                  +
-              </button>
-          </div>
-
-          <Modal open={open} disableClickOutside={!open} onClose={handleToggle}>
-          {formJob && (
-            <JobForm initialFormJob={formJob} onSubmit={handleFormSubmit} open={open} />
-          )}
-            <div className="modal-action">
-            </div>
-          </Modal>
-
-          <div className="card bg-base-200 py-6 px-5 h-min">
-            <Suspense fallback={<div>Loading...</div>}>
-              <LatestJobs ref={latestJobsRef} />
-            </Suspense>
-          </div>
-      </div>
+      <Card className="">
+        <JobTable data={jobs} />
+      </Card>
     </div>
   );
 }
