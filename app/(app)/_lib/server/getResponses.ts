@@ -31,13 +31,14 @@ export const getResponses = async (
   try {
     const userId = (await getServerUser()).id;
     const skip = page * limit;
-    const interviewConditions = interviewId ? { where: { id: interviewId } } : {};
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
         Interview: {
-          ...interviewConditions,
+          where: {
+            ...(interviewId ? { id: interviewId } : {}),
+          },
           include: {
             Response: {
               skip,
