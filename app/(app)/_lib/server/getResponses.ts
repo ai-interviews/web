@@ -21,9 +21,11 @@ export const getResponses = async (
   {
     page,
     limit,
+    interviewId,
   }: {
     page: number;
     limit: number;
+    interviewId?: string;
   } = { page: 0, limit: 10 }
 ): Promise<Response[]> => {
   try {
@@ -34,6 +36,9 @@ export const getResponses = async (
       where: { id: userId },
       include: {
         Interview: {
+          where: {
+            ...(interviewId ? { id: interviewId } : {}),
+          },
           include: {
             Response: {
               skip,

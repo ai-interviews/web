@@ -16,34 +16,22 @@ export async function DashboardMetrics() {
 
   const chartMetrics = formatChartMetrics({ metrics, responses });
 
-  const { wordFrequency } = chartMetrics.aggregateDatasets;
+  const { wordFrequency, slangFrequency } = chartMetrics.aggregateDatasets;
 
   const { timeSeconds, quietTimeSeconds } = chartMetrics.responseDatasets;
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-between gap-5 xl:h-80 2xl:h-96">
+    <div className="flex w-full flex-wrap items-center justify-between gap-5">
       <div className="flex w-full flex-col gap-3 lg:flex-1">
-        <MetricCard
-          title={wordFrequency.dataset.data.length}
-          subtext="Different filler words detected this month."
-        >
-          {wordFrequency.dataset.data.length ? (
-            <PieChart
-              labels={wordFrequency.labels}
-              dataset={wordFrequency.dataset}
-              className="w-24 2xl:w-36"
-            />
-          ) : (
-            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
-          )}
-        </MetricCard>
         <MetricCard
           title={
             <>
-              {quietTimeSeconds.dataset.data.reduce(
-                (acc, val) => acc + val,
-                0
-              ) / quietTimeSeconds.dataset.data.length || 0}{" "}
+              {(
+                quietTimeSeconds.dataset.data.reduce(
+                  (acc, val) => acc + val,
+                  0
+                ) / quietTimeSeconds.dataset.data.length
+              ).toFixed(2) || 0}{" "}
               s
             </>
           }
@@ -61,13 +49,41 @@ export async function DashboardMetrics() {
             <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
           )}
         </MetricCard>
+        {/* <MetricCard
+          title={slangFrequency.labels.length.toString()}
+          subtext="Different slang words detected this month."
+        >
+          {slangFrequency.dataset.data.length ? (
+            <PieChart
+              labels={slangFrequency.labels}
+              dataset={slangFrequency.dataset}
+              className="w-24 2xl:w-36"
+            />
+          ) : (
+            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
+          )}
+        </MetricCard> */}
+        <MetricCard
+          title={wordFrequency.dataset.data.length}
+          subtext="Different filler words detected this month."
+        >
+          {wordFrequency.dataset.data.length ? (
+            <PieChart
+              labels={wordFrequency.labels}
+              dataset={wordFrequency.dataset}
+              className="w-24 2xl:w-36"
+            />
+          ) : (
+            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
+          )}
+        </MetricCard>
       </div>
       <Card className="relative flex h-full w-full flex-col justify-center lg:w-96 lg:flex-auto">
         <div className="w-full pb-5 pl-4 text-2xl">Response times</div>
         <BarChart
           labels={timeSeconds.labels}
           dataset={timeSeconds.dataset}
-          className="h-5/6 w-full"
+          className="h-64 w-full"
         />
         {!timeSeconds.dataset.data.length && (
           <div className="absolute left-0 right-0 ml-auto mr-auto w-24 text-center text-sm 2xl:w-36">

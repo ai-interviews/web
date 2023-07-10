@@ -3,39 +3,14 @@ import { ChartDataset } from "../../_components/Charts/BarChart";
 import { AggregateMetrics } from "../server/getAggregateMetrics";
 import { Response } from "../server/getResponses";
 import { percentDifference } from "./percentDifference";
-
-const FILLER_WORDS = new Set([
-  "um",
-  "uh",
-  "like",
-  "well",
-  "you know",
-  "so",
-  "actually",
-  "basically",
-  "honestly",
-  "literally",
-  "anyway",
-  "right",
-  "i mean",
-  "ok",
-  "okay",
-  "ah",
-  "er",
-  "hmm",
-  "ahem",
-  "right",
-  "ahh",
-  "yeah",
-  "mm-hmm",
-  "mhm",
-]);
+import { FILLER_WORDS, SLANG_WORDS } from "./metricDictionary";
 
 type AggregateMetric =
   | "avgScore"
   | "avgQuietTimeSeconds"
   | "avgTimeSeconds"
-  | "wordFrequency";
+  | "wordFrequency"
+  | "slangFrequency";
 
 type ResponseMetric = "score" | "quietTimeSeconds" | "timeSeconds";
 
@@ -54,6 +29,7 @@ export const formatChartMetrics = ({
     avgQuietTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
     avgTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
     wordFrequency: { labels: [], dataset: { label: "data", data: [] } },
+    slangFrequency: { labels: [], dataset: { label: "data", data: [] } },
   };
 
   const responseDatasets: Record<ResponseMetric, Dataset> = {
@@ -118,6 +94,21 @@ export const formatChartMetrics = ({
 
         // Data
         aggregateDatasets.wordFrequency.dataset.data.push(freq);
+      }
+    }
+  }
+
+  // Slang frequency
+  if (metrics.length > 0) {
+    for (const [word, freq] of Object.entries(
+      metrics[metrics.length - 1].wordFrequency
+    )) {
+      if (SLANG_WORDS.includes(word)) {
+        // Label
+        aggregateDatasets.slangFrequency.labels.push(word);
+
+        // Data
+        aggregateDatasets.slangFrequency.dataset.data.push(freq);
       }
     }
   }

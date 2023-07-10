@@ -94,11 +94,9 @@ export function InterviewBot({
           },
           onResponseMetrics: async (metrics) => {
             setResponseMetrics(metrics);
-            console.log(metrics);
           },
           onInterviewMetrics: async (metrics) => {
             setInterviewLengthSeconds(metrics.lengthSeconds);
-            console.log(metrics);
           },
         },
         {
