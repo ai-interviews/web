@@ -34,7 +34,7 @@ export function InterviewLayout({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-20 items-center">
+      <div className="flex h-20 items-center gap-4">
         <InterviewerDropdown
           data={interviewers}
           value={interviewer}
