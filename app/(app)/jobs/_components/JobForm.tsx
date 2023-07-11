@@ -142,6 +142,7 @@ export default function JobForm({ job }: Props) {
         text: "Saved.",
       });
 
+      router.refresh();
       router.push(`/jobs/${newJob.id}`);
     } catch (e) {
       console.error(e);
