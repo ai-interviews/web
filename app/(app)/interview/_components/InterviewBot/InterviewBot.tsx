@@ -120,7 +120,7 @@ export function InterviewBot({
               description: job.description,
             },
           }),
-          candidateName: user.name,
+          candidateName: user.name.split(" ")[0],
         }
       ),
     [
