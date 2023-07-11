@@ -17,11 +17,10 @@ export const QueryParamsToast = ({
     if (success === "true") {
       showToast({
         type: "success",
-        text: "Sucess",
+        text: "Success",
       });
       router.replace(pathname);
     }
-    // @ts-ignore
   }, [success, showToast, router]);
 
   return <></>;

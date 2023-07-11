@@ -20,7 +20,6 @@ export default async function JobPage({
 
   return (
     <div>
-      <QueryParamsToast searchParams={searchParams} />
       <Header title={job?.title || ""} />
       <JobForm job={job} />
     </div>

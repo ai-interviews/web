@@ -133,6 +133,11 @@ export default function JobForm({ job }: Props) {
         },
       });
 
+      showToast({
+        type: "success",
+        text: "Saved.",
+      });
+
       router.push(`/jobs/${newJob.id}?success=true`);
     } catch (e) {
       console.error(e);
