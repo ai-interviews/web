@@ -7,9 +7,15 @@ type Props = {
   data: Interviewer[];
   onChange: (interviewer: Interviewer) => void;
   value?: Interviewer;
+  disabled?: boolean;
 };
 
-export function InterviewerDropdown({ data, onChange, value }: Props) {
+export function InterviewerDropdown({
+  data,
+  onChange,
+  value,
+  disabled,
+}: Props) {
   return (
     <Dropdown
       onChange={(name) =>
@@ -22,6 +28,7 @@ export function InterviewerDropdown({ data, onChange, value }: Props) {
       }))}
       title="Interviewer"
       selected={value?.name}
+      disabled={disabled}
       noOutline
     />
   );

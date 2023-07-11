@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/app/_components/Card";
-import { Interviewer, User } from "@prisma/client";
+import { Interviewer, Job, User } from "@prisma/client";
 import { InterviewWithMetrics } from "../../../_lib/server/getInterviews";
 import { InterviewerBio } from "./InterviewerBio";
 import { InterviewChat } from "./InterviewChat";
@@ -30,6 +30,9 @@ type Props = {
   interviews: InterviewWithMetrics[];
   interviewers: Interviewer[];
   user: User;
+  job?: Job;
+  onInterviewStart?: () => void;
+  onInterviewEnd?: () => void;
 };
 
 export function InterviewBot({
@@ -37,6 +40,9 @@ export function InterviewBot({
   interviewers,
   interviews,
   user,
+  job,
+  onInterviewStart,
+  onInterviewEnd,
 }: Props) {
   const showToast = useToast();
   const router = useRouter();
@@ -62,6 +68,7 @@ export function InterviewBot({
         {
           onRecognitionStarted: async () => {
             try {
+              onInterviewStart?.();
               const res = await callBackend<
                 ApiCreateInterviewResp,
                 ApiCreateInterviewBody
@@ -107,10 +114,25 @@ export function InterviewBot({
             bio: interviewer.bio,
             voice: interviewer.voice as any,
           },
+          ...(job?.title && {
+            jobOptions: {
+              title: job.title,
+              description: job.description,
+            },
+          }),
           candidateName: user.name,
         }
       ),
-    [interviewer, showToast]
+    [
+      interviewer.name,
+      interviewer.bio,
+      interviewer.voice,
+      showToast,
+      user.name,
+      job?.title,
+      job?.description,
+      onInterviewStart,
+    ]
   );
 
   useEffect(() => {
@@ -163,6 +185,8 @@ export function InterviewBot({
 
   const handleToggleInterview = () => {
     if (isActive) {
+      // onInterviewEnd?.();
+
       // Call interview SDK end handler
       interview.end();
 
