@@ -1,3 +1,4 @@
+import { getServerUser } from "@/app/_lib/server/getServerUser";
 import { getInterviewers } from "../_lib/server/getInterviewers";
 import { getInterviews } from "../_lib/server/getInterviews";
 import { InterviewLayout } from "./_components/InterviewLayout";
@@ -11,12 +12,14 @@ export default async function InterviewPage() {
       userId: "b3f7g9h2j1k4m8p5r7t9v1x3z6a8c5e1",
     },
   });
+  const user = await getServerUser();
 
   return (
     <InterviewLayout
       interviewers={interviewers}
       interviews={interviews}
       jobs={jobs}
+      user={user}
     />
   );
 }

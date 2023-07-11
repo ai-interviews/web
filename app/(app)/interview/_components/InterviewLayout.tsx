@@ -4,21 +4,27 @@ import { useState } from "react";
 import { InterviewBot } from "./InterviewBot/InterviewBot";
 import { InterviewerDropdown } from "./inputs/InterviewerDropdown";
 import { JobListingDropdown } from "./inputs/JobListingDropdown";
-import { Interviewer, Job } from "@prisma/client";
+import { Interviewer, Job, User } from "@prisma/client";
 import { InterviewWithMetrics } from "@/app/(app)/_lib/server/getInterviews";
 
 type Props = {
   interviewers: Interviewer[];
   interviews: InterviewWithMetrics[];
   jobs: Job[];
+  user: User;
 };
 
-export function InterviewLayout({ interviewers, interviews, jobs }: Props) {
+export function InterviewLayout({
+  interviewers,
+  interviews,
+  jobs,
+  user,
+}: Props) {
   const [interviewer, setInterviewer] = useState<Interviewer>(interviewers[0]);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center h-20">
+    <div className="flex h-full flex-col">
+      <div className="flex h-20 items-center">
         <InterviewerDropdown
           data={interviewers}
           onChange={setInterviewer}
@@ -31,6 +37,7 @@ export function InterviewLayout({ interviewers, interviews, jobs }: Props) {
         interviewer={interviewer}
         interviews={interviews}
         interviewers={interviewers}
+        user={user}
       />
     </div>
   );

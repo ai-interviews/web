@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/app/_components/Card";
-import { Interviewer } from "prisma/prisma-client";
+import { Interviewer, User } from "@prisma/client";
 import { InterviewWithMetrics } from "../../../_lib/server/getInterviews";
 import { InterviewerBio } from "./InterviewerBio";
 import { InterviewChat } from "./InterviewChat";
@@ -29,12 +29,14 @@ type Props = {
   interviewer?: Interviewer;
   interviews: InterviewWithMetrics[];
   interviewers: Interviewer[];
+  user: User;
 };
 
 export function InterviewBot({
   interviewer: userSelectedInterviewer,
   interviewers,
   interviews,
+  user,
 }: Props) {
   const showToast = useToast();
   const router = useRouter();
@@ -105,7 +107,7 @@ export function InterviewBot({
             bio: interviewer.bio,
             voice: interviewer.voice as any,
           },
-          candidateName: "Thomas",
+          candidateName: user.name,
         }
       ),
     [interviewer, showToast]
