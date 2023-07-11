@@ -3,6 +3,7 @@ import { formatTime } from "../../_lib/client/formatTime";
 import { truncateText } from "../../_lib/client/truncateText";
 import { Row, Table } from "../Table/Table";
 import { TableCol } from "../Table/TableCol";
+import { DeleteResponseButton } from "./DeleteResponseButton";
 
 type Props = {
   data: Response[];
@@ -57,6 +58,13 @@ export function ResponseTable({ data }: Props) {
           date: row.date,
         },
       },
+      // Delete
+      {
+        type: "Custom",
+        data: {
+          content: <DeleteResponseButton responseId={row.id} />,
+        },
+      },
     ],
   }));
 
@@ -69,6 +77,7 @@ export function ResponseTable({ data }: Props) {
         // { label: "Score", hiddenThreshold: "sm" },
         { label: "Time", hiddenThreshold: "md" },
         { label: "Date" },
+        { label: "" },
       ]}
       data={rows}
     />

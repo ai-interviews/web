@@ -3,7 +3,7 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useMemo, useRef, useState } from "react";
 import { Image } from "../Image";
-import { Avatar } from "../../(app)/_components/Avatar";
+import classNames from "classnames";
 
 type DropdownPosition =
   | "dropdown-end"
@@ -19,6 +19,7 @@ type Props = {
   title?: string;
   wide?: boolean;
   noOutline?: boolean;
+  disabled?: boolean;
   dropdownPosition?: DropdownPosition;
 };
 
@@ -29,6 +30,7 @@ export function Dropdown({
   selected,
   wide,
   noOutline,
+  disabled,
   dropdownPosition = "dropdown-bottom",
 }: Props) {
   const [selectedValue, setSelectedValue] = useState(selected);
@@ -45,11 +47,13 @@ export function Dropdown({
   };
 
   return (
-    <details className={`dropdown ${dropdownPosition}`} ref={ref}>
+    <details className={classNames("dropdown", dropdownPosition)} ref={ref}>
       <summary
-        className={`btn ${
-          noOutline ? "btn-ghost" : "btn-outline"
-        } no-animation flex flex-nowrap items-center`}
+        className={classNames(
+          "no-animation btn flex flex-nowrap items-center",
+          noOutline ? "btn-ghost" : "btn-outline",
+          { "btn-disabled": disabled }
+        )}
       >
         <span className="flex flex-row items-center gap-3 whitespace-nowrap">
           {selectedOption?.imageUrl && (
@@ -65,9 +69,10 @@ export function Dropdown({
         <ChevronDownIcon className="h-4 w-4" />
       </summary>
       <ul
-        className={`p-2 shadow menu dropdown-content bg-neutral rounded-box z-10 ${
+        className={classNames(
+          "dropdown-content menu rounded-box z-10 max-h-96 overflow-auto bg-neutral p-2 shadow",
           wide ? "w-96" : "w-52"
-        } max-h-96 overflow-auto`}
+        )}
       >
         {options.map(({ label, value, imageUrl }, i) => (
           <li
@@ -75,7 +80,7 @@ export function Dropdown({
             key={i}
             onClick={() => onClickOption(value)}
           >
-            <a className="text-white w-full flex gap-3">
+            <a className="flex w-full gap-3 text-white">
               {imageUrl && (
                 <Image
                   src={imageUrl}

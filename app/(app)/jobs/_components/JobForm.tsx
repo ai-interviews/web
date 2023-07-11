@@ -142,6 +142,7 @@ export default function JobForm({ job }: Props) {
         text: "Saved.",
       });
 
+      router.refresh();
       router.push(`/jobs/${newJob.id}`);
     } catch (e) {
       console.error(e);
@@ -188,7 +189,12 @@ export default function JobForm({ job }: Props) {
           Linkedin Job URL
         </label>
         <div className="flex w-full items-center gap-2">
-          <Input placeholder="Type here" value={url} onChange={onChangeUrl} />
+          <Input
+            placeholder="Type here"
+            value={url}
+            onChange={onChangeUrl}
+            bottomLabel="You don't have to satisfy every job requirement to practice or apply!"
+          />
           <button
             className="btn-neutral btn"
             onClick={onFetchFromUrl}

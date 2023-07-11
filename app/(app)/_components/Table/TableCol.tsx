@@ -2,6 +2,7 @@ import { Image } from "@/app/_components/Image";
 import { Avatar } from "../Avatar";
 import { getCountryImageUrl } from "../../_lib/client/getCountryImageUrl";
 import { formatDate } from "@/app/_lib/client/formatDate";
+import { ReactNode } from "react";
 
 type DateCol = {
   type: "Date";
@@ -26,7 +27,14 @@ type TextCol = {
   };
 };
 
-export type TableCol = TextCol | PersonCol | DateCol;
+type CustomCol = {
+  type: "Custom";
+  data: {
+    content: ReactNode;
+  };
+};
+
+export type TableCol = TextCol | PersonCol | DateCol | CustomCol;
 
 type Props = {
   colData: TableCol;
@@ -43,6 +51,8 @@ export function TableCol({ colData, className }: Props) {
       );
     case "Date":
       return <td className={className}>{formatDate(data.date)}</td>;
+    case "Custom":
+      return <td className={className}>{data.content}</td>;
     case "Person":
       return (
         <td className={className}>

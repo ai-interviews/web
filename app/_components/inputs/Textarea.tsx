@@ -2,6 +2,7 @@ import classNames from "classnames";
 
 type Props = {
   label?: string;
+  bottomLabel?: string;
   value?: string;
   placeholder?: string;
   onChange?: (v: string) => void;
@@ -11,6 +12,7 @@ type Props = {
 
 export function Textarea({
   label,
+  bottomLabel,
   value,
   onChange,
   placeholder,
@@ -34,7 +36,12 @@ export function Textarea({
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         rows={rows || 5}
-      ></textarea>
+      />
+      {bottomLabel && (
+        <label className="label">
+          <span className="label-text-alt">{bottomLabel}</span>
+        </label>
+      )}
     </div>
   );
 }

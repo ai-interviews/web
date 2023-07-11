@@ -5,6 +5,7 @@ import { Image } from "@/app/_components/Image";
 import { useClientUser } from "@/app/_hooks/useClientUser";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
+import TextareaAutosize from "react-textarea-autosize";
 
 type Props = {
   interviewerImageUrl: string;
@@ -67,11 +68,9 @@ export function InterviewChat({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <input
-          type="text"
-          className="border-3 input-bordered input w-full text-sm "
+        <TextareaAutosize
+          className="border-3 textarea-bordered textarea w-full resize-none pt-3 text-sm"
           value={messageInProgress}
-          onChange={() => null}
         />
         <button
           className="btn-ghost btn px-3"
