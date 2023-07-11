@@ -170,6 +170,7 @@ export function InterviewBot({
       setMessageInProgress("");
       setMessages([]);
       setIsActive(false);
+      setIsLoadingResponse(true);
 
       // Refetch past interviews
       router.refresh();
