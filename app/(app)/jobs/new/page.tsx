@@ -5,7 +5,7 @@ import JobForm from "../_components/JobForm";
 export default async function JobPage() {
   return (
     <div>
-      <Header title="Add job" />
+      <Header title="Add job" backButton backLink="/jobs" />
       <JobForm />
     </div>
   );
