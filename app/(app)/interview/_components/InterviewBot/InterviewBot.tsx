@@ -16,7 +16,7 @@ import {
 import {
   ApiCreateResponseBody,
   ApiCreateResponseResp,
-} from "@/app/api/response/route";
+} from "@/app/api/response/_lib/createResponse";
 import { useRouter } from "next/navigation";
 import {
   ApiUpdateInterviewBody,

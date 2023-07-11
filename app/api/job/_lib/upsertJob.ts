@@ -32,7 +32,7 @@ export const upsertJob = async (req: NextRequest) => {
       return generateApiResponse({
         status: 401,
         data: {
-          error: "Unauthorized.",
+          error: "Unauthenticated.",
         },
       });
     }

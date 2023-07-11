@@ -3,11 +3,11 @@ import { ResponseTable } from "../../_components/ResponseTable/ResponseTable";
 import { getResponses } from "../../_lib/server/getResponses";
 
 export async function LatestQuestions() {
-  const responses = await getResponses({ page: 0, limit: 3 });
+  const responses = await getResponses({ page: 0, limit: 10 });
 
   return (
     <Card className="h-min">
-      <div className="text-2xl pl-4 pb-2.5">Activity</div>
+      <div className="pb-2.5 pl-4 text-2xl">Activity</div>
       <ResponseTable data={responses} />
     </Card>
   );

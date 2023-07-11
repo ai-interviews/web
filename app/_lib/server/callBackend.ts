@@ -1,9 +1,9 @@
-type GetProps = {
-  method: "GET";
+type NoBodyProps = {
+  method: "GET" | "DELETE";
 };
 
-type OtherMethodsProps<Body> = {
-  method: "POST" | "PUT" | "DELETE" | "BATCH";
+type BodyProps<Body> = {
+  method: "POST" | "PUT" | "BATCH";
   body: Body;
 };
 
@@ -13,7 +13,7 @@ type BaseProps<QueryParams> = {
 };
 
 type Props<QueryParams, Body> = BaseProps<QueryParams> &
-  (GetProps | OtherMethodsProps<Body>);
+  (NoBodyProps | BodyProps<Body>);
 
 export const callBackend = async <
   ReturnType,
@@ -28,11 +28,12 @@ export const callBackend = async <
 
   let res;
 
-  if (method === "GET") {
+  if (method === "GET" || method === "DELETE") {
     res = await fetch(urlWithParams, {
       method,
     });
   } else {
+    // @ts-ignore
     const { body } = params;
     res = await fetch(urlWithParams, {
       method,

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { getServerUser } from "../../_lib/server/getServerUser";
 import { Header } from "../_components/Header";
 import { DashboardMetrics } from "./_components/DashboardMetrics";
+import { Spinner } from "@/app/_components/Spinner";
 
 export default async function Dashboard() {
   const user = await getServerUser();
@@ -16,7 +17,7 @@ export default async function Dashboard() {
           <DashboardMetrics />
         </Suspense>
       </div>
-      <Suspense>
+      <Suspense fallback={<Spinner />}>
         <div>
           <LatestQuestions />
         </div>
