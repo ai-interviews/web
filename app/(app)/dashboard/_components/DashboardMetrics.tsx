@@ -20,20 +20,17 @@ export async function DashboardMetrics() {
 
   const { timeSeconds, quietTimeSeconds } = chartMetrics.responseDatasets;
 
+  const avgQuietTimeSeconds = (
+    quietTimeSeconds.dataset.data.reduce((acc, val) => acc + val, 0) /
+      quietTimeSeconds.dataset.data.length || 0
+  ).toFixed(2);
+
   return (
     <div className="flex w-full flex-wrap items-center justify-between gap-5">
       <div className="flex w-full flex-col gap-3 lg:flex-1">
         <MetricCard
           title={
-            <>
-              {(
-                quietTimeSeconds.dataset.data.reduce(
-                  (acc, val) => acc + val,
-                  0
-                ) / quietTimeSeconds.dataset.data.length
-              ).toFixed(2) || 0}{" "}
-              s
-            </>
+            <>{avgQuietTimeSeconds === "0.00" ? 0 : avgQuietTimeSeconds} s</>
           }
           subtext={"Average thinking time this month."}
         >
