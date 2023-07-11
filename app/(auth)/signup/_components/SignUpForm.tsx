@@ -97,9 +97,9 @@ export function SignupForm() {
 
   return (
     <div className="space-y-2">
-      <Input label="Email" onChange={setEmail} required />
-      <Input label="Name" onChange={setName} required />
-      <Input label="Linkedin" onChange={setLinkedin} />
+      <Input label="Email" value={email} onChange={setEmail} required />
+      <Input label="Name" value={name} onChange={setName} required />
+      <Input label="Linkedin" value={linkedin} onChange={setLinkedin} />
 
       <div className="pt-3">
         <button
