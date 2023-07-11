@@ -41,7 +41,12 @@ export function InterviewLayout({
           onChange={setInterviewer}
           disabled={disabledDropdowns}
         />
-        <JobListingDropdown data={jobs} value={job} onChange={setJob} />
+        <JobListingDropdown
+          data={jobs}
+          value={job}
+          onChange={setJob}
+          disabled={disabledDropdowns}
+        />
       </div>
 
       <InterviewBot

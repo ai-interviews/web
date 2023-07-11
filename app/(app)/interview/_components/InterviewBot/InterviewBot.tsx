@@ -24,6 +24,7 @@ import {
 } from "@/app/api/interview/_lib/updateInterview";
 import { ResponseMetricsEventData } from "ai-interview-sdk/dist/types";
 import { Interview } from "ai-interview-sdk";
+import classNames from "classnames";
 
 type Props = {
   interviewer?: Interviewer;
@@ -250,10 +251,10 @@ export function InterviewBot({
       {/* RIGHT VIEW - PAST INTERVIEWS TABLE (INACTIVE), CHAT WINDOW (ACTIVE) */}
 
       <div
-        className={`
-        h-full w-80 flex-auto px-8 py-5
-        ${isActive ? "flex items-end" : ""}
-      `}
+        className={classNames(
+          "h-full w-80 flex-auto px-8 py-5",
+          isActive ? "flex items-end" : ""
+        )}
       >
         {isActive ? (
           <InterviewChat

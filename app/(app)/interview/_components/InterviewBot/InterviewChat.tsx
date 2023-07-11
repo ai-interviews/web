@@ -69,7 +69,7 @@ export function InterviewChat({
       </div>
       <div className="flex items-center gap-2">
         <TextareaAutosize
-          className="border-3 textarea-bordered textarea w-full resize-none text-sm"
+          className="border-3 textarea-bordered textarea w-full resize-none pt-3 text-sm"
           value={messageInProgress}
         />
         <button
