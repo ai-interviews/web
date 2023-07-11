@@ -138,7 +138,7 @@ export default function JobForm({ job }: Props) {
         text: "Saved.",
       });
 
-      router.push(`/jobs/${newJob.id}?success=true`);
+      router.push(`/jobs/${newJob.id}`);
     } catch (e) {
       console.error(e);
       showToast({
@@ -165,6 +165,15 @@ export default function JobForm({ job }: Props) {
     setDescription(v);
   };
 
+  const onChangeUrl = (v: string) => {
+    try {
+      const _url = new URL(v);
+      setUrl(_url.origin + _url.pathname);
+    } catch (e) {
+      setUrl(v);
+    }
+  };
+
   return (
     <div className="w-full space-y-5 p-1 md:w-2/3">
       <div>
@@ -172,10 +181,10 @@ export default function JobForm({ job }: Props) {
           className="mb-2 block text-xs font-bold uppercase tracking-wide"
           htmlFor="url"
         >
-          Job URL
+          Linkedin Job URL
         </label>
         <div className="flex w-full items-center gap-2">
-          <Input placeholder="Type here" value={url} onChange={setUrl} />
+          <Input placeholder="Type here" value={url} onChange={onChangeUrl} />
           <button
             className="btn-neutral btn"
             onClick={onFetchFromUrl}
