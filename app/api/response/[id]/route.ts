@@ -1,3 +1,3 @@
-import { deleteResponse } from "./deleteResponse";
+import { deleteResponse } from "./_lib/deleteResponse";
 
 export { deleteResponse as DELETE };

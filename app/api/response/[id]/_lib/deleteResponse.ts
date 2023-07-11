@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { logErrorMessage } from "../../_lib/generateErrorMessage";
-import { generateApiResponse } from "../../_lib/generateApiResponse";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { logErrorMessage } from "../../../_lib/generateErrorMessage";
+import { generateApiResponse } from "../../../_lib/generateApiResponse";
+import { authOptions } from "../../../auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import prisma from "@/app/_lib/server/prismadb";
 
