@@ -186,7 +186,7 @@ export function InterviewBot({
 
   const handleToggleInterview = () => {
     if (isActive) {
-      // onInterviewEnd?.();
+      onInterviewEnd?.();
 
       // Call interview SDK end handler
       interview.end();
