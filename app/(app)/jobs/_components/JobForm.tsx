@@ -97,20 +97,24 @@ export default function JobForm({ job }: Props) {
         "Please fill in all required fields.",
       ];
 
+      let hasError = false;
+
       if (!title) {
         setIsErrorTitle(true);
-        showToast({ type, text });
-        return;
+        hasError = true;
       }
 
       if (!company) {
         setIsErrorCompany(true);
-        showToast({ type, text });
-        return;
+        hasError = true;
       }
 
       if (!description) {
         setIsErrorDescription(true);
+        hasError = true;
+      }
+
+      if (hasError) {
         showToast({ type, text });
         return;
       }
