@@ -26,7 +26,7 @@ export const createInterview = async (req: NextRequest) => {
     if (!session || !session.user) {
       return generateApiResponse({
         status: 401,
-        error: "Unauthorized",
+        error: "Unauthenticated",
       });
     }
 

@@ -2,6 +2,7 @@ import classNames from "classnames";
 
 type Props = {
   label?: string;
+  bottomLabel?: string;
   value?: string | null;
   className?: string;
   placeholder?: string;
@@ -13,6 +14,7 @@ type Props = {
 
 export function Input({
   label,
+  bottomLabel,
   value,
   className,
   onChange,
@@ -41,6 +43,11 @@ export function Input({
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}
       />
+      {bottomLabel && (
+        <label className="label">
+          <span className="label-text-alt">{bottomLabel}</span>
+        </label>
+      )}
     </div>
   );
 }
