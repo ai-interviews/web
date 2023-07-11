@@ -157,7 +157,7 @@ export function InterviewBot({
         }
       })();
     }
-  }, [interviewLengthSeconds, interviewId]);
+  }, [interviewLengthSeconds, interviewId, router]);
 
   const handleToggleInterview = () => {
     if (isActive) {

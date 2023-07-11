@@ -21,6 +21,7 @@ export const QueryParamsToast = ({
       });
       router.replace(pathname);
     }
+    // @ts-ignore
   }, [success, showToast, router]);
 
   return <></>;
