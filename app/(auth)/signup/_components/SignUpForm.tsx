@@ -41,12 +41,14 @@ export function SignupForm() {
       if (!email) {
         setIsErrorEmail(true);
         showToast({ type, text });
-        return;
       }
 
       if (!name) {
         setIsErrorName(true);
         showToast({ type, text });
+      }
+
+      if (!email || !name) {
         return;
       }
 
@@ -96,9 +98,28 @@ export function SignupForm() {
   }
 
   return (
-    <div className="space-y-2">
-      <Input label="Email" value={email} onChange={setEmail} required />
-      <Input label="Name" value={name} onChange={setName} required />
+    <div
+      className="space-y-2"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          onSubmit();
+        }
+      }}
+    >
+      <Input
+        label="Email"
+        isError={isErrorEmail}
+        value={email}
+        onChange={setEmail}
+        required
+      />
+      <Input
+        label="Name"
+        isError={isErrorName}
+        value={name}
+        onChange={setName}
+        required
+      />
       <Input label="Linkedin" value={linkedin} onChange={setLinkedin} />
 
       <div className="pt-3">

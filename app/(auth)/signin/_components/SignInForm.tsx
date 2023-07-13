@@ -69,6 +69,11 @@ export function SignInForm() {
             "input-error": isErrorEmail,
           })}
           onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onSubmit();
+            }
+          }}
         />
       </div>
 

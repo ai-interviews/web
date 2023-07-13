@@ -219,7 +219,7 @@ export function InterviewBot({
   return (
     <Card
       className={classNames(
-        "flex h-[calc(100%-5rem)] w-full flex-row rounded-lg border-2 px-8 transition-colors",
+        "flex min-h-[calc(100%-5rem)] w-full flex-row rounded-lg border-2 px-8 transition-colors",
         isActive ? "border-red-400" : "border-current"
       )}
     >
