@@ -44,8 +44,9 @@ export const callBackend = async <
   const data = await res.json();
 
   if (!res.ok) {
-    const errorString = `Error fetching ${urlWithParams}: ${data.error}`;
-    throw Error(errorString);
+    console.error(`Error calling ${urlWithParams}: ${data.error}`);
+
+    throw data.error;
   }
 
   return data as ReturnType;

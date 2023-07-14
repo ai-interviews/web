@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card } from "@/app/_components/Card";
 import { Interviewer, Job, User } from "@prisma/client";
 import { InterviewWithMetrics } from "../../../_lib/server/getInterviews";
@@ -64,8 +64,9 @@ export function InterviewBot({
     useState<number>();
 
   const interview = useMemo(
-    () =>
-      new Interview(
+    () => {
+      console.log("RESTART");
+      return new Interview(
         {
           onRecognitionStarted: async () => {
             try {
@@ -103,10 +104,16 @@ export function InterviewBot({
             setMessages((prev) => [...prev, text]);
           },
           onResponseMetrics: async (metrics) => {
+            console.log(metrics);
             setResponseMetrics(metrics);
           },
           onInterviewMetrics: async (metrics) => {
+            console.log(metrics);
             setInterviewLengthSeconds(metrics.lengthSeconds);
+          },
+          onInterviewEnd: ({ feedback }) => {
+            console.log(feedback);
+            endInterview();
           },
         },
         {
@@ -123,12 +130,13 @@ export function InterviewBot({
           }),
           candidateName: user.name.split(" ")[0],
         }
-      ),
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       interviewer.name,
       interviewer.bio,
       interviewer.voice,
-      showToast,
       user.name,
       job?.title,
       job?.description,
@@ -184,21 +192,25 @@ export function InterviewBot({
     }
   }, [interviewLengthSeconds, interviewId, router]);
 
+  const endInterview = () => {
+    onInterviewEnd?.();
+
+    // Call interview SDK end handler
+    interview.end();
+
+    // Clear state
+    setMessageInProgress("");
+    setMessages([]);
+    setIsActive(false);
+    setIsLoadingResponse(true);
+
+    // Refetch past interviews
+    router.refresh();
+  };
+
   const handleToggleInterview = () => {
     if (isActive) {
-      onInterviewEnd?.();
-
-      // Call interview SDK end handler
-      interview.end();
-
-      // Clear state
-      setMessageInProgress("");
-      setMessages([]);
-      setIsActive(false);
-      setIsLoadingResponse(true);
-
-      // Refetch past interviews
-      router.refresh();
+      endInterview();
     } else {
       interview.begin();
       setIsActive(true);
