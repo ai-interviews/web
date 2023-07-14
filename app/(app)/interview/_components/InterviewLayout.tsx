@@ -28,13 +28,14 @@ export function InterviewLayout({
     setIsDisabledDropdowns(true);
   }, []);
 
-  const onInterviewEnd = () => {
+  const onInterviewEnd = useCallback(() => {
+    console.log("have you ever seen an angel in play clothes");
     setIsDisabledDropdowns(false);
-  };
+  }, []);
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-20 items-center gap-4">
+      <div className="flex h-20 items-center gap-2 pb-2">
         <InterviewerDropdown
           data={interviewers}
           value={interviewer}
