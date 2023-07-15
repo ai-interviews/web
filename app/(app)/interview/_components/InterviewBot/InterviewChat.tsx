@@ -6,14 +6,19 @@ import { useClientUser } from "@/app/_hooks/useClientUser";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
+import { AnimatedMicrophone } from "./AnimatedMicrophone";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   interviewerImageUrl: string;
   messages: string[];
   onSendMessage: () => void;
   messageInProgress?: string;
+  setMessageInProgress?: (v: string) => void;
+  isTextOnly?: boolean;
   isLoadingResponse?: boolean;
   isCompletePhrase?: boolean;
+  isActiveMicrophone?: boolean;
 };
 
 export function InterviewChat({
@@ -21,14 +26,31 @@ export function InterviewChat({
   messages,
   onSendMessage,
   messageInProgress,
+  setMessageInProgress,
+  isTextOnly,
   isLoadingResponse,
   isCompletePhrase,
+  isActiveMicrophone,
 }: Props) {
   const { user } = useClientUser();
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [infoMessage, setInfoMessage] = useState<string>("Not listening");
+
+  useEffect(() => {
+    if (isActiveMicrophone && isCompletePhrase) {
+      setInfoMessage("Click to finish response");
+    }
+
+    if (isActiveMicrophone && !isCompletePhrase) {
+      setInfoMessage("Processing...");
+    }
+
+    inputRef?.current?.focus();
+  }, [isActiveMicrophone, isCompletePhrase]);
 
   return (
-    <div className="flex h-full max-h-full w-full flex-col justify-end space-y-3">
-      <div className="flex max-h-[calc(100%-3rem)] flex-col-reverse overflow-y-auto">
+    <div className="flex h-full min-h-full w-full flex-col justify-end space-y-3">
+      <div className="flex max-h-[70vh] min-h-[calc(100%-3rem)] flex-col-reverse overflow-y-auto">
         <div className="space-y-1 pr-10">
           {messages.map((message, i) => {
             const isInterviewer = i % 2 === 0;
@@ -67,19 +89,41 @@ export function InterviewChat({
           )}
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <TextareaAutosize
-          className="border-3 textarea-bordered textarea w-full resize-none pt-3 text-sm"
-          value={messageInProgress}
-        />
-        <button
-          className="btn-ghost btn px-3"
-          onClick={onSendMessage}
-          disabled={!isCompletePhrase}
-        >
-          <PaperAirplaneIcon width={24} />
-        </button>
+      <div className="divider" />
+
+      <div className="flex items-center justify-center gap-2">
+        {isTextOnly ? (
+          <>
+            <TextareaAutosize
+              className="border-3 textarea-bordered textarea w-full resize-none pt-3 text-sm"
+              value={messageInProgress}
+              onChange={(e) => setMessageInProgress?.(e.target.value)}
+              ref={inputRef}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onSendMessage();
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              }}
+            />
+            <button
+              className="btn-ghost btn px-3"
+              onClick={onSendMessage}
+              disabled={!isCompletePhrase}
+            >
+              <PaperAirplaneIcon width={24} />
+            </button>
+          </>
+        ) : (
+          <AnimatedMicrophone
+            active={isActiveMicrophone || false}
+            onClick={onSendMessage}
+            isClickable={isCompletePhrase}
+          />
+        )}
       </div>
+      {!isTextOnly && <div className="text-center text-xs">{infoMessage}</div>}
     </div>
   );
 }

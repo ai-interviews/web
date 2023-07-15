@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/app/_components/Card";
 import { Interviewer, Job, User } from "@prisma/client";
 import { InterviewWithMetrics } from "../../../_lib/server/getInterviews";
@@ -51,10 +51,12 @@ export function InterviewBot({
 
   // Interview state
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [isActiveMicrophone, setIsActiveMicrophone] = useState<boolean>(false);
+  const [isTextOnly, setIsTextOnly] = useState<boolean>(false);
   const [messages, setMessages] = useState<string[]>([]);
   const [messageInProgress, setMessageInProgress] = useState<string>("");
   const [isLoadingResponse, setIsLoadingResponse] = useState<boolean>(true);
-  const [isCompletePhrase, setIsCompletePhrase] = useState<boolean>(false);
+  const [isCompletePhrase, setIsCompletePhrase] = useState<boolean>(true);
 
   // Database state
   const [interviewId, setInterviewId] = useState<string>("");
@@ -65,7 +67,6 @@ export function InterviewBot({
 
   const interview = useMemo(
     () => {
-      console.log("RESTART");
       return new Interview(
         {
           onRecognitionStarted: async () => {
@@ -104,16 +105,16 @@ export function InterviewBot({
             setMessages((prev) => [...prev, text]);
           },
           onResponseMetrics: async (metrics) => {
-            console.log(metrics);
             setResponseMetrics(metrics);
           },
           onInterviewMetrics: async (metrics) => {
-            console.log(metrics);
             setInterviewLengthSeconds(metrics.lengthSeconds);
           },
           onInterviewEnd: ({ feedback }) => {
-            console.log(feedback);
             endInterview();
+          },
+          onInterviewerFinishedSpeaking: () => {
+            setIsActiveMicrophone(true);
           },
         },
         {
@@ -129,6 +130,7 @@ export function InterviewBot({
             },
           }),
           candidateName: user.name.split(" ")[0],
+          textOnly: isTextOnly,
         }
       );
     },
@@ -141,6 +143,7 @@ export function InterviewBot({
       job?.title,
       job?.description,
       onInterviewStart,
+      isTextOnly,
     ]
   );
 
@@ -203,6 +206,7 @@ export function InterviewBot({
     setMessages([]);
     setIsActive(false);
     setIsLoadingResponse(true);
+    setIsActiveMicrophone(false);
 
     // Refetch past interviews
     router.refresh();
@@ -218,20 +222,22 @@ export function InterviewBot({
   };
 
   const handleCandidateFinishedSpeaking = () => {
-    if (messageInProgress.length > 0) {
+    const strippedMessage = messageInProgress.replace(/(\r\n|\n|\r)/gm, "");
+    if (strippedMessage.length > 0) {
       setMessages((prev) => [...prev, messageInProgress]);
       setMessageInProgress("");
       setIsLoadingResponse(true);
-      setIsCompletePhrase(false);
+      setIsCompletePhrase(true);
+      setIsActiveMicrophone(false);
 
-      interview.finishedSpeaking();
+      interview.finishedSpeaking(isTextOnly ? messageInProgress : undefined);
     }
   };
 
   return (
     <Card
       className={classNames(
-        "flex min-h-[calc(100%-5rem)] w-full flex-row rounded-lg border-2 px-8 transition-colors",
+        "flex w-full flex-row rounded-lg border-2 px-8 transition-colors",
         isActive ? "border-red-400" : "border-current"
       )}
     >
@@ -243,13 +249,9 @@ export function InterviewBot({
         2xl:pr-10 ${isActive ? "border-red-400" : "border-current"}
       `}
       >
-        <InterviewerBio
-          interviewer={interviewer}
-          isActive={isActive}
-          onBegin={() => interview.begin()}
-        />
+        <InterviewerBio interviewer={interviewer} />
 
-        <div className="mt-auto flex w-full justify-center pt-4">
+        <div className="mt-auto flex w-full justify-center pt-8">
           <button
             className="btn-outline btn w-2/3"
             onClick={handleToggleInterview}
@@ -257,13 +259,23 @@ export function InterviewBot({
             {isActive ? "End" : "Begin"}
           </button>
         </div>
+        <div className="mt-6 flex items-center justify-center gap-2 text-xs">
+          <input
+            type="checkbox"
+            className="toggle toggle-xs"
+            checked={isTextOnly}
+            onChange={(e) => setIsTextOnly(e.target.checked)}
+            disabled={isActive}
+          />
+          <div>Text only (no voice)?</div>
+        </div>
       </div>
 
       {/* RIGHT VIEW - PAST INTERVIEWS TABLE (INACTIVE), CHAT WINDOW (ACTIVE) */}
 
       <div
         className={classNames(
-          "h-full w-80 flex-auto px-8 py-5",
+          "min-h-[80vh] w-80 flex-auto pl-8",
           isActive ? "flex items-end" : ""
         )}
       >
@@ -273,12 +285,15 @@ export function InterviewBot({
             messages={messages}
             onSendMessage={handleCandidateFinishedSpeaking}
             messageInProgress={messageInProgress}
+            setMessageInProgress={setMessageInProgress}
+            isTextOnly={isTextOnly}
             isLoadingResponse={isLoadingResponse}
             isCompletePhrase={isCompletePhrase}
+            isActiveMicrophone={isActiveMicrophone}
           />
         ) : (
           <div className="h-full overflow-auto">
-            <div className="mb-5 text-3xl">Past interviews</div>
+            <div className="mb-5 mt-3 text-3xl">Past interviews</div>
             <InterviewTable interviews={interviews} />
           </div>
         )}

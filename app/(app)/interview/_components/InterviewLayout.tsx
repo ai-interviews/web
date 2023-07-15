@@ -29,7 +29,6 @@ export function InterviewLayout({
   }, []);
 
   const onInterviewEnd = useCallback(() => {
-    console.log("have you ever seen an angel in play clothes");
     setIsDisabledDropdowns(false);
   }, []);
 

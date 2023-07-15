@@ -8,53 +8,55 @@ type Props = {
 
 export function InterviewTable({ interviews }: Props) {
   return (
-    <Table
-      headers={[
-        { label: "Interviewer" },
-        { label: "Length" },
-        // { label: "Score" },
-        { label: "Date" },
-      ]}
-      data={interviews.map(
-        ({
-          id,
-          timeSeconds,
-          interviewerName,
-          interviewerImageUrl,
-          interviewerCountry,
-          date,
-        }) => ({
-          id,
-          rowData: [
-            {
-              type: "Person",
-              data: {
-                name: interviewerName,
-                country: interviewerCountry,
-                image: interviewerImageUrl,
+    <div className="max-h-[70vh] overflow-auto">
+      <Table
+        headers={[
+          { label: "Interviewer" },
+          { label: "Length" },
+          // { label: "Score" },
+          { label: "Date" },
+        ]}
+        data={interviews.map(
+          ({
+            id,
+            timeSeconds,
+            interviewerName,
+            interviewerImageUrl,
+            interviewerCountry,
+            date,
+          }) => ({
+            id,
+            rowData: [
+              {
+                type: "Person",
+                data: {
+                  name: interviewerName,
+                  country: interviewerCountry,
+                  image: interviewerImageUrl,
+                },
               },
-            },
-            {
-              type: "Text",
-              data: {
-                text: formatTime({ seconds: timeSeconds }),
+              {
+                type: "Text",
+                data: {
+                  text: formatTime({ seconds: timeSeconds }),
+                },
               },
-            },
-            // {
-            //   type: "Text",
-            //   data: {
-            //     text: `${avgScore} / 10`,
-            //   },
-            // },
-            {
-              type: "Date",
-              data: {
-                date,
+              // {
+              //   type: "Text",
+              //   data: {
+              //     text: `${avgScore} / 10`,
+              //   },
+              // },
+              {
+                type: "Date",
+                data: {
+                  date,
+                },
               },
-            },
-          ],
-        })
-      )}
-    />
+            ],
+          })
+        )}
+      />
+    </div>
   );
 }
