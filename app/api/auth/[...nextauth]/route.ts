@@ -16,6 +16,7 @@ export const authOptions = {
         },
       },
       from: process.env.SENDGRID_FROM_EMAIL,
+      maxAge: 24 * 60 * 60,
     }),
   ],
   callbacks: {

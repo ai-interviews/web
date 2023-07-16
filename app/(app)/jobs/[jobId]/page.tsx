@@ -1,17 +1,12 @@
 import prisma from "@/app/_lib/server/prismadb";
 import { Header } from "../../_components/Header";
 import JobForm from "../_components/JobForm";
-import { QueryParamsToast } from "@/app/_components/QueryParamsToast";
 
 type Props = {
   params: { jobId: string };
-  searchParams: { success?: string };
 };
 
-export default async function JobPage({
-  params: { jobId },
-  searchParams,
-}: Props) {
+export default async function JobPage({ params: { jobId } }: Props) {
   const job = await prisma.job.findUnique({
     where: {
       id: jobId,
@@ -20,7 +15,7 @@ export default async function JobPage({
 
   return (
     <div>
-      <Header title={job?.title || ""} />
+      <Header title={job?.title || ""} hasBackButton />
       <JobForm job={job} />
     </div>
   );

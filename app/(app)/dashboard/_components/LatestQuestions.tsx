@@ -3,7 +3,7 @@ import { ResponseTable } from "../../_components/ResponseTable/ResponseTable";
 import { getResponses } from "../../_lib/server/getResponses";
 
 export async function LatestQuestions() {
-  const responses = await getResponses({ page: 0, limit: 10 });
+  const responses = await getResponses({ page: 0, limit: 100 });
 
   return (
     <Card className="h-min">

@@ -71,7 +71,7 @@ export function SignupForm() {
       console.error(error);
       showToast({
         type: "danger",
-        text: "Something went wrong. Please try again.",
+        text: "Something went wrong: " + error,
       });
     }
 
@@ -99,29 +99,36 @@ export function SignupForm() {
 
   return (
     <div
-      className="space-y-2"
+      className="space-y-4"
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           onSubmit();
         }
       }}
     >
-      <Input
-        label="Email"
-        isError={isErrorEmail}
-        value={email}
-        onChange={setEmail}
-        required
-      />
-      <Input
-        label="Name"
-        isError={isErrorName}
-        value={name}
-        onChange={setName}
-        required
-      />
-      <Input label="Linkedin" value={linkedin} onChange={setLinkedin} />
-
+      <div className="mt-3 text-sm">
+        Note: We are currently experiencing an issue with link validatin for
+        Microsoft work emails. While we are fixing this issue, we kindly ask
+        that you use a non-work email to sign up. Thank you for your
+        understanding!
+      </div>
+      <div className="space-y-6">
+        <Input
+          label="Email"
+          isError={isErrorEmail}
+          value={email}
+          onChange={setEmail}
+          required
+        />
+        <Input
+          label="Name"
+          isError={isErrorName}
+          value={name}
+          onChange={setName}
+          required
+        />
+        {/* <Input label="Linkedin URL" value={linkedin} onChange={setLinkedin} /> */}
+      </div>
       <div className="pt-3">
         <button
           className="btn-neutral btn w-24"
@@ -131,7 +138,6 @@ export function SignupForm() {
           {isLoading ? <Spinner /> : "Sign up"}
         </button>
       </div>
-
       <div className="pt-1 text-sm">
         Already have an account? <Link href="/signin">Sign in.</Link>
       </div>

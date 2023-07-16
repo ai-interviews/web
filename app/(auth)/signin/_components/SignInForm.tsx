@@ -4,6 +4,8 @@ import { Spinner } from "@/app/_components/Spinner";
 import { Link } from "@/app/_components/inputs/Link";
 import { useToast } from "@/app/_hooks/useToast";
 import { signIn } from "@/app/_lib/client/signIn";
+import { callBackend } from "@/app/_lib/server/callBackend";
+import { ApiSignInBody } from "@/app/api/signin/_lib/signIn";
 import CheckCircleIcon from "@heroicons/react/24/outline/CheckCircleIcon";
 import classNames from "classnames";
 import { useState } from "react";
@@ -30,15 +32,19 @@ export function SignInForm() {
 
     try {
       setIsLoading(true);
+
       await signIn({ email });
+
       setIsEmailSent(true);
     } catch (error) {
       console.error(error);
       showToast({
         type: "danger",
-        text: "Something went wrong. Please try again.",
+        text: "Something went wrong: " + error,
       });
     }
+
+    setIsLoading(false);
   };
 
   return isEmailSent ? (

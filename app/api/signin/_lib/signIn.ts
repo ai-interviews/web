@@ -1,26 +1,18 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
-import { Account, User } from "@prisma/client";
 import prisma from "@/app/_lib/server/prismadb";
 import { generateApiResponse } from "@/app/api/_lib/generateApiResponse";
 import { logErrorMessage } from "@/app/api/_lib/generateErrorMessage";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const bodySchema = z.object({
-  name: z.string(),
   email: z.string(),
-  linkedin: z.string().optional(),
 });
 
-export type ApiSignUpBody = z.infer<typeof bodySchema>;
+export type ApiSignInBody = z.infer<typeof bodySchema>;
 
-export type ApiSignUpResp = {
-  user: User;
-  account: Account;
-};
-
-export const signUp = async (req: NextRequest) => {
+export const signIn = async (req: NextRequest) => {
   const body = await req.json();
 
   try {
@@ -33,45 +25,28 @@ export const signUp = async (req: NextRequest) => {
       });
     }
 
-    const { name, email, linkedin } = bodySchema.parse(body);
+    const { email } = bodySchema.parse(body);
 
-    const existingUser = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
     });
 
-    if (existingUser) {
+    if (!user) {
       return generateApiResponse({
-        status: 400,
-        error: "Email already registered. Please sign in.",
+        status: 404,
+        error: "Email not registered.",
       });
     }
 
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        linkedin,
-      },
-    });
-
-    const account = await prisma.account.create({
-      data: {
-        userId: user.id,
-        provider: "email",
-        type: "email",
-        providerAccountId: email,
-      },
-    });
-
-    return generateApiResponse<ApiSignUpResp>({
+    return generateApiResponse({
       status: 200,
-      data: { user, account },
+      data: {},
     });
   } catch (error) {
     const errorMessage = logErrorMessage({
-      message: "Error signing up.",
+      message: "Error signing in.",
       error,
     });
 

@@ -6,14 +6,10 @@ import { getCountryImageUrl } from "../../../_lib/client/getCountryImageUrl";
 import { Image } from "@/app/_components/Image";
 
 type Props = {
-  isActive: boolean;
-  onBegin: () => void;
   interviewer?: Interviewer;
 };
 
 export function InterviewerBio({
-  isActive,
-  onBegin,
   interviewer = {
     name: "Random interviewer",
     bio: "???",
