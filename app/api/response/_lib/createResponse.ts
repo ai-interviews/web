@@ -15,6 +15,7 @@ const bodySchema = z.object({
   wordFrequency: z.record(z.number()),
   score: z.number().optional(),
   quietTimeSeconds: z.number(),
+  quantifiedMetric: z.number().optional(),
 });
 
 export type ApiCreateResponseBody = z.infer<typeof bodySchema>;
@@ -44,6 +45,7 @@ export const createResponse = async (req: NextRequest) => {
       wordFrequency,
       score,
       quietTimeSeconds,
+      quantifiedMetric
     } = bodySchema.parse(body);
 
     const dbResponse = await prisma.response.create({
@@ -55,6 +57,7 @@ export const createResponse = async (req: NextRequest) => {
         wordFrequency,
         score,
         quietTimeSeconds,
+        quantifiedMetric,
       },
     });
 

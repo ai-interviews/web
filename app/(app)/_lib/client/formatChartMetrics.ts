@@ -9,10 +9,11 @@ type AggregateMetric =
   | "avgScore"
   | "avgQuietTimeSeconds"
   | "avgTimeSeconds"
+  | "avgQuantifiedMetric"
   | "wordFrequency"
   | "slangFrequency";
 
-type ResponseMetric = "score" | "quietTimeSeconds" | "timeSeconds";
+type ResponseMetric = "score" | "quietTimeSeconds" | "timeSeconds" | "quantifiedMetric";
 
 type Dataset = { labels: string[]; dataset: ChartDataset };
 
@@ -28,6 +29,7 @@ export const formatChartMetrics = ({
     avgScore: { labels: [], dataset: { label: "data", data: [] } },
     avgQuietTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
     avgTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
+    avgQuantifiedMetric: { labels: [], dataset: { label: "data", data: [] } },
     wordFrequency: { labels: [], dataset: { label: "data", data: [] } },
     slangFrequency: { labels: [], dataset: { label: "data", data: [] } },
   };
@@ -36,6 +38,7 @@ export const formatChartMetrics = ({
     score: { labels: [], dataset: { label: "data", data: [] } },
     quietTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
     timeSeconds: { labels: [], dataset: { label: "data", data: [] } },
+    quantifiedMetric: { labels: [], dataset: { label: "data", data: [] } },
   };
 
   // Base metrics
@@ -47,6 +50,7 @@ export const formatChartMetrics = ({
     aggregateDatasets.avgScore.labels.push(label);
     aggregateDatasets.avgTimeSeconds.labels.push(label);
     aggregateDatasets.avgQuietTimeSeconds.labels.push(label);
+    aggregateDatasets.avgQuantifiedMetric.labels.push(label);
 
     // Data
     aggregateDatasets.avgScore.dataset.data.push(metric.avgScore);
@@ -54,6 +58,7 @@ export const formatChartMetrics = ({
     aggregateDatasets.avgQuietTimeSeconds.dataset.data.push(
       metric.avgQuietTimeSeconds
     );
+    aggregateDatasets.avgQuantifiedMetric.dataset.data.push(metric.avgQuantifiedMetric);
   }
 
   if (responses) {
@@ -64,10 +69,14 @@ export const formatChartMetrics = ({
       responseDatasets.score.labels.push(label);
       responseDatasets.timeSeconds.labels.push(label);
       responseDatasets.quietTimeSeconds.labels.push(label);
+      responseDatasets.quantifiedMetric.labels.push(label);
 
       // Data
       if (response.score) {
         responseDatasets.score.dataset.data.push(response.score);
+      }
+      if (response.quantifiedMetric) {
+        responseDatasets.quantifiedMetric.dataset.data.push(response.quantifiedMetric);
       }
       if (response.quietTimeSeconds) {
         responseDatasets.quietTimeSeconds.dataset.data.push(
@@ -124,6 +133,7 @@ export const formatChartMetrics = ({
     avgScore: getPercentDifference("avgScore"),
     avgQuietTimeSeconds: getPercentDifference("avgQuietTimeSeconds"),
     avgTimeSeconds: getPercentDifference("avgTimeSeconds"),
+    avgQuantifiedMetric: getPercentDifference("avgQuantifiedMetric"),
   };
 
   return { labels, aggregateDatasets, responseDatasets, percentDifferences };

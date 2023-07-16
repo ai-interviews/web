@@ -18,11 +18,16 @@ export async function DashboardMetrics() {
 
   const { wordFrequency, slangFrequency } = chartMetrics.aggregateDatasets;
 
-  const { timeSeconds, quietTimeSeconds } = chartMetrics.responseDatasets;
+  const { timeSeconds, quietTimeSeconds, quantifiedMetric } = chartMetrics.responseDatasets;
 
   const avgQuietTimeSeconds = (
     quietTimeSeconds.dataset.data.reduce((acc, val) => acc + val, 0) /
       quietTimeSeconds.dataset.data.length || 0
+  ).toFixed(2);
+
+  const avgQuantifiedMetric = (
+    quantifiedMetric.dataset.data.reduce((acc, val) => acc + val, 0) /
+    quantifiedMetric.dataset.data.length || 0
   ).toFixed(2);
 
   return (
@@ -38,6 +43,24 @@ export async function DashboardMetrics() {
             <BarChart
               labels={quietTimeSeconds.dataset.data.map(() => "")}
               dataset={quietTimeSeconds.dataset}
+              className="h-24 w-24  2xl:h-full 2xl:w-36"
+              barThickness={6}
+              hideGridLines
+            />
+          ) : (
+            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
+          )}
+        </MetricCard>
+        <MetricCard
+          title={
+            <>{avgQuantifiedMetric === "0.00" ? 0 : avgQuantifiedMetric} s</>
+          }
+          subtext={"Average thinking time this month."}
+        >
+          {quantifiedMetric.dataset.data.length ? (
+            <BarChart
+              labels={quantifiedMetric.dataset.data.map(() => "")}
+              dataset={quantifiedMetric.dataset}
               className="h-24 w-24  2xl:h-full 2xl:w-36"
               barThickness={6}
               hideGridLines

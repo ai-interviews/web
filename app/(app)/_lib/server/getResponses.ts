@@ -13,6 +13,7 @@ export type Response = {
   score: number | null;
   timeSeconds: number;
   quietTimeSeconds: number | null;
+  quantifiedMetric: number | null;
   wordFrequency: Prisma.JsonValue;
   date: Date;
 };
@@ -66,6 +67,7 @@ export const getResponses = async (
       ...row,
       timeSeconds: row.timeSeconds.toNumber(),
       quietTimeSeconds: row.quietTimeSeconds.toNumber(),
+      quantifiedMetric: row.quantifiedMetric ? row.quantifiedMetric.toNumber() : 0,
       interviewerName: row.interview.interviewer.name,
       interviewerCountry: row.interview.interviewer.country,
       interviewerImageUrl: row.interview.interviewer.imageUrl,

@@ -90,6 +90,7 @@ model Response {
   score            Int?
   timeSeconds      Decimal
   quietTimeSeconds Decimal
+  quantifiedMetric Decimal?
   wordFrequency    Json
 
   interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
