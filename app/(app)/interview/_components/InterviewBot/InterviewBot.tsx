@@ -223,7 +223,7 @@ export function InterviewBot({
 
   const handleCandidateFinishedSpeaking = () => {
     const strippedMessage = messageInProgress.replace(/(\r\n|\n|\r)/gm, "");
-    if (strippedMessage.length > 0) {
+    if (strippedMessage.length > 0 && isCompletePhrase) {
       setMessages((prev) => [...prev, messageInProgress]);
       setMessageInProgress("");
       setIsLoadingResponse(true);
