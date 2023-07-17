@@ -1,6 +1,7 @@
 "use client";
 
 import { Spinner } from "@/app/_components/Spinner";
+import { Input } from "@/app/_components/inputs/Input";
 import { Link } from "@/app/_components/inputs/Link";
 import { useToast } from "@/app/_hooks/useToast";
 import { signIn } from "@/app/_lib/client/signIn";
@@ -68,18 +69,12 @@ export function SignInForm() {
         <label className="label">
           <span className="label-text text-base">Email</span>
         </label>
-        <input
-          type="text"
+        <Input
           placeholder="Email address"
-          className={classNames("input-bordered input w-full", {
-            "input-error": isErrorEmail,
-          })}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onSubmit();
-            }
-          }}
+          isError={isErrorEmail}
+          value={email}
+          onChange={setEmail}
+          onEnterKey={() => onSubmit()}
         />
       </div>
 
