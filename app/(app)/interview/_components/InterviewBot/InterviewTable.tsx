@@ -56,6 +56,7 @@ export function InterviewTable({ interviews }: Props) {
             ],
           })
         )}
+        navigateOnRowClick
       />
     </div>
   );

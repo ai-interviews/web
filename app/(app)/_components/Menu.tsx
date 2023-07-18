@@ -3,7 +3,7 @@ import {
   BookmarkIcon,
   UserIcon,
   PlusIcon,
-  ArrowLeftOnRectangleIcon,
+  Bars4Icon,
 } from "@heroicons/react/24/outline";
 import { Avatar } from "./Avatar";
 import { Card } from "../../_components/Card";
@@ -33,11 +33,11 @@ export async function Menu() {
           text="Dashboard"
           href="/dashboard"
         />
-        {/* <MenuItem
-          icon={<ChartBarIcon className={iconClass} />}
-          text="Metrics"
-          href="/metrics"
-        /> */}
+        <MenuItem
+          icon={<Bars4Icon className={iconClass} />}
+          text="Past interviews"
+          href="/interviews"
+        />
         <MenuItem
           icon={<BookmarkIcon className={iconClass} />}
           text="My Jobs"

@@ -2,28 +2,27 @@ import React, { useState, Suspense, useRef } from "react";
 import { Header } from "../_components/Header";
 import Link from "next/link";
 import { Card } from "@/app/_components/Card";
-import { JobTable } from "./_components/JobTable";
-import prisma from "@/app/_lib/server/prismadb";
-import { getJobs } from "../_lib/server/getJobs";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { getInterviews } from "../_lib/server/getInterviews";
+import { InterviewTable } from "../interview/_components/InterviewBot/InterviewTable";
 
-export default async function Jobs() {
-  const jobs = await getJobs();
+export default async function Interviews() {
+  const interviews = await getInterviews();
 
   return (
     <div className="h-min">
       <Header
-        title="Added jobs"
+        title="Past interviews"
         rightContent={
-          <Link href="/jobs/new" className="btn-neutral btn">
+          <Link href="/interview" className="btn-neutral btn">
             <PlusIcon height={22} />
-            Add job
+            New interview
           </Link>
         }
       />
 
       <Card className="">
-        <JobTable data={jobs} />
+        <InterviewTable interviews={interviews} />
       </Card>
     </div>
   );

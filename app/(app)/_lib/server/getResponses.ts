@@ -19,12 +19,12 @@ export type Response = {
 
 export const getResponses = async (
   {
-    page,
-    limit,
+    page = 0,
+    limit = 10,
     interviewId,
   }: {
-    page: number;
-    limit: number;
+    page?: number;
+    limit?: number;
     interviewId?: string;
   } = { page: 0, limit: 10 }
 ): Promise<Response[]> => {

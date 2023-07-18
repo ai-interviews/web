@@ -64,6 +64,7 @@ export function InterviewBot({
     useState<ResponseMetricsEventData>();
   const [interviewLengthSeconds, setInterviewLengthSeconds] =
     useState<number>();
+  const [interviewFeedback, setInterviewFeedback] = useState<string>();
 
   const interview = useMemo(
     () => {
@@ -111,6 +112,8 @@ export function InterviewBot({
             setInterviewLengthSeconds(metrics.lengthSeconds);
           },
           onInterviewEnd: ({ feedback }) => {
+            console.log(feedback);
+            setInterviewFeedback(feedback);
             endInterview();
           },
           onInterviewerFinishedSpeaking: () => {
@@ -194,6 +197,29 @@ export function InterviewBot({
       })();
     }
   }, [interviewLengthSeconds, interviewId, router]);
+
+  useEffect(() => {
+    if (interviewFeedback) {
+      (async () => {
+        try {
+          await callBackend<ApiUpdateInterviewResp, ApiUpdateInterviewBody>({
+            url: "/api/interview",
+            method: "PUT",
+            body: {
+              id: interviewId,
+              data: {
+                feedback: interviewFeedback,
+              },
+            },
+          });
+          setInterviewLengthSeconds(undefined);
+          router.refresh();
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, [interviewFeedback, interviewId, router]);
 
   const endInterview = () => {
     onInterviewEnd?.();

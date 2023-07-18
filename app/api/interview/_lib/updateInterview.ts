@@ -11,6 +11,7 @@ const bodySchema = z.object({
   id: z.string(),
   data: z.object({
     interviewerName: z.string().optional(),
+    feedback: z.string().optional(),
     timeSeconds: z.number().min(1).optional(),
   }),
 });
