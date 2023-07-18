@@ -65,6 +65,12 @@ export function SignInForm() {
     </div>
   ) : (
     <div className="space-y-2">
+      <div className="mt-3 text-sm">
+        Note: We are currently experiencing an issue with link validation for
+        Microsoft work emails. While we are fixing this issue, we kindly ask
+        that you use a non-work email to sign up. Thank you for your
+        understanding!
+      </div>
       <div>
         <label className="label">
           <span className="label-text text-base">Email</span>

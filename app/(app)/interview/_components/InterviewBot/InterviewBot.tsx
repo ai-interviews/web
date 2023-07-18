@@ -126,7 +126,7 @@ export function InterviewBot({
           ...(job?.title && {
             jobOptions: {
               title: job.title,
-              description: job.description,
+              description: job.description.substring(0, 5000),
             },
           }),
           candidateName: user.name.split(" ")[0],

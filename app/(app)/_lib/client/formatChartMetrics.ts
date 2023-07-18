@@ -57,13 +57,13 @@ export const formatChartMetrics = ({
   }
 
   if (responses) {
-    for (const response of responses) {
+    for (const response of responses.slice(0, 10)) {
       const label = formatDate(response.date);
 
       // Labels
       responseDatasets.score.labels.push(label);
       responseDatasets.timeSeconds.labels.push(label);
-      responseDatasets.quietTimeSeconds.labels.push(label);
+      responseDatasets.quietTimeSeconds.labels.push("");
 
       // Data
       if (response.score) {
