@@ -49,7 +49,7 @@ export function InterviewChat({
   }, [isActiveMicrophone, isCompletePhrase]);
 
   return (
-    <div className="flex h-full min-h-full w-full flex-col justify-end space-y-3">
+    <div className="flex h-full min-h-full w-full flex-col justify-end space-y-3 overflow-hidden">
       <div className="flex max-h-[70vh] min-h-[calc(100%-3rem)] flex-col-reverse overflow-y-auto">
         <div className="space-y-1 pr-10">
           {messages.map((message, i) => {
