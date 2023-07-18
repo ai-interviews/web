@@ -204,9 +204,9 @@ export default function JobForm({ job }: Props) {
                         <path d="M23 12l-4.61 7H16l4-6H8a3.92 3.92 0 00-4 3.84V17a4 4 0 00.19 1.24L5.12 21H3l-.73-2.22A6.4 6.4 0 012 16.94 6 6 0 018 11h12l-4-6h2.39z"></path>
                       </svg>
                     </span>
-                    button. A menu will pop up, and from this menu, click 'Copy link'. This will copy the link to the job post onto your clipboard.
+                    button. A menu will pop up, and from this menu, click &apos;Copy link&apos;. This will copy the link to the job post onto your clipboard.
                   </li>
-                  <li>2. Click on the job description to be redirected to the full LinkedIn job description and copy the URL from your web browser's address bar.</li>
+                  <li>2. Click on the job description to be redirected to the full LinkedIn job description and copy the URL from your web browser&apos;s address bar.</li>
                 </ul>
               </>
             }
