@@ -1,15 +1,14 @@
 "use client";
 
+import { Image } from "@/app/_components/Image";
 import { Spinner } from "@/app/_components/Spinner";
 import { Input } from "@/app/_components/inputs/Input";
 import { Link } from "@/app/_components/inputs/Link";
 import { useToast } from "@/app/_hooks/useToast";
 import { signIn } from "@/app/_lib/client/signIn";
-import { callBackend } from "@/app/_lib/server/callBackend";
-import { ApiSignInBody } from "@/app/api/signin/_lib/signIn";
 import CheckCircleIcon from "@heroicons/react/24/outline/CheckCircleIcon";
-import classNames from "classnames";
 import { useState } from "react";
+import { signIn as nextAuthSignIn } from "next-auth/react";
 
 export function SignInForm() {
   const showToast = useToast();
@@ -21,7 +20,7 @@ export function SignInForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
 
-  const onSubmit = async () => {
+  const onSubmitEmail = async () => {
     if (!email) {
       setIsErrorEmail(true);
       showToast({
@@ -48,6 +47,18 @@ export function SignInForm() {
     setIsLoading(false);
   };
 
+  const onSubmitSso = async () => {
+    try {
+      await nextAuthSignIn("azure-ad");
+    } catch (error) {
+      console.error(error);
+      showToast({
+        type: "danger",
+        text: "Something went wrong: " + error,
+      });
+    }
+  };
+
   return isEmailSent ? (
     <div className="mt-3 flex w-full flex-col items-center gap-3 px-5">
       <CheckCircleIcon height={80} className="text-success" />
@@ -64,7 +75,7 @@ export function SignInForm() {
       </div>
     </div>
   ) : (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <div className="mt-3 text-sm">
         Note: We are currently experiencing an issue with link validation for
         Microsoft work emails. While we are fixing this issue, we kindly ask
@@ -80,17 +91,25 @@ export function SignInForm() {
           isError={isErrorEmail}
           value={email}
           onChange={setEmail}
-          onEnterKey={() => onSubmit()}
+          onEnterKey={() => onSubmitEmail()}
         />
       </div>
 
-      <div className="pt-3">
+      <div className="space-y-3 pb-2 pt-4">
         <button
-          className="btn-neutral btn w-24"
-          onClick={onSubmit}
+          className="btn-neutral btn w-full"
+          onClick={() => onSubmitEmail()}
           disabled={isLoading}
         >
           {isLoading ? <Spinner /> : "Sign in"}
+        </button>
+        <button
+          className="btn-outline btn w-full"
+          onClick={() => onSubmitSso()}
+          disabled={isLoading}
+        >
+          <Image src="/logos/microsoft.png" alt="microsoft logo" />
+          {isLoading ? <Spinner /> : "Sign in with Microsoft"}
         </button>
       </div>
 

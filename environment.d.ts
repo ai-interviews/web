@@ -4,7 +4,20 @@ import { type DefaultSession } from "next-auth";
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv {}
+    interface ProcessEnv {
+      DATABASE_URL: string;
+      NEXTAUTH_SECRET: string;
+      SENDGRID_FROM_EMAI: string;
+      SENDGRID_SMTP_USER: string;
+      SENDGRID_SMTP_KEY: string;
+      SENDGRID_SMTP_HOST: string;
+      SENDGRID_SMTP_PORT: string;
+      AZURE_STORAGE_ACCOUNT_NAME: string;
+      AZURE_STORAGE_ACCOUNT_KEY: string;
+      AZURE_AD_CLIENT_ID: string;
+      AZURE_AD_CLIENT_SECRET: string;
+      AZURE_AD_TENANT_ID: string;
+    }
   }
 }
 
