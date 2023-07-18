@@ -207,6 +207,7 @@ export function InterviewBot({
     setIsActive(false);
     setIsLoadingResponse(true);
     setIsActiveMicrophone(false);
+    setIsCompletePhrase(true);
 
     // Refetch past interviews
     router.refresh();
