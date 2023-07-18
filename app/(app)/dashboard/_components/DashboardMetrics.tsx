@@ -1,38 +1,26 @@
-import { Card } from "../../../_components/Card";
-import { BarChart } from "../../_components/Charts/BarChart";
-import { MetricCard } from "../../_components/MetricCard";
-import { getAggregateMetrics } from "../../_lib/server/getAggregateMetrics";
-import { formatChartMetrics } from "../../_lib/client/formatChartMetrics";
-import { PieChart } from "../../_components/Charts/PieChart";
-import { getResponses } from "../../_lib/server/getResponses";
+import { Card } from "@/app/_components/Card";
+import { BarChart } from "@/app/(app)/_components/Charts/BarChart";
+import { MetricCard } from "@/app/(app)/_components/MetricCard";
+import { formatChartMetrics } from "@/app/(app)/_lib/client/formatChartMetrics";
+import { PieChart } from "@/app/(app)/_components/Charts/PieChart";
+import { Response } from "@/app/(app)/_lib/server/getResponses";
 
-export async function DashboardMetrics() {
-  const metrics = await getAggregateMetrics({
-    startDate: new Date("2023-02-15"),
-    endDate: new Date(),
-  });
+type Props = {
+  responses: Response[];
+};
 
-  const responses = await getResponses();
+export async function DashboardMetrics({ responses }: Props) {
+  const chartMetrics = formatChartMetrics({ responses });
 
-  const chartMetrics = formatChartMetrics({ metrics, responses });
-
-  const { wordFrequency, slangFrequency } = chartMetrics.aggregateDatasets;
-
-  const { timeSeconds, quietTimeSeconds } = chartMetrics.responseDatasets;
-
-  const avgQuietTimeSeconds = (
-    quietTimeSeconds.dataset.data.reduce((acc, val) => acc + val, 0) /
-      quietTimeSeconds.dataset.data.length || 0
-  ).toFixed(2);
+  const { timeSeconds, quietTimeSeconds, wordFrequency, slangFrequency } =
+    chartMetrics.responseDatasets;
 
   return (
     <div className="flex w-full flex-wrap items-center justify-between gap-5">
       <div className="flex w-full flex-col gap-3 lg:flex-1">
         <MetricCard
-          title={
-            <>{avgQuietTimeSeconds === "0.00" ? 0 : avgQuietTimeSeconds} s</>
-          }
-          subtext={"Average thinking time this month."}
+          title={<>{quietTimeSeconds.avg.toFixed(2)} s</>}
+          subtext={"Average thinking time."}
         >
           {quietTimeSeconds.dataset.data.length ? (
             <BarChart
@@ -46,23 +34,9 @@ export async function DashboardMetrics() {
             <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
           )}
         </MetricCard>
-        {/* <MetricCard
-          title={slangFrequency.labels.length.toString()}
-          subtext="Different slang words detected this month."
-        >
-          {slangFrequency.dataset.data.length ? (
-            <PieChart
-              labels={slangFrequency.labels}
-              dataset={slangFrequency.dataset}
-              className="w-24 2xl:w-36"
-            />
-          ) : (
-            <div className="w-24 text-center text-sm 2xl:w-36">No data</div>
-          )}
-        </MetricCard> */}
         <MetricCard
           title={wordFrequency.dataset.data.length}
-          subtext="Different filler words detected this month."
+          subtext="Different filler words detected."
         >
           {wordFrequency.dataset.data.length ? (
             <PieChart

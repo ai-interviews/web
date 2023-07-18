@@ -1,7 +1,9 @@
 import { Card } from "@/app/_components/Card";
-import { getInterview } from "../../_lib/server/getInterview";
-import { InterviewChat } from "../../interview/_components/InterviewBot/InterviewChat";
-import { getResponses } from "../../_lib/server/getResponses";
+import { getInterview } from "@/app/(app)/_lib/server/getInterview";
+import { InterviewChat } from "@/app/(app)/interview/_components/InterviewBot/InterviewChat";
+import { getResponses } from "@/app/(app)/_lib/server/getResponses";
+import { DashboardMetrics } from "@/app/(app)/dashboard/_components/DashboardMetrics";
+import { Header } from "@/app/(app)/_components/Header";
 
 type Props = {
   searchParams: { interviewId: string };
@@ -22,26 +24,22 @@ export default async function PastInterview({
   }
 
   return (
-    <div className="flex h-full gap-5">
-      <Card className="w-1/2 space-y-2">
-        <div className="text-2xl">Feedback</div>
-        <div>{interview.feedback}</div>
-      </Card>
-      <Card className="h-1/2 w-1/2 space-y-10 overflow-hidden px-4 ">
-        <div className="text-2xl">Responses</div>
-
-        <InterviewChat
-          messages={[
-            "dasddsasdsasa",
-            "dasddsasdsasa",
-            "dasddsasdsasa",
-            "dasddsasdsasa",
-            "dasddsasdsasa",
-            "dasddsasdsasa",
-          ]}
-          interviewerImageUrl={interview.interviewer.imageUrl}
-        />
-      </Card>
+    <div className="space-y-4">
+      <Header title="Interview report" />
+      <DashboardMetrics responses={responses} />
+      <div className="flex h-1/2 gap-5">
+        <Card className="h-full w-1/2 space-y-2">
+          <div className="text-2xl">Feedback</div>
+          <div>{interview.feedback}</div>
+        </Card>
+        <Card className="h-full max-h-96 w-1/2 space-y-10 overflow-hidden px-4 ">
+          <div className="text-2xl">Responses</div>
+          <InterviewChat
+            messages={messages}
+            interviewerImageUrl={interview.interviewer.imageUrl}
+          />
+        </Card>
+      </div>
     </div>
   );
 }

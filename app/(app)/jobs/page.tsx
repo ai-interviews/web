@@ -3,7 +3,6 @@ import { Header } from "../_components/Header";
 import Link from "next/link";
 import { Card } from "@/app/_components/Card";
 import { JobTable } from "./_components/JobTable";
-import prisma from "@/app/_lib/server/prismadb";
 import { getJobs } from "../_lib/server/getJobs";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
@@ -22,8 +21,8 @@ export default async function Jobs() {
         }
       />
 
-      <Card className="">
-        <JobTable data={jobs} />
+      <Card>
+        <JobTable data={jobs} rowClickPath="/jobs" />
       </Card>
     </div>
   );

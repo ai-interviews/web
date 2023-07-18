@@ -12,25 +12,18 @@ export type Response = {
   response: string;
   score: number | null;
   timeSeconds: number;
-  quietTimeSeconds: number | null;
+  quietTimeSeconds: number;
   wordFrequency: Prisma.JsonValue;
   date: Date;
 };
 
-export const getResponses = async (
-  {
-    page = 0,
-    limit = 10,
-    interviewId,
-  }: {
-    page?: number;
-    limit?: number;
-    interviewId?: string;
-  } = { page: 0, limit: 10 }
-): Promise<Response[]> => {
+export const getResponses = async ({
+  interviewId,
+}: {
+  interviewId?: string;
+} = {}): Promise<Response[]> => {
   try {
     const userId = (await getServerUser()).id;
-    const skip = page * limit;
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -41,8 +34,6 @@ export const getResponses = async (
           },
           include: {
             Response: {
-              skip,
-              take: limit,
               include: {
                 interview: {
                   include: {

@@ -22,7 +22,7 @@ export default async function Interviews() {
       />
 
       <Card className="">
-        <InterviewTable interviews={interviews} />
+        <InterviewTable interviews={interviews} rowClickPath="/interviews" />
       </Card>
     </div>
   );

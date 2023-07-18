@@ -321,7 +321,10 @@ export function InterviewBot({
         ) : (
           <div className="h-full overflow-auto">
             <div className="mb-5 mt-3 text-3xl">Past interviews</div>
-            <InterviewTable interviews={interviews} />
+            <InterviewTable
+              interviews={interviews}
+              rowClickPath="/interviews"
+            />
           </div>
         )}
       </div>
