@@ -58,9 +58,7 @@ export const getResponses = async ({
       ...row,
       timeSeconds: row.timeSeconds.toNumber(),
       quietTimeSeconds: row.quietTimeSeconds.toNumber(),
-      quantifiedMetric: row.quantifiedMetric
-        ? row.quantifiedMetric.toNumber()
-        : 0,
+      quantifiedMetric: row.quantifiedMetric ? row.quantifiedMetric : 0,
       interviewerName: row.interview.interviewer.name,
       interviewerCountry: row.interview.interviewer.country,
       interviewerImageUrl: row.interview.interviewer.imageUrl,

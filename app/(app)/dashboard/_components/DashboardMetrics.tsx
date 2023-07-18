@@ -45,7 +45,7 @@ export async function DashboardMetrics({ responses }: Props) {
                 s
               </>
             }
-            subtext={"Average thinking time this month."}
+            subtext={"Average thinking time."}
           >
             {quietTimeSeconds.dataset.data.length ? (
               <BarChart
@@ -63,7 +63,7 @@ export async function DashboardMetrics({ responses }: Props) {
           </MetricCard>
           <MetricCard
             title={wordFrequency.dataset.data.length}
-            subtext="Different filler words detected this month."
+            subtext="Different filler words detected."
           >
             {wordFrequency.dataset.data.length ? (
               <PieChart
@@ -80,12 +80,12 @@ export async function DashboardMetrics({ responses }: Props) {
           <MetricCard
             title={<></>}
             subtext={
-              "Average number of quantifiable metrics detected in your responses this month."
+              "Percentage of responses with quantifiable metrics detected."
             }
           >
             {quantifiedMetric.dataset.data.length ? (
               <div className="w-24 text-center lg:w-1/4 2xl:w-36 2xl:text-5xl">
-                {quantifiedMetric.avg.toFixed(1)}
+                {Math.round(quantifiedMetric.avg * 100)}%
               </div>
             ) : (
               <div className="w-24 text-center text-sm lg:w-1/4 2xl:w-36">
@@ -95,7 +95,7 @@ export async function DashboardMetrics({ responses }: Props) {
           </MetricCard>
           <MetricCard
             title={slangFrequency.labels.length.toString()}
-            subtext="Different slang words detected this month."
+            subtext="Different slang words detected."
           >
             {slangFrequency.dataset.data.length ? (
               <PieChart
