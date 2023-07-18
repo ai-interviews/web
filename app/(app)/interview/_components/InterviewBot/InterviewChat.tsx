@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   interviewerImageUrl: string;
   messages: string[];
-  onSendMessage: () => void;
+  onSendMessage?: () => void;
   messageInProgress?: string;
   setMessageInProgress?: (v: string) => void;
   isTextOnly?: boolean;
@@ -49,7 +49,12 @@ export function InterviewChat({
   }, [isActiveMicrophone, isCompletePhrase]);
 
   return (
-    <div className="flex h-full min-h-full w-full flex-col justify-end space-y-3">
+    <div
+      className={classNames(
+        "flex  w-full flex-col justify-end space-y-3 overflow-hidden",
+        { "h-full min-h-full": !!onSendMessage }
+      )}
+    >
       <div className="flex max-h-[70vh] min-h-[calc(100%-3rem)] flex-col-reverse overflow-y-auto">
         <div className="space-y-1 pr-10">
           {messages.map((message, i) => {
@@ -89,41 +94,47 @@ export function InterviewChat({
           )}
         </div>
       </div>
-      <div className="divider" />
 
-      <div className="flex items-center justify-center gap-2">
-        {isTextOnly ? (
-          <>
-            <TextareaAutosize
-              className="border-3 textarea-bordered textarea w-full resize-none pt-3 text-sm"
-              value={messageInProgress}
-              onChange={(e) => setMessageInProgress?.(e.target.value)}
-              ref={inputRef}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  onSendMessage();
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
-              }}
-            />
-            <button
-              className="btn-ghost btn px-3"
-              onClick={onSendMessage}
-              disabled={!isCompletePhrase}
-            >
-              <PaperAirplaneIcon width={24} />
-            </button>
-          </>
-        ) : (
-          <AnimatedMicrophone
-            active={isActiveMicrophone || false}
-            onClick={onSendMessage}
-            isClickable={isCompletePhrase}
-          />
-        )}
-      </div>
-      {!isTextOnly && <div className="text-center text-xs">{infoMessage}</div>}
+      {!!onSendMessage && (
+        <>
+          <div className="divider" />
+          <div className="flex items-center justify-center gap-2">
+            {isTextOnly ? (
+              <>
+                <TextareaAutosize
+                  className="border-3 textarea-bordered textarea w-full resize-none pt-3 text-sm"
+                  value={messageInProgress}
+                  onChange={(e) => setMessageInProgress?.(e.target.value)}
+                  ref={inputRef}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      onSendMessage();
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }}
+                />
+                <button
+                  className="btn-ghost btn px-3"
+                  onClick={onSendMessage}
+                  disabled={!isCompletePhrase}
+                >
+                  <PaperAirplaneIcon width={24} />
+                </button>
+              </>
+            ) : (
+              <AnimatedMicrophone
+                active={isActiveMicrophone || false}
+                onClick={onSendMessage}
+                isClickable={isCompletePhrase}
+              />
+            )}
+          </div>
+          {!isTextOnly && (
+            <div className="text-center text-xs">{infoMessage}</div>
+          )}
+        </>
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   ApiUpdateUserResp,
   ApiUpdateUserBody,
 } from "@/app/api/user/_lib/updateUser";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: User;
@@ -19,6 +20,8 @@ type Props = {
 
 export function ProfileForm({ user }: Props) {
   const showToast = useToast();
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState<boolean>();
 
   // Form state
@@ -45,6 +48,8 @@ export function ProfileForm({ user }: Props) {
         type: "success",
         text: "Saved.",
       });
+
+      router.refresh();
     } catch (e) {
       console.error(e);
       showToast({

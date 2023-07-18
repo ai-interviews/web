@@ -74,6 +74,7 @@ model Interview {
   userId          String
   timeSeconds     Int?
   date            DateTime @default(now())
+  feedback        String?
 
   Response    Response[]
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)

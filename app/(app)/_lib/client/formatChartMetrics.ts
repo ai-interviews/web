@@ -1,140 +1,99 @@
 import { formatDate } from "@/app/_lib/client/formatDate";
 import { ChartDataset } from "../../_components/Charts/BarChart";
-import { AggregateMetrics } from "../server/getAggregateMetrics";
 import { Response } from "../server/getResponses";
-import { percentDifference } from "./percentDifference";
 import { FILLER_WORDS, SLANG_WORDS } from "./metricDictionary";
 
-type AggregateMetric =
-  | "avgScore"
-  | "avgQuietTimeSeconds"
-  | "avgTimeSeconds"
-  | "avgQuantifiedMetric"
+type ResponseMetric =
+  | "quietTimeSeconds"
+  | "timeSeconds"
   | "wordFrequency"
   | "slangFrequency";
 
-type ResponseMetric = "score" | "quietTimeSeconds" | "timeSeconds" | "quantifiedMetric";
-
-type Dataset = { labels: string[]; dataset: ChartDataset };
+type Dataset = { labels: string[]; dataset: ChartDataset; avg: number };
 
 export const formatChartMetrics = ({
-  metrics,
-  responses,
+  responses = [],
 }: {
-  metrics: AggregateMetrics[];
   responses?: Response[];
 }) => {
   const labels: string[] = [];
-  const aggregateDatasets: Record<AggregateMetric, Dataset> = {
-    avgScore: { labels: [], dataset: { label: "data", data: [] } },
-    avgQuietTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
-    avgTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
-    avgQuantifiedMetric: { labels: [], dataset: { label: "data", data: [] } },
-    wordFrequency: { labels: [], dataset: { label: "data", data: [] } },
-    slangFrequency: { labels: [], dataset: { label: "data", data: [] } },
-  };
 
   const responseDatasets: Record<ResponseMetric, Dataset> = {
-    score: { labels: [], dataset: { label: "data", data: [] } },
-    quietTimeSeconds: { labels: [], dataset: { label: "data", data: [] } },
-    timeSeconds: { labels: [], dataset: { label: "data", data: [] } },
-    quantifiedMetric: { labels: [], dataset: { label: "data", data: [] } },
+    quietTimeSeconds: {
+      labels: [],
+      dataset: { label: "data", data: [] },
+      avg: 0,
+    },
+    timeSeconds: {
+      labels: [],
+      dataset: { label: "data", data: [] },
+      avg: 0,
+    },
+    wordFrequency: {
+      labels: [],
+      dataset: { label: "data", data: [] },
+      avg: 0,
+    },
+    slangFrequency: {
+      labels: [],
+      dataset: { label: "data", data: [] },
+      avg: 0,
+    },
   };
 
-  // Base metrics
-  for (const metric of metrics) {
-    // TODO: handle different periods
-    const label = metric.date.toLocaleString("default", { month: "long" });
+  const wordFrequency: Record<string, number> = {};
+  for (const response of responses) {
+    const label = formatDate(response.date);
 
     // Labels
-    aggregateDatasets.avgScore.labels.push(label);
-    aggregateDatasets.avgTimeSeconds.labels.push(label);
-    aggregateDatasets.avgQuietTimeSeconds.labels.push(label);
-    aggregateDatasets.avgQuantifiedMetric.labels.push(label);
+    responseDatasets.timeSeconds.labels.push(label);
+    responseDatasets.quietTimeSeconds.labels.push("");
 
     // Data
-    aggregateDatasets.avgScore.dataset.data.push(metric.avgScore);
-    aggregateDatasets.avgTimeSeconds.dataset.data.push(metric.avgTimeSeconds);
-    aggregateDatasets.avgQuietTimeSeconds.dataset.data.push(
-      metric.avgQuietTimeSeconds
+    responseDatasets.timeSeconds.dataset.data.push(response.timeSeconds);
+    responseDatasets.quietTimeSeconds.dataset.data.push(
+      response.quietTimeSeconds
     );
-    aggregateDatasets.avgQuantifiedMetric.dataset.data.push(metric.avgQuantifiedMetric);
+
+    // Averages
+    responseDatasets.timeSeconds.avg += response.timeSeconds / responses.length;
+    responseDatasets.quietTimeSeconds.avg +=
+      response.quietTimeSeconds / responses.length;
+
+    // console.log(JSON.parse(response.wordFrequency as string));
+
+    // Word frequency
+    const responseWordFrequency = (response.wordFrequency || {}) as Record<
+      string,
+      number
+    >;
+
+    for (const [word, freq] of Object.entries(responseWordFrequency)) {
+      wordFrequency[word] = (wordFrequency[word] || 0) + freq;
+    }
   }
 
-  if (responses) {
-    for (const response of responses) {
-      const label = formatDate(response.date);
-
-      // Labels
-      responseDatasets.score.labels.push(label);
-      responseDatasets.timeSeconds.labels.push(label);
-      responseDatasets.quietTimeSeconds.labels.push(label);
-      responseDatasets.quantifiedMetric.labels.push(label);
+  // Get filler words from wordFrequency
+  for (const [word, freq] of Object.entries(wordFrequency)) {
+    if (FILLER_WORDS.has(word) || word.includes("uh") || word.includes("um")) {
+      // Label
+      responseDatasets.wordFrequency.labels.push(word);
 
       // Data
-      if (response.score) {
-        responseDatasets.score.dataset.data.push(response.score);
-      }
-      if (response.quantifiedMetric) {
-        responseDatasets.quantifiedMetric.dataset.data.push(response.quantifiedMetric);
-      }
-      if (response.quietTimeSeconds) {
-        responseDatasets.quietTimeSeconds.dataset.data.push(
-          response.quietTimeSeconds
-        );
-      }
-      responseDatasets.timeSeconds.dataset.data.push(response.timeSeconds);
+      responseDatasets.wordFrequency.dataset.data.push(freq);
     }
   }
 
-  // Word frequency
-  if (metrics.length > 0) {
-    for (const [word, freq] of Object.entries(
-      // Get current periods metrics
-      metrics[metrics.length - 1].wordFrequency
-    )) {
-      if (
-        FILLER_WORDS.has(word) ||
-        word.includes("uh") ||
-        word.includes("um")
-      ) {
-        // Label
-        aggregateDatasets.wordFrequency.labels.push(word);
+  // Get slang words from wordFrequency
+  for (const [word, freq] of Object.entries(wordFrequency)) {
+    if (SLANG_WORDS.includes(word)) {
+      // Label
+      responseDatasets.slangFrequency.labels.push(word);
 
-        // Data
-        aggregateDatasets.wordFrequency.dataset.data.push(freq);
-      }
+      // Data
+      responseDatasets.slangFrequency.dataset.data.push(freq);
     }
   }
 
-  // Slang frequency
-  if (metrics.length > 0) {
-    for (const [word, freq] of Object.entries(
-      metrics[metrics.length - 1].wordFrequency
-    )) {
-      if (SLANG_WORDS.includes(word)) {
-        // Label
-        aggregateDatasets.slangFrequency.labels.push(word);
-
-        // Data
-        aggregateDatasets.slangFrequency.dataset.data.push(freq);
-      }
-    }
-  }
-
-  const getPercentDifference = (key: AggregateMetric) => {
-    const data = aggregateDatasets[key].dataset.data;
-    if (data.length > 1) {
-      return percentDifference(data[data.length - 2], data[data.length - 1]);
-    }
-  };
-
-  const percentDifferences = {
-    avgScore: getPercentDifference("avgScore"),
-    avgQuietTimeSeconds: getPercentDifference("avgQuietTimeSeconds"),
-    avgTimeSeconds: getPercentDifference("avgTimeSeconds"),
-    avgQuantifiedMetric: getPercentDifference("avgQuantifiedMetric"),
-  };
-
-  return { labels, aggregateDatasets, responseDatasets, percentDifferences };
+  return { labels, responseDatasets };
 };

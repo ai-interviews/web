@@ -10,6 +10,7 @@ type Props = {
   isError?: boolean;
   required?: boolean;
   disabled?: boolean;
+  onEnterKey?: () => void;
 };
 
 export function Input({
@@ -22,6 +23,7 @@ export function Input({
   isError,
   required,
   disabled,
+  onEnterKey,
 }: Props) {
   return (
     <div className="w-full">
@@ -42,6 +44,11 @@ export function Input({
         value={value || ""}
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && onEnterKey) {
+            onEnterKey();
+          }
+        }}
       />
       {bottomLabel && (
         <label className="label">

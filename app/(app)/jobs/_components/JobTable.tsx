@@ -5,9 +5,10 @@ import { Job } from "@prisma/client";
 
 type Props = {
   data: Job[];
+  rowClickPath?: string;
 };
 
-export function JobTable({ data }: Props) {
+export function JobTable({ data, rowClickPath }: Props) {
   const rows: Row[] = data.map((row) => ({
     id: row.id,
     rowData: [
@@ -52,7 +53,7 @@ export function JobTable({ data }: Props) {
           { label: "Description", hiddenThreshold: "sm" },
         ]}
         data={rows}
-        navigateOnRowClick
+        rowClickPath={rowClickPath}
       />
     </div>
   );

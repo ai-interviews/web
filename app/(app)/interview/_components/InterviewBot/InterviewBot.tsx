@@ -64,6 +64,7 @@ export function InterviewBot({
     useState<ResponseMetricsEventData>();
   const [interviewLengthSeconds, setInterviewLengthSeconds] =
     useState<number>();
+  const [interviewFeedback, setInterviewFeedback] = useState<string>();
 
   const interview = useMemo(
     () => {
@@ -111,6 +112,8 @@ export function InterviewBot({
             setInterviewLengthSeconds(metrics.lengthSeconds);
           },
           onInterviewEnd: ({ feedback }) => {
+            console.log(feedback);
+            setInterviewFeedback(feedback);
             endInterview();
           },
           onInterviewerFinishedSpeaking: () => {
@@ -126,7 +129,7 @@ export function InterviewBot({
           ...(job?.title && {
             jobOptions: {
               title: job.title,
-              description: job.description,
+              description: job.description.substring(0, 5000),
             },
           }),
           candidateName: user.name.split(" ")[0],
@@ -195,6 +198,29 @@ export function InterviewBot({
     }
   }, [interviewLengthSeconds, interviewId, router]);
 
+  useEffect(() => {
+    if (interviewFeedback) {
+      (async () => {
+        try {
+          await callBackend<ApiUpdateInterviewResp, ApiUpdateInterviewBody>({
+            url: "/api/interview",
+            method: "PUT",
+            body: {
+              id: interviewId,
+              data: {
+                feedback: interviewFeedback,
+              },
+            },
+          });
+          setInterviewLengthSeconds(undefined);
+          router.refresh();
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, [interviewFeedback, interviewId, router]);
+
   const endInterview = () => {
     onInterviewEnd?.();
 
@@ -207,6 +233,7 @@ export function InterviewBot({
     setIsActive(false);
     setIsLoadingResponse(true);
     setIsActiveMicrophone(false);
+    setIsCompletePhrase(true);
 
     // Refetch past interviews
     router.refresh();
@@ -223,7 +250,7 @@ export function InterviewBot({
 
   const handleCandidateFinishedSpeaking = () => {
     const strippedMessage = messageInProgress.replace(/(\r\n|\n|\r)/gm, "");
-    if (strippedMessage.length > 0) {
+    if (strippedMessage.length > 0 && isCompletePhrase) {
       setMessages((prev) => [...prev, messageInProgress]);
       setMessageInProgress("");
       setIsLoadingResponse(true);
@@ -294,7 +321,10 @@ export function InterviewBot({
         ) : (
           <div className="h-full overflow-auto">
             <div className="mb-5 mt-3 text-3xl">Past interviews</div>
-            <InterviewTable interviews={interviews} />
+            <InterviewTable
+              interviews={interviews}
+              rowClickPath="/interviews"
+            />
           </div>
         )}
       </div>

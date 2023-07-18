@@ -1,9 +1,5 @@
-"use client";
-
 import { ReactNode } from "react";
 import { TableCol } from "./TableCol";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
 import classNames from "classnames";
 
 type TailwindBreakpoints = "sm" | "md" | "lg" | "xl" | "2xl";
@@ -18,7 +14,7 @@ type Props = {
   data: Row[];
   size?: "xs" | "sm" | "md" | "lg";
   placeholder?: ReactNode;
-  navigateOnRowClick?: boolean;
+  rowClickPath?: string;
 };
 
 export function Table({
@@ -26,11 +22,8 @@ export function Table({
   data,
   size = "md",
   placeholder,
-  navigateOnRowClick,
+  rowClickPath,
 }: Props) {
-  const pathname = usePathname();
-  const router = useRouter();
-
   return (
     <div className="h-min overflow-x-auto">
       <table className={`table table-${size} h-min`}>
@@ -50,14 +43,9 @@ export function Table({
             data.map(({ id, rowData }, i) => (
               <tr
                 className={classNames("rounded-lg", {
-                  "cursor-pointer hover:bg-base-300": navigateOnRowClick,
+                  "cursor-pointer hover:bg-base-300": !!rowClickPath,
                 })}
                 key={i}
-                onClick={
-                  navigateOnRowClick
-                    ? () => router.push(`${pathname}/${id}`)
-                    : undefined
-                }
               >
                 {rowData.map((colData, j) => (
                   <TableCol
@@ -66,6 +54,7 @@ export function Table({
                     className={getClassToHideTableCol(
                       headers[j].hiddenThreshold
                     )}
+                    href={rowClickPath ? `${rowClickPath}/${id}` : undefined}
                   />
                 ))}
               </tr>
