@@ -36,7 +36,7 @@ export async function DashboardMetrics() {
         >
           {quietTimeSeconds.dataset.data.length ? (
             <BarChart
-              labels={quietTimeSeconds.dataset.data.map(() => "")}
+              labels={quietTimeSeconds.labels}
               dataset={quietTimeSeconds.dataset}
               className="h-24 w-24  2xl:h-full 2xl:w-36"
               barThickness={6}

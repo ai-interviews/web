@@ -107,7 +107,7 @@ export function SignupForm() {
       }}
     >
       <div className="mt-3 text-sm">
-        Note: We are currently experiencing an issue with link validatin for
+        Note: We are currently experiencing an issue with link validation for
         Microsoft work emails. While we are fixing this issue, we kindly ask
         that you use a non-work email to sign up. Thank you for your
         understanding!
