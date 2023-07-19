@@ -14,7 +14,7 @@ export default async function SignupPage() {
 
   return (
     <Card className="w-full rounded-md p-6 lg:max-w-lg">
-      <h1 className="text-center text-3xl font-light">AI Interviews</h1>
+      <h1 className="text-center text-3xl font-light">Sign up</h1>
       <SignupForm />
     </Card>
   );
