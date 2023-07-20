@@ -7,6 +7,7 @@ export type AggregateMetrics = {
   avgScore: number;
   avgTimeSeconds: number;
   avgQuietTimeSeconds: number;
+  avgQuantifiedMetric: number;
   wordFrequency: Record<string, number>;
 };
 
@@ -28,6 +29,7 @@ export const getAggregateMetrics = async ({
         r."score",
         r."timeSeconds",
         r."quietTimeSeconds",
+        r."quantifiedMetric",
         (jsonb_each_text(r."wordFrequency")).*
       FROM "Response" r
       INNER JOIN "Interview" i ON r."interviewId" = i."id"
@@ -39,6 +41,7 @@ export const getAggregateMetrics = async ({
       CAST(ROUND(AVG("score")) AS INTEGER) AS "avgScore",
       CAST(ROUND(AVG("timeSeconds")) AS INTEGER) AS "avgTimeSeconds",
       CAST(ROUND(AVG("quietTimeSeconds")) AS INTEGER) AS "avgQuietTimeSeconds",
+      CAST(ROUND(AVG("quantifiedMetric")) AS INTEGER) AS "avgQuantifiedMetric",
       jsonb_object_agg(key, value::float) as "wordFrequency"
     FROM data
     GROUP BY "date"

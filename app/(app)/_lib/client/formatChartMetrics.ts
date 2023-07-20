@@ -7,6 +7,7 @@ type ResponseMetric =
   | "quietTimeSeconds"
   | "timeSeconds"
   | "wordFrequency"
+  | "quantifiedMetric"
   | "slangFrequency";
 
 type Dataset = { labels: string[]; dataset: ChartDataset; avg: number };
@@ -34,6 +35,11 @@ export const formatChartMetrics = ({
       dataset: { label: "data", data: [] },
       avg: 0,
     },
+    quantifiedMetric: {
+      labels: [],
+      dataset: { label: "data", data: [] },
+      avg: 0,
+    },
     slangFrequency: {
       labels: [],
       dataset: { label: "data", data: [] },
@@ -48,17 +54,27 @@ export const formatChartMetrics = ({
     // Labels
     responseDatasets.timeSeconds.labels.push(label);
     responseDatasets.quietTimeSeconds.labels.push("");
+    responseDatasets.quantifiedMetric.labels.push("");
 
     // Data
     responseDatasets.timeSeconds.dataset.data.push(response.timeSeconds);
     responseDatasets.quietTimeSeconds.dataset.data.push(
       response.quietTimeSeconds
     );
+    if (response.quantifiedMetric) {
+      responseDatasets.quantifiedMetric.dataset.data.push(
+        response.quantifiedMetric
+      );
+    }
 
     // Averages
     responseDatasets.timeSeconds.avg += response.timeSeconds / responses.length;
     responseDatasets.quietTimeSeconds.avg +=
       response.quietTimeSeconds / responses.length;
+    if (response.quantifiedMetric) {
+      responseDatasets.quantifiedMetric.avg +=
+        response.quantifiedMetric / responses.length;
+    }
 
     // console.log(JSON.parse(response.wordFrequency as string));
 
