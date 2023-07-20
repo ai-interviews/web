@@ -1,8 +1,9 @@
 import classNames from "classnames";
+import { ReactNode } from 'react';
 
 type Props = {
   label?: string;
-  bottomLabel?: string;
+  bottomLabel?: string | ReactNode;
   value?: string | null;
   className?: string;
   placeholder?: string;

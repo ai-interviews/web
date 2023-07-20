@@ -188,14 +188,31 @@ export default function JobForm({ job }: Props) {
         >
           Linkedin Job URL
         </label>
-        <div className="flex w-full items-center gap-2">
+        <div className="flex w-full items-start gap-2">
           <Input
             placeholder="Type here"
             value={url}
             onChange={onChangeUrl}
-            bottomLabel="You don't have to satisfy every job requirement to practice or apply!"
+            bottomLabel={
+              <>
+                <ul>
+                  <li>Please note that the LinkedIn link you are about to share can be retrieved in 2 specific way. On the LinkedIn job post:</li>
+                  <li>
+                    1. Click on the 
+                    <span style={{display: 'inline-flex', alignItems: 'center', margin: '0 5px'}}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" width="12" height="12" focusable="false">
+                        <path d="M23 12l-4.61 7H16l4-6H8a3.92 3.92 0 00-4 3.84V17a4 4 0 00.19 1.24L5.12 21H3l-.73-2.22A6.4 6.4 0 012 16.94 6 6 0 018 11h12l-4-6h2.39z"></path>
+                      </svg>
+                    </span>
+                    button. A menu will pop up, and from this menu, click &apos;Copy link&apos;. This will copy the link to the job post onto your clipboard.
+                  </li>
+                  <li>2. Click on the job description to be redirected to the full LinkedIn job description and copy the URL from your web browser&apos;s address bar.</li>
+                </ul>
+              </>
+            }
           />
           <button
+            style={{ marginTop: '6px' }}
             className="btn-neutral btn"
             onClick={onFetchFromUrl}
             disabled={isLoadingFetchJob}
