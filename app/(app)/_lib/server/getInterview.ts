@@ -18,6 +18,10 @@ export type InterviewWithMetrics = {
 
 export const getInterview = async (interviewId: string) => {
   try {
+    if (!interviewId) {
+      return undefined;
+    }
+
     const user = await getServerUser();
 
     const interview = await prisma.interview.findFirst({

@@ -6,11 +6,11 @@ import { DashboardMetrics } from "@/app/(app)/dashboard/_components/DashboardMet
 import { Header } from "@/app/(app)/_components/Header";
 
 type Props = {
-  searchParams: { interviewId: string };
+  params: { interviewId: string };
 };
 
 export default async function PastInterview({
-  searchParams: { interviewId },
+  params: { interviewId },
 }: Props) {
   const interview = await getInterview(interviewId);
   const responses = await getResponses({ interviewId });
