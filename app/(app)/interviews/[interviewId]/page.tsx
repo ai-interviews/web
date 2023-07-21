@@ -27,12 +27,12 @@ export default async function PastInterview({
     <div className="space-y-4">
       <Header title="Interview report" />
       <DashboardMetrics responses={responses} />
-      <div className="flex h-1/2 gap-5">
+      <div className="flex h-[34rem] gap-5">
         <Card className="h-full w-1/2 space-y-2">
           <div className="text-2xl">Feedback</div>
-          <div>{interview.feedback}</div>
+          <div className="overflow-y-auto">{interview.feedback}</div>
         </Card>
-        <Card className="h-full max-h-96 w-1/2 space-y-10 overflow-hidden px-4 ">
+        <Card className="h-full w-1/2 space-y-2 overflow-hidden px-4 ">
           <div className="text-2xl">Responses</div>
           <InterviewChat
             messages={messages}

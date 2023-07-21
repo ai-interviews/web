@@ -98,7 +98,7 @@ export function InterviewChat({
       {!!onSendMessage && (
         <>
           <div className="divider" />
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2 p-1">
             {isTextOnly ? (
               <>
                 <TextareaAutosize
