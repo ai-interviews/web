@@ -40,6 +40,7 @@ export const getInterviews = async (): Promise<InterviewWithMetrics[]> => {
       LEFT JOIN "Interviewer" p ON p."name" = i."interviewerName" 
       WHERE i."userId" = ${user.id}
       GROUP BY i."id", p."name"
+      ORDER BY i."date" DESC
     `;
 
     const interviews: InterviewWithMetrics[] = await prisma.$queryRaw(sql);

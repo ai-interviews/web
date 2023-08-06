@@ -45,6 +45,10 @@ export function InterviewChat({
       setInfoMessage("Processing...");
     }
 
+    if (!isActiveMicrophone) {
+      setInfoMessage("Not listening");
+    }
+
     inputRef?.current?.focus();
   }, [isActiveMicrophone, isCompletePhrase]);
 

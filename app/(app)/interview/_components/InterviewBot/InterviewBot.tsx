@@ -109,11 +109,10 @@ export function InterviewBot({
             setResponseMetrics(metrics);
           },
           onInterviewMetrics: async (metrics) => {
+            setInterviewFeedback(metrics.feedback);
             setInterviewLengthSeconds(metrics.lengthSeconds);
           },
-          onInterviewEnd: ({ feedback }) => {
-            console.log(feedback);
-            setInterviewFeedback(feedback);
+          onInterviewEnd: () => {
             endInterview();
           },
           onInterviewerFinishedSpeaking: () => {
@@ -165,7 +164,7 @@ export function InterviewBot({
           });
           setResponseMetrics(undefined);
         } catch (error) {
-          console.error(error);
+          console.error(error, interviewId);
           showToast({
             type: "danger",
             text: "There was an error starting the interview.",
